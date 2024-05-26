@@ -6,8 +6,9 @@ const StartServer = async()=>{
   const app = express();
   await dbConnection();
   await App(app);
-  app.listen(8080, ()=>{
-    console.log('listing to port 8080');
+  const port = process.env.PORT || 8080;
+  app.listen(port, ()=>{
+    console.log(`listing to port ${port}`);
   });  
 }
 
