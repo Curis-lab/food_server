@@ -1,8 +1,10 @@
 import express from 'express';
-import { CreateVandor, GetVandorById, GetVandors } from '../controllers/AdminController';
+import { AdminRegi, CreateVandor, GetVandorById, GetVandors } from '../controllers/AdminController';
 
 const router = express.Router();
 
+// router.post('/login',AdminLogin);
+router.post('/signin',AdminRegi);
 router.post('/vandor',CreateVandor);
 router.get('/vandors', GetVandors);
 router.get('/vandor/:id',GetVandorById);

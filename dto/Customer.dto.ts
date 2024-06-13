@@ -23,3 +23,8 @@ export interface CustomerPayload{
     _id:string;
     email:string;
 }
+
+export class OrderInputs{
+  _id:string;
+  unit:number;
+}

@@ -22,10 +22,10 @@ export const GenerateSignature = (payload: AuthPayload)=>{
 
 export const ValidateSignature = async(req: Request)=>{
     const signature = req.get('Authorization');
+    
     if(signature){
         const payload = jwt.verify(signature.split(' ')[1], jwt_sec) as AuthPayload;
         req.user = payload;
-        console.log('Request',req.user);
         return true;
     }
     return false;

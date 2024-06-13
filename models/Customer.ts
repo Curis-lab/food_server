@@ -1,5 +1,5 @@
 import mongoose , {Schema, Document, Model, mongo} from "mongoose"
-
+import {OrderDoc} from './Order';
 interface CustomerDoc extends Document{
     email:string;
     password:string;
@@ -13,6 +13,7 @@ interface CustomerDoc extends Document{
     otp_expiry:number;
     lat:number;
     lng:number;
+    orders:[OrderDoc]
 }
 
 const CustomerSchema = new Schema({
@@ -27,7 +28,11 @@ const CustomerSchema = new Schema({
     otp:{type:Number},
     otp_expiry:{type:Number},
     lat:{type:Number},
-    lng:{type:Number}
+    lng:{type:Number},
+    orders:[{
+        type:Schema.Types.ObjectId,
+        ref:'order'
+    }]
 },{
     toJSON:{
         transform(doc, ret){
