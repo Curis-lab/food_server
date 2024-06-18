@@ -13,6 +13,7 @@ export const GetFoodAvailablity = async(req:Request, res:Response, next:NextFunc
     return res.status(400).json({message:'Data not found'});
 };
 
+
 export const GetTopRestruent = async(req:Request, res:Response, next:NextFunction)=>{
     const pinCode = req.params.pincode;
     const result = await Vandor.find({pinCode, serviceAvailable:false})
