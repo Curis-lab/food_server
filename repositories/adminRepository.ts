@@ -10,6 +10,5 @@ export class AdminRepository implements IAdminRepository{
     }
     find(id: number): Promise<Admin> {
         throw new Error("Method not implemented.");
-    }
-    
+    }   
 }
