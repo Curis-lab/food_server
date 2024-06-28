@@ -1,9 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateVandorInput } from "../dto";
+import { CreateVandorInput, IVendorInput } from "../dto";
 import { Vandor } from "../models";
 import { GeneratePassword, generateSalt } from "../utility";
 import { Admin } from "../models/Admin";
 import { IAdminInteractor } from "../interface/IAdminInteractor";
+
+/**
+ * @
+ * @class AdminController
+ * @description AdminController class
+ */
+
 export class AdminController {
   private interactor: IAdminInteractor;
 
@@ -26,12 +33,8 @@ export class AdminController {
 
   async onGetVandors(req: Request, res: Response, next: NextFunction) {
     try {
-      const string = this.interactor.allVandors;
-      const vandors = await Vandor.find();
-      if (vandors !== null) {
-        return res.json({ string, vandors });
-      }
-      return res.json({ message: "vandor is not avaliable" });
+      const vandors = await this.interactor.allVandors();
+      return res.json( vandors );
     } catch (error) {
       next(error);
     }
@@ -58,7 +61,7 @@ export class AdminController {
     const salt = await generateSalt();
     const userPassword = await GeneratePassword(password, salt);
     
-    const createVandor = await Vandor.create({
+    const vendorData:IVendorInput = {
       name,
       ownerName,
       foodType,
@@ -71,11 +74,12 @@ export class AdminController {
       serviceAvailable: false,
       coverImage: [""],
       rating: 2,
-    });
-    res.json(createVandor);
+    }
+    const createVandor = await this.interactor.createVandor(vendorData);
+    res.json({createVandor});
   }
 }
-//adapte bussianess logic
+
 export const findVandor = async (id: string | undefined, email?: string) => {
   if (email) {
     return await Vandor.findOne({ email });

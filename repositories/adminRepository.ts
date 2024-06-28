@@ -1,16 +1,18 @@
-import { Admin } from "../entities/Admin";
+import { IVendorInput } from "../dto";
 import { IAdminRepository } from "../interface/IAdminRepository";
 import { Vandor, VandorDoc } from "../models";
-import { AdminDoc } from "../models/Admin";
 
 export class AdminRepository implements IAdminRepository {
     private vandor;
-
     constructor(){
         this.vandor = Vandor;
     }
-    async createVandor(input: any): Promise<VandorDoc> {
-        return this.vandor.create(input);
+
+    async Vandors():Promise<any[]>{
+        return await this.vandor.find();
+    }
+    async createVandor(input: IVendorInput): Promise<VandorDoc> {
+        return await this.vandor.create(input);
     }
     updateVandor(id: number): Promise<VandorDoc> {
         throw new Error("Method not implemented.");
