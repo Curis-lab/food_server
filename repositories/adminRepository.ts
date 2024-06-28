@@ -1,23 +1,21 @@
 import { Admin } from "../entities/Admin";
 import { IAdminRepository } from "../interface/IAdminRepository";
+import { Vandor, VandorDoc } from "../models";
 import { AdminDoc } from "../models/Admin";
 
-//make only one connection
+export class AdminRepository implements IAdminRepository {
+    private vandor;
 
-export class AdminRepository implements IAdminRepository{
-    private client;
-    constructor(client: any){
-        this.client = client;
+    constructor(){
+        this.vandor = Vandor;
     }
-
-    /*------------create vandor------------*/
-    create(input: Admin): Promise<AdminDoc> {
+    async createVandor(input: any): Promise<VandorDoc> {
+        return this.vandor.create(input);
+    }
+    updateVandor(id: number): Promise<VandorDoc> {
         throw new Error("Method not implemented.");
     }
-    update(id: number): Promise<AdminDoc> {
-        throw new Error("Method not implemented.");
-    }
-    find(id: number): Promise<Admin> {
+    findVandor(id: number): Promise<VandorDoc> {
         throw new Error("Method not implemented.");
     }
 }

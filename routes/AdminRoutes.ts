@@ -4,7 +4,8 @@ import { AdminInteractor } from '../interactors/AdminInteractor';
 
 const router = express.Router();
 
-const controller = new AdminController(new AdminInteractor());
+const adminInteractor = new AdminInteractor()
+const controller = new AdminController(adminInteractor);
 
 router.post('/signin',AdminRegi);
 router.post('/vandor',controller.onCreateVandor.bind(controller));

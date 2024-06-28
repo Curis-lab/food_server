@@ -23,6 +23,7 @@ export class AdminController {
       next(error);
     }
   }
+
   async onGetVandors(req: Request, res: Response, next: NextFunction) {
     try {
       const string = this.interactor.allVandors;
@@ -35,6 +36,7 @@ export class AdminController {
       next(error);
     }
   }
+
   async onCreateVandor(req: Request, res: Response) {
     const {
       name,
@@ -55,6 +57,7 @@ export class AdminController {
     }
     const salt = await generateSalt();
     const userPassword = await GeneratePassword(password, salt);
+    
     const createVandor = await Vandor.create({
       name,
       ownerName,
