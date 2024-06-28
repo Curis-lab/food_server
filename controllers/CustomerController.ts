@@ -5,7 +5,6 @@ import {  validate} from 'class-validator';
 import { Customer, Food } from '../models';
 import { GeneratePassword, generateSalt, GenerateSignature, validatePassword } from '../utility';
 
-
 interface CustomerSignup{
     email:string;
     password:string;
@@ -14,10 +13,34 @@ interface CustomerSignup{
     address:string;
     phone:string;
 }
+
+// Define a simple class with properties and methods
+export class CustomerClass {
+
+  getName(): string {
+    return this.name;
+  }
+
+  setName(newName: string): void {
+    this.name = newName;
+  }
+  constructor(public name: string, public age: number) {}
+
+  greet() {
+    console.log(`Hello, my Name is ${this.name}. I am ${this.age} years old`);
+  }
+}
+
+// Instantiate an instance of the class and call its method
+const simpleInstance = new CustomerClass("John Doe", 30);
+simpleInstance.greet(); // Output: "Hello, My Name is John Doe. i am 30 years old"
+
+
 export const CustomerSignUp = async(req: Request, res:Response, next:NextFunction)=>{
     const inputer = <CustomerSignup>req.body; 
     const customerInputs = plainToClass(CreateCustomerInputs, {email:inputer.email, password:inputer.password, phone:inputer.phone});
     const inputErrors = await validate(customerInputs, {validationError:{target:true}});
+    
     if(inputErrors.length > 0){
         return res.status(400).json(inputErrors);
     }
@@ -82,8 +105,7 @@ export const GetProfile = async(req: Request, res:Response, next:NextFunction)=>
     return res.json({message: 'do not show any'});
 }
 
-export const EditProfile = async(req: Request, res:Response, next: NextFunction)=>{
-    
+export const EditProfile = async(req: Request, res:Response, next: NextFunction)=>{    
     const customer = req.user;
     if(customer){}
 }

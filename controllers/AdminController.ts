@@ -5,14 +5,16 @@ import { GeneratePassword, generateSalt } from "../utility";
 import { Admin } from "../models/Admin";
 import { IAdminInteractor } from "../interface/IAdminInteractor";
 export class AdminController {
-  // private interactor: IAdminInteractor;
-  // constructor(interactor: IAdminInteractor) {
-  // this.interactor = interactor;
-  // }
+  private interactor: IAdminInteractor;
+
+  constructor(interactor: IAdminInteractor) {
+    this.interactor = interactor;
+  }
+
   async onGetVandorById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
-      const vandor = await findVandor(id);
+      const vandor = this.interactor.vandorById(id);
       if (vandor !== null) {
         return res.json(vandor);
       }
@@ -23,14 +25,51 @@ export class AdminController {
   }
   async onGetVandors(req: Request, res: Response, next: NextFunction) {
     try {
+      const string = this.interactor.allVandors;
       const vandors = await Vandor.find();
       if (vandors !== null) {
-        return res.json(vandors);
+        return res.json({ string, vandors });
       }
       return res.json({ message: "vandor is not avaliable" });
     } catch (error) {
       next(error);
     }
+  }
+  async onCreateVandor(req: Request, res: Response) {
+    const {
+      name,
+      ownerName,
+      foodType,
+      pinCode,
+      address,
+      phone,
+      email,
+      password,
+    } = <CreateVandorInput>req.body;
+
+    const existing_vandor = await findVandor("", email);
+    if (existing_vandor !== null) {
+      return res.json({
+        message: "Vandor is existed. You can not create this one.",
+      });
+    }
+    const salt = await generateSalt();
+    const userPassword = await GeneratePassword(password, salt);
+    const createVandor = await Vandor.create({
+      name,
+      ownerName,
+      foodType,
+      pinCode,
+      address,
+      phone,
+      email,
+      password: userPassword,
+      salt,
+      serviceAvailable: false,
+      coverImage: [""],
+      rating: 2,
+    });
+    res.json(createVandor);
   }
 }
 //adapte bussianess logic
@@ -67,41 +106,4 @@ export const AdminRegi = async (req: Request, res: Response) => {
   });
 
   return res.json(createAdmin);
-};
-
-export const CreateVandor = async (req: Request, res: Response) => {
-  const {
-    name,
-    ownerName,
-    foodType,
-    pinCode,
-    address,
-    phone,
-    email,
-    password,
-  } = <CreateVandorInput>req.body;
-
-  const existing_vandor = await findVandor("", email);
-  if (existing_vandor !== null) {
-    return res.json({
-      message: "Vandor is existed. You can not create this one.",
-    });
-  }
-  const salt = await generateSalt();
-  const userPassword = await GeneratePassword(password, salt);
-  const createVandor = await Vandor.create({
-    name,
-    ownerName,
-    foodType,
-    pinCode,
-    address,
-    phone,
-    email,
-    password: userPassword,
-    salt,
-    serviceAvailable: false,
-    coverImage: [""],
-    rating: 2,
-  });
-  res.json(createVandor);
 };

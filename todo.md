@@ -1,7 +1,8 @@
 ## requirement
 
-## client work and update
-- [ ] done for login page 
+## continue to work
+- [ ] provide admin controller.ts to read data from database system.
+- [ ] have to refactor the codebase.
 
 ## backend work and update
 - [ ] add s3 backet
