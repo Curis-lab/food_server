@@ -1,5 +1,4 @@
 import { IVendorInput } from "../dto";
-import { ICreateVandor } from "../interactors/AdminInteractor";
 import { VandorDoc } from "../models";
 
 export interface IAdminInteractor {
@@ -9,4 +8,5 @@ export interface IAdminInteractor {
   login({ email, password }: { email: string; password: string }): Promise<boolean>;
   getProfile(): Promise<VandorDoc | null>;
   findVandor(id: string | undefined, email?: string): Promise<VandorDoc | null>;
+  deleteVandor(id:string): Promise<boolean>;
 }

@@ -13,6 +13,6 @@ router.post('/signin',AdminRegi);
 router.post('/vandor',controller.onCreateVandor.bind(controller));
 router.get('/vandors', controller.onGetVandors.bind(controller));
 router.get('/vandor/:id',controller.onGetVandorById.bind(controller));
-router.delete('/vandor/:id');
+router.delete('/vandor/:id', controller.onDeleteVandorById.bind(controller));
 
 export {router as AdminRoute}

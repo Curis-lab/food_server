@@ -26,7 +26,7 @@ export interface EditVandorInputs {
   phone: string;
 }
 
-export interface IVendorInput extends CreateVandorInput {
+export interface IVendorInput{
   name: string;
   ownerName: string;
   foodType: [string];

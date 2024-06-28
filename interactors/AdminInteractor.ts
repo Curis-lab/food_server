@@ -4,16 +4,16 @@ import { IAdminRepository } from "../interface/IAdminRepository";
 import { Vandor, VandorDoc } from "../models";
 
 
-
-export type ICreateVandor = {name:string, ownerName:string, foodType:[string], pinCode:string, address:string; phone:string; email:string; password:string;}
-
 export class AdminInteractor implements IAdminInteractor{
     private repository:IAdminRepository;
+
     constructor(repository: IAdminRepository){
         this.repository = repository;
     }
-    vandorById(id: string): Promise<VandorDoc | null> {
-        throw new Error("Method not implemented.");
+
+    async vandorById(id: string): Promise<VandorDoc | null> {
+        const vandors = await this.repository.findVandor(id);
+        return vandors;
     }
     async allVandors(): Promise<VandorDoc[]> {
         const vandors = await this.repository.Vandors();
@@ -24,6 +24,14 @@ export class AdminInteractor implements IAdminInteractor{
             return vandors;
         }else{
             return []
+        }
+    }
+    async deleteVandor(id:string):Promise<boolean>{
+        const deleted = await this.repository.deleteVandor(id);
+        if(deleted){
+            return true;
+        }else{
+            return false;
         }
     }
     async createVandor(input: IVendorInput): Promise<VandorDoc> {

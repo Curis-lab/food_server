@@ -39,6 +39,15 @@ export class AdminController {
       next(error);
     }
   }
+  async onDeleteVandorById(req:Request, res: Response, next: NextFunction){
+    const id = req.params.id;
+    const vandor = await this.interactor.vandorById(id);
+    if(vandor!== null){
+      const deleted = await this.interactor.deleteVandor(id);
+      return res.json({message: deleted ? "vandor have been deleted":"is not delete"});
+    }
+    return res.json({message: 'vandor is not existed'});
+  }
 
   async onCreateVandor(req: Request, res: Response) {
     const {
