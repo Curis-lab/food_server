@@ -16,7 +16,7 @@ export class AdminInteractor implements IAdminInteractor{
         return vandors;
     }
     async allVandors(): Promise<VandorDoc[]> {
-        const vandors = await this.repository.Vandors();
+        const vandors = await this.repository.vandors();
         if(vandors){
             vandors.sort((a,b)=>{
                 return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -42,13 +42,12 @@ export class AdminInteractor implements IAdminInteractor{
             throw new Error("Error while creating vandor");
         }
     }
-    login({ email, password }: { email: string; password: string; }): Promise<boolean> {
-        throw new Error("Method not implemented.");
-    }
-    getProfile(): Promise<VandorDoc | null> {
-        throw new Error("Method not implemented.");
-    }
-    findVandor(id: string | undefined, email?: string): Promise<VandorDoc | null> {
-        throw new Error("Method not implemented.");
+    async updateVandor(id:string, input:string):Promise<VandorDoc>{
+        const updated = await this.repository.updateVandor(id, input);
+        if(updated){
+            return updated;
+        }else{
+            throw new Error("Error while updating vandor");
+        }
     }
 }

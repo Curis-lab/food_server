@@ -18,6 +18,11 @@ export class AdminController {
     this.interactor = interactor;
   }
 
+  async onUpdateVandor(req: Request, res: Response, next: NextFunction){
+    const id = req.params.id;
+    const vandor = await this.interactor.updateVandor(id, 'new name');
+    return res.json(vandor);
+  }
   async onGetVandorById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;

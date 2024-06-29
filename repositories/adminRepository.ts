@@ -3,24 +3,25 @@ import { IAdminRepository } from "../interface/IAdminRepository";
 import { Vandor, VandorDoc } from "../models";
 
 export class AdminRepository implements IAdminRepository {
-    private vandor;
+    private database;
     constructor(){
-        this.vandor = Vandor;
+        this.database = Vandor;
     }
     async deleteVandor(id:string):Promise<boolean>{
-        const result =  await this.vandor.deleteOne({_id:id});   
+        const result =  await this.database.deleteOne({_id:id});   
         return result.deletedCount === 1;
     }
-    async Vandors():Promise<any[]>{
-        return await this.vandor.find();
+    async vandors():Promise<any[]>{
+        return await this.database.find();
     }
     async createVandor(input: IVendorInput): Promise<VandorDoc> {
-        return await this.vandor.create(input);
-    }
-    updateVandor(id: number): Promise<VandorDoc> {
-        throw new Error("Method not implemented.");
+        return await this.database.create(input);
     }
     async findVandor(id: string): Promise<VandorDoc|null> {
-        return await this.vandor.findById({_id:id});
+        return await this.database.findById({_id:id});
+    }
+    async updateVandor(id:string, data:string):Promise<VandorDoc|null>{
+        const result =  await this.database.findByIdAndUpdate({_id:id},{name:data},{new: true});
+        return result;
     }
 }
