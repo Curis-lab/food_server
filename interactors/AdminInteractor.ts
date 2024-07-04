@@ -1,8 +1,7 @@
 import { IVendorInput } from "../dto";
 import { IAdminInteractor } from "../interface/IAdminInteractor";
 import { IAdminRepository } from "../interface/IAdminRepository";
-import { Vandor, VandorDoc } from "../models";
-
+import { VandorDoc } from "../models";
 
 export class AdminInteractor implements IAdminInteractor{
     private repository:IAdminRepository;

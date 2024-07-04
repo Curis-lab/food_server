@@ -1,7 +1,9 @@
-import express from 'express';
-import { AddFood, GetFood, GetVandorProfile, UpdateVandorCoverImage, UpdateVandorProfile, UpdateVandorServices, VandorLogin } from '../controllers';
+import express, { response } from 'express';
+import { VandorController} from '../controllers';
 import { Authenticate } from '../middlewares';
 import multer from 'multer';
+import { VandorInteractor } from '../interactors/VandorInteractor';
+import { VandorRepository } from '../repositories/vandorRepository';
 
 const router = express.Router();
 
@@ -17,16 +19,19 @@ const imagesStorage = multer.diskStorage({
 const upload = multer({storage:imagesStorage});
 
 // const images= multer({storage: imagesStorage}).array('images',10);
+const repository = new VandorRepository()
+const interactor = new VandorInteractor(repository);
+const controller = new VandorController(interactor);
 
-router.post('/login',VandorLogin);
+router.post('/login',controller.VandorLogin.bind(controller));
 
 router.use(Authenticate);
-router.get('/profile',GetVandorProfile);
-router.patch('/edit',UpdateVandorProfile);
-router.patch('/service',UpdateVandorServices);
-router.post('/add',upload.single('image'),AddFood);
-router.get('/foods',GetFood);
-router.patch('/updateCoverImage',upload.single('image'),UpdateVandorCoverImage);
+router.get('/profile',controller.GetVandorProfile.bind(controller));
+router.patch('/edit',controller.UpdateVandorProfile.bind(controller));
+router.patch('/service',controller.UpdateVandorServices.bind(controller));
+router.post('/add',upload.single('image'),controller.AddFood.bind(controller));
+router.get('/foods',controller.GetFood.bind(controller));
+router.patch('/updateCoverImage',upload.single('image'),controller.UpdateVandorCoverImage.bind(controller));
 
 
 export {router as VandorRoute}
