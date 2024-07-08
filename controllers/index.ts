@@ -1,3 +1,3 @@
-export * from './VandorController';
-export * from './AdminController';
-export * from './CustomerController';
+export * from "./VandorController";
+export * from "../src/adapters/admin/http-admin.controller";
+export * from "./CustomerController";

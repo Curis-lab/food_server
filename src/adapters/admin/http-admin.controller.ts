@@ -1,26 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateVandorInput, IVendorInput } from "../dto";
-import { Vandor } from "../models";
-import { GeneratePassword, generateSalt } from "../utility";
-import { Admin } from "../models/Admin";
-import { IAdminInteractor } from "../interface/IAdminInteractor";
+import { CreateVandorInput, IVendorInput } from "../../../dto";
+import { Vandor } from "../../../models";
+import { GeneratePassword, generateSalt } from "../../../utility";
+import { Admin } from "../../../models/Admin";
+import { IAdminInteractor } from "../../../interface/IAdminInteractor";
 
-/**
- * @
- * @class AdminController
- * @description AdminController class
- */
-
-export class AdminController {
+export default class HttpAdminController {
   private interactor: IAdminInteractor;
 
   constructor(interactor: IAdminInteractor) {
     this.interactor = interactor;
   }
-
-  async onUpdateVandor(req: Request, res: Response, next: NextFunction){
+  run(){
+    console.log('running');
+  }
+  async onUpdateVandor(req: Request, res: Response, next: NextFunction) {
     const id = req.params.id;
-    const vandor = await this.interactor.updateVandor(id, 'new name');
+    const vandor = await this.interactor.updateVandor(id, "new name");
     return res.json(vandor);
   }
   async onGetVandorById(req: Request, res: Response, next: NextFunction) {
@@ -39,19 +35,21 @@ export class AdminController {
   async onGetVandors(req: Request, res: Response, next: NextFunction) {
     try {
       const vandors = await this.interactor.allVandors();
-      return res.json( vandors );
+      return res.json(vandors);
     } catch (error) {
       next(error);
     }
   }
-  async onDeleteVandorById(req:Request, res: Response, next: NextFunction){
+  async onDeleteVandorById(req: Request, res: Response, next: NextFunction) {
     const id = req.params.id;
     const vandor = await this.interactor.vandorById(id);
-    if(vandor!== null){
+    if (vandor !== null) {
       const deleted = await this.interactor.deleteVandor(id);
-      return res.json({message: deleted ? "vandor have been deleted":"is not delete"});
+      return res.json({
+        message: deleted ? "vandor have been deleted" : "is not delete",
+      });
     }
-    return res.json({message: 'vandor is not existed'});
+    return res.json({ message: "vandor is not existed" });
   }
 
   async onCreateVandor(req: Request, res: Response) {
@@ -74,8 +72,8 @@ export class AdminController {
     }
     const salt = await generateSalt();
     const userPassword = await GeneratePassword(password, salt);
-    
-    const vendorData:IVendorInput = {
+
+    const vendorData: IVendorInput = {
       name,
       ownerName,
       foodType,
@@ -88,9 +86,9 @@ export class AdminController {
       serviceAvailable: false,
       coverImage: [""],
       rating: 2,
-    }
+    };
     const createVandor = await this.interactor.createVandor(vendorData);
-    res.json({createVandor});
+    res.json({ createVandor });
   }
 }
 
