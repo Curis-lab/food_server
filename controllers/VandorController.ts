@@ -16,8 +16,8 @@ export class VandorController {
     if (existingVandor !== null) {
       const validation = await validatePassword(
         password,
-        existingVandor.password,
-        existingVandor.salt
+        existingVandor[0].password,
+        existingVandor[0].salt
       );
       if (validation) {
         const signature = GenerateSignature({
