@@ -17,8 +17,8 @@ export class AdminRepository implements IAdminRepository {
     async createVandor(input: IVendorInput): Promise<VandorDoc> {
         return await this.database.create(input);
     }
-    async findVandor(id: string): Promise<VandorDoc|null> {
-        return await this.database.findById({_id:id});
+    async findVandorById(id: string): Promise<VandorDoc|null> {
+        return await this.database.findById(id);
     }
     async updateVandor(id:string, data:string):Promise<VandorDoc|null>{
         const result =  await this.database.findByIdAndUpdate({_id:id},{name:data},{new: true});

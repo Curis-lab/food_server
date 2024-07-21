@@ -10,8 +10,8 @@ export class AdminInteractor implements IAdminInteractor{
         this.repository = repository;
     }
 
-    async vandorById(id: string): Promise<VandorDoc | null> {
-        const vandors = await this.repository.findVandor(id);
+    async vandorById(id: string) {
+        const vandors = await this.repository.findVandorById(id);
         return vandors;
     }
     async allVandors(): Promise<VandorDoc[]> {

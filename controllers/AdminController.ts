@@ -15,6 +15,7 @@ export class AdminController {
   private interactor: IAdminInteractor;
 
   constructor(interactor: IAdminInteractor) {
+    //interactor is like database
     this.interactor = interactor;
   }
 
@@ -26,7 +27,7 @@ export class AdminController {
   async onGetVandorById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
-      const vandor = this.interactor.vandorById(id);
+      const vandor = await Vandor.findById(id);
       if (vandor !== null) {
         return res.json(vandor);
       }
