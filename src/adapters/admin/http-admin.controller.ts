@@ -14,6 +14,9 @@ export default class HttpAdminController {
   run(){
     console.log('running');
   }
+  onTestingAPI(req: Request, res: Response){
+    res.send([]);
+  }
   async onUpdateVandor(req: Request, res: Response, next: NextFunction) {
     const id = req.params.id;
     const vandor = await this.interactor.updateVandor(id, "new name");
