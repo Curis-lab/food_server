@@ -17,4 +17,5 @@ router.get('/search/:pincode',controllers.SearchFoods.bind(controllers));
 
 router.get('/restaurant/:id',controllers.RestaurantById);
 
+router.get('/', controllers.GetAllFood.bind(controllers));
 export {router as ShoppingRoute};

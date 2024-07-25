@@ -6,7 +6,7 @@ import { AdminDoc } from "../models/Admin";
 
 export interface IAdminRepository {
   createVandor(input:IVendorInput): Promise<VandorDoc>;
-  findVandor(id: string): Promise<VandorDoc|null>;
+  findVandorById(id: string):any;
   vandors():Promise<any[]>;
   deleteVandor(id:string):Promise<boolean>;
   updateVandor(id:string, data:string):Promise<VandorDoc|null>;

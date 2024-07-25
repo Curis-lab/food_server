@@ -9,6 +9,7 @@ export default class HttpAdminController {
   private interactor: IAdminInteractor;
 
   constructor(interactor: IAdminInteractor) {
+    //interactor is like database
     this.interactor = interactor;
   }
   run(){
@@ -25,7 +26,7 @@ export default class HttpAdminController {
   async onGetVandorById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
-      const vandor = this.interactor.vandorById(id);
+      const vandor = await Vandor.findById(id);
       if (vandor !== null) {
         return res.json(vandor);
       }

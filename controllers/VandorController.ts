@@ -12,18 +12,18 @@ export class VandorController {
   async VandorLogin(req: Request, res: Response, next: NextFunction) {
     const { email, password } = <VandorLoginInput>req.body;
     const existingVandor = await this.interactor.findVandor("", email);
-
+    console.log('existing vendor', existingVandor);
     if (existingVandor !== null) {
       const validation = await validatePassword(
         password,
-        existingVandor.password,
-        existingVandor.salt
+        existingVandor[0].password,
+        existingVandor[0].salt
       );
       if (validation) {
         const signature = GenerateSignature({
-          _id: existingVandor.id,
-          email: existingVandor.email,
-          name: existingVandor.name,
+          _id: existingVandor[0].id,
+          email: existingVandor[0].email,
+          name: existingVandor[0].name,
         });
         return res.json(signature);
       } else {
@@ -32,8 +32,11 @@ export class VandorController {
     }
     res.json({ message: "login credential not validate" });
   }
+
+
   async GetVandorProfile(req: Request, res: Response, next: NextFunction) {
     const user = req.user;
+    console.log(user);
     if (user) {
       const existingVandor = await Vandor.findById(user._id);
       return res.json(existingVandor);

@@ -14,27 +14,6 @@ interface CustomerSignup{
     phone:string;
 }
 
-// Define a simple class with properties and methods
-export class CustomerClass {
-
-  getName(): string {
-    return this.name;
-  }
-
-  setName(newName: string): void {
-    this.name = newName;
-  }
-  constructor(public name: string, public age: number) {}
-
-  greet() {
-    console.log(`Hello, my Name is ${this.name}. I am ${this.age} years old`);
-  }
-}
-
-// Instantiate an instance of the class and call its method
-const simpleInstance = new CustomerClass("John Doe", 30);
-simpleInstance.greet(); // Output: "Hello, My Name is John Doe. i am 30 years old"
-
 
 export const CustomerSignUp = async(req: Request, res:Response, next:NextFunction)=>{
     const inputer = <CustomerSignup>req.body; 

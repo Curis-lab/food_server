@@ -2,7 +2,7 @@ import { IVendorInput } from "../dto";
 import { VandorDoc } from "../models";
 
 export interface IAdminInteractor {
-  vandorById(id: string): Promise<VandorDoc | null>;
+  vandorById(id: string): any;
   allVandors(): Promise<VandorDoc[]>;
   deleteVandor(id:string): Promise<boolean>;
   createVandor(input: IVendorInput): Promise<VandorDoc>;
