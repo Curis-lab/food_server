@@ -15,6 +15,7 @@ export interface VandorDoc extends Document{
     foodType:[string];
     foods:any
 }
+
 const VandorSchema =  new Schema({
     name:{type:String, required:true},
     ownerName:{type:String, required:true},
