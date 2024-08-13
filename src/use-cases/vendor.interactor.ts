@@ -16,8 +16,9 @@ export class VendorInteractor implements IVendorInteractor {
   updateVendorProfile(data: any): Promise<Vendor> {
     throw new Error("Method not implemented.");
   }
-  addFood(data: any): Promise<Food> {
-    throw new Error("Method not implemented.");
+  async addFood(input: any): Promise<Food> {
+    const data = await this._foodRepository.create(input);
+    return Promise.resolve(data);
   }
   getFoods(): Promise<Food[]> {
     throw new Error("Method not implemented.");
