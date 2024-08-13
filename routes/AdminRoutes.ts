@@ -9,6 +9,8 @@ const repository = new AdminRepository();
 const interactor = new AdminInteractor(repository);
 const controller = new AdminController(interactor);
 
+//have to add container for dependency injection
+
 router.post('/signin',AdminRegi);
 router.post('/vandor',controller.onCreateVandor.bind(controller));
 router.get('/vandors', controller.onGetVandors.bind(controller));
