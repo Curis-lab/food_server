@@ -22,10 +22,12 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "inversify": "^6.0.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.0",
+    "reflect-metadata": "^0.2.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5"
   },
