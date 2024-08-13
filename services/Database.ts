@@ -5,10 +5,10 @@ mongoose.set("strictQuery", false);
 
 export default async () => {
   try {
-    const mongoDb = process.env.MONGO_URL || MONGO_URL
-    await mongoose.connect(mongoDb);
+    await mongoose.connect(MONGO_URL);
     console.log("Db connnect!...");
   } catch (ex) {
+    console.error('error on database connection');
     console.log(ex);
   }
 };
