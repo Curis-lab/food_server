@@ -1,37 +1,22 @@
-import { VandorController } from "../../../../controllers";
-import { VandorInteractor } from "../../../../interactors/VandorInteractor";
-import { Authenticate } from "../../../../middlewares";
-import { VandorRepository } from "../../../../repositories/vandorRepository";
-import multer from "multer";
-import express from 'express';
+import express, { Request, Response } from 'express';
+import { VendorController } from '../../../adapters/vendor/vendor.controller';
+import { Container } from "inversify";
+import { INTERFACE_TYPE } from "../../container";
+import { VendorRepository } from "../../../adapters/common/repositories/vendor.rep";
+import { IVendorInteractor, IVendorRepository } from "../../../adapters/common/interfaces/vendor";
+import { VendorInteractor } from "../../../use-cases/vendor.interactor";
+
+//container registration
+const container = new Container();
+container.bind<IVendorRepository>(INTERFACE_TYPE.VendorRepository).to(VendorRepository);
+container.bind<IVendorInteractor>(INTERFACE_TYPE.VendorInteractor).to(VendorInteractor);
+container.bind(INTERFACE_TYPE.VendorController).to(VendorController);
+
 
 const router = express.Router();
 
-const imagesStorage = multer.diskStorage({
-    destination:function(req, file, cb){
-        cb(null,'images');
-    },
-    filename: function(req, file, cb){
-        cb(null, new Date().toISOString()+'-'+file.originalname);
-    }
-});
+const controller = container.get<VendorController>(INTERFACE_TYPE.VendorController);
 
-const upload = multer({storage:imagesStorage});
-
-// const images= multer({storage: imagesStorage}).array('images',10);
-const repository = new VandorRepository()
-const interactor = new VandorInteractor(repository);
-const controller = new VandorController(interactor);
-
-router.post('/login',controller.VandorLogin.bind(controller));
-
-router.use(Authenticate);
-router.get('/profile',controller.GetVandorProfile.bind(controller));
-router.patch('/edit',controller.UpdateVandorProfile.bind(controller));
-router.patch('/service',controller.UpdateVandorServices.bind(controller));
-router.post('/add',upload.single('image'),controller.AddFood.bind(controller));
-router.get('/foods',controller.GetFood.bind(controller));
-router.patch('/updateCoverImage',upload.single('image'),controller.UpdateVandorCoverImage.bind(controller));
-
-
+// router.get('/',controller.VendorLogin.bind(controller));
+router.get('/profile',controller.GetVendorProfile.bind(controller));
 export {router as VendorRoute}

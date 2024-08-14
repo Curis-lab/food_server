@@ -1,3 +1,4 @@
+//change dirty data to clean data
 export class Vendor{
     constructor(
         public name:string,
