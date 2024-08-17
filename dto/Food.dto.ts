@@ -6,4 +6,3 @@ export interface CreateFoodInputs{
     readyTime:number;
     price:number;
 }
-

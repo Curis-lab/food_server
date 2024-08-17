@@ -5,11 +5,11 @@ import { Vendor } from "../models/vendor";
 
 @injectable()
 export class VendorRepository implements IVendorRepository {
-    private client:any;
-    constructor(){
-this.client = Vandor;
+  private client: any;
+  constructor() {
+    this.client = Vandor;
   }
-    create(data: any): Promise<Vendor> {
+  create(data: any): Promise<Vendor> {
     throw new Error("Method not implemented.");
   }
   delete(id: string | number): null {
@@ -18,9 +18,16 @@ this.client = Vandor;
   update(id: string): Promise<Vendor> {
     throw new Error("Method not implemented.");
   }
-  async findOne(id: string): Promise<Vendor> {
+  async findByEmail(email: string): Promise<Vendor> {
+    const data = await this.client.findOne({ email });
+    if (data) {
+      return Promise.resolve(data);
+    } else {
+      throw new Error("Method not implemented.");
+    }
+  }
+  async findById(id: string): Promise<Vendor> {
     const data = await this.client.findById(id);
-    console.log("check vendor datatype", Vendor);
     if (data) {
       return Promise.resolve(data);
     } else {

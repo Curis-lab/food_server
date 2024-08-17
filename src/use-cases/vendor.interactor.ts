@@ -11,8 +11,12 @@ export class VendorInteractor implements IVendorInteractor {
     @inject(INTERFACE_TYPE.VendorRepository) vendorRepository:IVendorRepository) {
     this._vendorRepository = vendorRepository;
   }
+  async getVendorProfileByEmail(email: string): Promise<Vendor> {
+    const data = await this._vendorRepository.findByEmail(email);
+    return Promise.resolve(data);
+  }
   async getVendorProfileById(id:string): Promise<Vendor> {
-    const data = await this._vendorRepository.findOne(id);
+    const data = await this._vendorRepository.findById(id);
     return Promise.resolve(data);
   }
   updateVendorProfile(data: any): Promise<Vendor> {

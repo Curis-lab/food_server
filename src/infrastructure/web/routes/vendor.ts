@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { VendorController } from '../../../adapters/vendor/vendor.controller';
 import { Container } from "inversify";
 import { INTERFACE_TYPE } from "../../container";
@@ -16,7 +16,6 @@ container.bind(INTERFACE_TYPE.VendorController).to(VendorController);
 const router = express.Router();
 
 const controller = container.get<VendorController>(INTERFACE_TYPE.VendorController);
-
-// router.get('/',controller.VendorLogin.bind(controller));
+router.post('/login', controller.VendorLogin.bind(controller));
 router.get('/profile',controller.GetVendorProfile.bind(controller));
 export {router as VendorRoute}
