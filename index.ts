@@ -2,8 +2,9 @@ import 'reflect-metadata';
 import express from "express";
 import dbConnection from "./services/Database";
 import App from "./services/ExpressApp";
+import { loadContainer } from './src/infrastructure/container';
 
-const StartServer = async () => {
+const init = async () => {
   const app = express();
   await dbConnection();
   await App(app);
@@ -13,4 +14,4 @@ const StartServer = async () => {
   });
 };
 
-StartServer();
+init();

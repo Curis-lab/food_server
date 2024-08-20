@@ -1,66 +1,91 @@
-import { NextFunction, Request, Response } from "express";
-import { Container, inject, injectable } from "inversify";
 import "reflect-metadata";
-import { Vandor } from "../../../models";
+import { Container, inject, injectable } from "inversify";
+import { getContainer, loadContainer } from "../../infrastructure/container";
 
-const TYPES = {
+export const TYPES = {
   FunctionRegistry: Symbol.for("FunctionRegistry"),
+  HelloServices: Symbol.for("HelloService"),
+  GoodByeService: Symbol.for("GoodByeService"),
+  VendorController: Symbol.for("VendorController"),
+  AdminController: Symbol.for("AdminController"),
+  CustomerController: Symbol.for("CustomerController"),
+  ShoppingController: Symbol.for("ShoppingController"),
 };
 
-const functionRegistry = {
-  sayHello: async()=>{
-    const vendorData = {
-        name:"tuntun",
-        ownerName:"tuntun",
-        foodType:"fksd",
-        pinCode:"fii",
-        address:"fiowe",
-        phone:"fiowe",
-        email:"fiowe",
-        password: "userPassword",
-        salt:"fsdf",
-        serviceAvailable: false,
-        coverImage: [""],
-        rating: 2,
-      }
-    await Vandor.create(vendorData).then(()=>console.log('Success')).catch(err=>console.log('error'));
-  },
-};
+//controller
+@injectable()
+export class HelloService {
+  sayHello(name: string): string {
+    return `hello , ${name}`;
+  }
+}
 
 @injectable()
-class MyService {
+export class GoodByeService {
+  sayGoodBye(name: string): string {
+    return `Goodbye, ${name}`;
+  }
+}
+
+@injectable()
+export class VendorController {
+  login() {}
+  getProfile() {}
+  updateProfile() {}
+  updateVendorService() {}
+  addFood() {}
+  getFood() {}
+  updateVendorCoverImage() {}
+}
+@injectable()
+export class AdminController {
+  onUpdateVendor() {}
+  onGetVendorById() {}
+  onGetVendors() {}
+  onDeleteVendorById() {}
+  onCreateVendor() {}
+}
+@injectable()
+export class CustomerController {
+  customerSignUp() {}
+  customerSignIn() {}
+  customerProfile() {}
+  customerEditProfile() {}
+  createOrder() {}
+}
+@injectable()
+export class ShoppingController {
+  getAllFood() {}
+  getFoodAvailablity() {}
+  getTopResturent() {}
+  getFoodUnder30Min() {}
+  searchFoods() {}
+  getResturantById() {}
+}
+
+//services
+@injectable()
+export class MainCollection {
   constructor(
-    @inject(TYPES.FunctionRegistry) private registry: Record<string, Function>
-  ) {
-    
-  }
-  callFunctionByName(functionName: string) {
-    if (this.registry[functionName]) {
-      this.registry[functionName]();
-    } else {
-      console.log("Function name is not found");
-    }
-  }
-}
-
-const container = new Container();
-container
-  .bind<Record<string, Function>>(TYPES.FunctionRegistry)
-  .toConstantValue(functionRegistry);
-container.bind<MyService>(MyService).toSelf();
-
-const myService = container.get(MyService);
-
-export function executeRule(rule: string) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    myService.callFunctionByName(rule);
-    
-    return res.send("hello");
-  };
-}
-
-export class MainAdminController {
-  createVendor() {
-    return executeRule("sayHello");
+    @inject(TYPES.HelloServices) private helloService: HelloService,
+    @inject(TYPES.GoodByeService) private goodByeService: GoodByeService,
+    @inject(TYPES.AdminController) private adminController: AdminController,
+    @inject(TYPES.VendorController) private vendorController: VendorController,
+    @inject(TYPES.CustomerController)
+    private customerController: CustomerController,
+    @inject(TYPES.ShoppingController)
+    private shoppingController: ShoppingController
+  ) {}
+  callFunctionByName(functionName: string, ...args: any[]): any {
+    const register: Record<string, (...args: any[]) => any> = {
+      sayHello: (name: string) => this.helloService.sayHello(name),
+      sayGoodBye: (name: string) => this.goodByeService.sayGoodBye(name),
+      admin: () => this.adminController.onCreateVendor(),
+    };
+    return register[functionName] && args
+      ? register[functionName](...args)
+      : "Function not found";
   }
 }
+
+export const myService = loadContainer().get(MainCollection);

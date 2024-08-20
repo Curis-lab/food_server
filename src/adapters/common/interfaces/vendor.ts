@@ -17,3 +17,12 @@ export interface IVendorRepository{
     getAll():Promise<Vendor[]>;
     findByEmail(email:string):Promise<Vendor>;
 }
+
+export interface IVendorInput{
+    name:string;
+    address:string;
+    phone:string;
+    email:string;
+    password:string;
+    coverImage:string
+}

@@ -26,7 +26,7 @@ const controller = container.get<VendorController>(
   INTERFACE_TYPE.VendorController
 );
 
-function exectuteRule(rule: string) {
+function exectuteRule1(rule: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const data = req.body;
     const ctrl = {
@@ -45,6 +45,13 @@ function exectuteRule(rule: string) {
   };
 }
 router.post("/login", controller.VendorLogin.bind(controller));
-router.route("/profile").get(exectuteRule("profile"));
+router.route("/profile").get(exectuteRule1("profile"));
+router.route('/login')
+router.route('/:id');//get profile
+router.route('/:id'); //update specific profile
+router.route('/food'); //add food
+router.route('/:id/food'); //get food by id
+router.route('/:id'); //update vendor cover images
+
 export { router as VendorRoute };
 
