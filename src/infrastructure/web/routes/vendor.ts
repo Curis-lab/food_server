@@ -47,3 +47,4 @@ function exectuteRule(rule: string) {
 router.post("/login", controller.VendorLogin.bind(controller));
 router.route("/profile").get(exectuteRule("profile"));
 export { router as VendorRoute };
+
