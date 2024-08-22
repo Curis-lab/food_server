@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { vendorLoadContainer } from "../../containers/vendor-container";
-import { VendorCollection } from "../collection/vendor-collection";
+import { VendorCollection } from "../../collections/vendor-collection";
 
 export function vendorExecuteRule(rule: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const reqData = req.body;
     const id = req.params.id;
-    
+
     const controller = vendorLoadContainer().get(VendorCollection);
-    
+
     try {
       const funData =
         reqData || id

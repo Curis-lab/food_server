@@ -2,13 +2,13 @@ import { inject, injectable } from "inversify";
 import { IVendorInteractor, IVendorRepository } from "../adapters/common/interfaces/vendor";
 import { Food } from "../adapters/common/models/food";
 import { Vendor } from "../adapters/common/models/vendor";
-import { INTERFACE_TYPE } from "../infrastructure/container";
+import { VENDOR_TYPES } from "../adapters/vendor/vendor.controller";
 
 @injectable()
 export class VendorInteractor implements IVendorInteractor {
   private _vendorRepository: IVendorRepository;
   constructor(
-    @inject(INTERFACE_TYPE.VendorRepository) vendorRepository:IVendorRepository) {
+    @inject(VENDOR_TYPES.VendorRepository) vendorRepository:IVendorRepository) {
     this._vendorRepository = vendorRepository;
   }
   async getVendorProfileByEmail(email: string): Promise<Vendor> {

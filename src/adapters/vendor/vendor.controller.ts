@@ -1,16 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 import { IVendorInteractor } from "../common/interfaces/vendor";
 import { inject, injectable } from "inversify";
-import { INTERFACE_TYPE } from "../../infrastructure/container";
 import { GenerateSignature, validatePassword } from "../../../utility";
+
+
+export const VENDOR_TYPES = {
+  VendorRepository: Symbol.for("VendorRepository"),
+  VendorInteractor: Symbol.for("VendorInteractor"),
+  VendorController: Symbol.for("VendorController"),
+  VendorPresenter: Symbol.for("VendorPresenter"),
+};
 
 @injectable()
 export class VendorController {
   private _interactor: IVendorInteractor;
   private _presenter: any;
   constructor(
-    @inject(INTERFACE_TYPE.VendorInteractor) interactor: IVendorInteractor,
-    @inject(INTERFACE_TYPE.VendorPresenter) presenter: any
+    @inject(VENDOR_TYPES.VendorInteractor) interactor: IVendorInteractor,
+    @inject(VENDOR_TYPES.VendorPresenter) presenter: any
   ) {
     this._interactor = interactor;
     this._presenter = presenter;

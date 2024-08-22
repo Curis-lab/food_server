@@ -1,30 +1,30 @@
-import express from "express";
-import { Container, inject, injectable } from "inversify";
-import { INTERFACE_TYPE } from "../container";
+import { Container } from "inversify";
 import { VendorInteractor } from "../../use-cases/vendor.interactor";
 import { VendorRepository } from "../../adapters/common/repositories/vendor.rep";
 import {
   IVendorInteractor,
   IVendorRepository,
 } from "../../adapters/common/interfaces/vendor";
-import { VendorController } from "../../adapters/vendor/vendor.controller";
+import {
+  VENDOR_TYPES,
+  VendorController,
+} from "../../adapters/vendor/vendor.controller";
 import VendorPresenter from "../../adapters/vendor/vendor.presenter";
-import { VendorCollection } from "../web/collection/vendor-collection";
-
+import { VendorCollection } from "../collections/vendor-collection";
 
 export function vendorLoadContainer() {
   const container = new Container();
   container
-    .bind<IVendorRepository>(INTERFACE_TYPE.VendorRepository)
+    .bind<IVendorRepository>(VENDOR_TYPES.VendorRepository)
     .to(VendorRepository);
   container
-    .bind<IVendorInteractor>(INTERFACE_TYPE.VendorInteractor)
+    .bind<IVendorInteractor>(VENDOR_TYPES.VendorInteractor)
     .to(VendorInteractor);
   container
-    .bind<VendorPresenter>(INTERFACE_TYPE.VendorPresenter)
+    .bind<VendorPresenter>(VENDOR_TYPES.VendorPresenter)
     .to(VendorPresenter);
   container
-    .bind<VendorController>(INTERFACE_TYPE.VendorController)
+    .bind<VendorController>(VENDOR_TYPES.VendorController)
     .to(VendorController);
   container.bind<VendorCollection>(VendorCollection).toSelf();
   return container;
