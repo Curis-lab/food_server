@@ -1,19 +1,18 @@
-import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import { Vandor } from "../../../models";
-//only working with admin route;
-export const ADMIN_TYPES = {
-  FunctionRegistry: Symbol.for("FunctionRegistry"),
-  AdminController: Symbol.for("AdminController"),
-};
+import { ADMIN_TYPES } from "../../infrastructure/containers/admin-container";
+import { AdminInteractor } from "../../use-cases/admin.interactor";
 
 @injectable()
 export class AdminController {
-  private _repository:any;
-  constructor(){
-    this._repository = Vandor;
+  private _interactor:any;
+  constructor(
+    // @inject(ADMIN_TYPES.AdminInteractor) private adminInteractor:AdminInteractor
+  ){
+    this._interactor = '';
   }
   onUpdateVendor() {
+    const data = this._interactor.findVandor()
     return `this is on update vendor`
   }
   onGetVendorById() {

@@ -1,5 +1,6 @@
 import { inject, injectable } from "inversify";
-import { ADMIN_TYPES, AdminController } from "../../adapters/admin/admin.controller";
+import {  AdminController } from "../../adapters/admin/admin.controller";
+import { ADMIN_TYPES } from "../containers/admin-container";
 
 
 @injectable()
