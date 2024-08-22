@@ -1,57 +1,13 @@
-import express, { NextFunction, Request, Response } from "express";
-import { Container } from "inversify";
-import { INTERFACE_TYPE } from "../../container";
-import { VendorInteractor } from "../../../use-cases/vendor.interactor";
-import { VendorRepository } from "../../../adapters/common/repositories/vendor.rep";
-import {
-  IVendorInteractor,
-  IVendorRepository,
-} from "../../../adapters/common/interfaces/vendor";
-import { VendorController } from "../../../adapters/vendor/vendor.controller";
-import VendorPresenter from "../../../adapters/vendor/vendor.presenter";
-
-const container = new Container();
-container
-  .bind<IVendorRepository>(INTERFACE_TYPE.VendorRepository)
-  .to(VendorRepository);
-container
-  .bind<IVendorInteractor>(INTERFACE_TYPE.VendorInteractor)
-  .to(VendorInteractor);
-container.bind(INTERFACE_TYPE.VendorPresenter).to(VendorPresenter);
-container.bind(INTERFACE_TYPE.VendorController).to(VendorController);
+import express from "express";
+import { vendorExecuteRule } from "../executeRule/vendor-execute-rule";
 
 const router = express.Router();
 
-const controller = container.get<VendorController>(
-  INTERFACE_TYPE.VendorController
-);
-
-function exectuteRule1(rule: string) {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    const data = req.body;
-    const ctrl = {
-        'profile': controller.GetVendorProfile(req, res, next),
-        'login': controller.VendorLogin(req, res, next)
-    }
-    try {
-        const rule1 = `${rule}`;
-      return await ctrl.profile;
-    } catch (err) {
-      res.status(500).json({
-        name: "unexpected_failure",
-        description: "Unexpected server error",
-      });
-    }
-  };
-}
-router.post("/login", controller.VendorLogin.bind(controller));
-router.route("/profile").get(exectuteRule1("profile"));
-router.route('/login')
-router.route('/:id');//get profile
-router.route('/:id'); //update specific profile
-router.route('/food'); //add food
-router.route('/:id/food'); //get food by id
-router.route('/:id'); //update vendor cover images
+router.route("/profile/:id").get(vendorExecuteRule("profile"));
+router.route("/login").post(vendorExecuteRule("login"));
+router.route("/:id"); //update specific profile
+router.route("/food"); //add food
+router.route("/:id/food"); //get food by id
+router.route("/:id"); //update vendor cover images
 
 export { router as VendorRoute };
-

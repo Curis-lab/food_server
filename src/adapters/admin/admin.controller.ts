@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { Container, inject, injectable } from "inversify";
 import { getContainer, loadContainer } from "../../infrastructure/container";
+import { Vandor } from "../../../models";
 
 export const TYPES = {
   FunctionRegistry: Symbol.for("FunctionRegistry"),
@@ -26,10 +27,12 @@ export class GoodByeService {
     return `Goodbye, ${name}`;
   }
 }
-
+//projected only clean dat
 @injectable()
 export class VendorController {
-  login() {}
+  async login() { 
+    return 'vendor profile login'
+  }
   getProfile() {}
   updateProfile() {}
   updateVendorService() {}
@@ -39,11 +42,25 @@ export class VendorController {
 }
 @injectable()
 export class AdminController {
-  onUpdateVendor() {}
-  onGetVendorById() {}
-  onGetVendors() {}
-  onDeleteVendorById() {}
-  onCreateVendor() {}
+  private _repository:any;
+  constructor(){
+    this._repository = Vandor;
+  }
+  onUpdateVendor() {
+    return `this is on update vendor`
+  }
+  onGetVendorById() {
+    return `this is on get vendor by id`
+  }
+  onGetVendors() {
+    return `this is on get vendor`
+  }
+  onDeleteVendorById() {
+    return `this is on delete vendor by id`
+  }
+  onCreateVendor() {
+    return `this is on create vendor`
+  }
 }
 @injectable()
 export class CustomerController {
@@ -80,8 +97,10 @@ export class MainCollection {
     const register: Record<string, (...args: any[]) => any> = {
       sayHello: (name: string) => this.helloService.sayHello(name),
       sayGoodBye: (name: string) => this.goodByeService.sayGoodBye(name),
-      admin: () => this.adminController.onCreateVendor(),
+      createVendor: () => this.adminController.onCreateVendor(),
     };
+
+    //returning of the data too cohesion
     return register[functionName] && args
       ? register[functionName](...args)
       : "Function not found";

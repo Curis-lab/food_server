@@ -19,7 +19,7 @@ export default async (app: Application) => {
   app.use(cookie());
   app.use("/images", express.static(path.join(__dirname, "images")));
 
-  app.use("/vandor", VendorRoute);
+  app.use("/vendor", VendorRoute);
   app.use("/admin", AdminRoute);
 
   return app;
