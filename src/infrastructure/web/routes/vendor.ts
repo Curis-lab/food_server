@@ -3,6 +3,8 @@ import { vendorExecuteRule } from "../executeRule/vendor-execute-rule";
 
 const router = express.Router();
 
+
+
 router.route("/profile/:id").get(vendorExecuteRule("profile"));
 router.route("/login").post(vendorExecuteRule("login"));
 router.route("/:id"); //update specific profile

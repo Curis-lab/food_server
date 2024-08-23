@@ -1,31 +1,30 @@
 import { inject, injectable } from "inversify";
-import { Vandor } from "../../../models";
-import { ADMIN_TYPES } from "../../infrastructure/containers/admin-container";
-import { AdminInteractor } from "../../use-cases/admin.interactor";
+import { IAdminInteractor } from "../common/interfaces/admin";
+import { admin_types } from "../../use-cases/utils/jd-const";
 
 @injectable()
 export class AdminController {
-  private _interactor:any;
+  private _interactor: IAdminInteractor;
   constructor(
-    // @inject(ADMIN_TYPES.AdminInteractor) private adminInteractor:AdminInteractor
-  ){
-    this._interactor = '';
+    @inject(admin_types.admininteractor)  adminInteractor: IAdminInteractor
+  )
+  {
+    this._interactor = adminInteractor;
   }
   onUpdateVendor() {
-    const data = this._interactor.findVandor()
-    return `this is on update vendor`
+    const data = this._interactor.createVendor("interantio");
+    return `this is on update vendor`;
   }
   onGetVendorById() {
-    return `this is on get vendor by id`
+    return `this is on get vendor by id`;
   }
   onGetVendors() {
-    return `this is on get vendor`
+    return `this is on get vendor`;
   }
   onDeleteVendorById() {
-    return `this is on delete vendor by id`
+    return `this is on delete vendor by id`;
   }
   onCreateVendor() {
     return `this is on create vendor`
   }
 }
-
