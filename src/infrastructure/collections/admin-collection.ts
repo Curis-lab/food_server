@@ -1,7 +1,6 @@
 import { inject, injectable } from "inversify";
-import {  AdminController } from "../../adapters/admin/admin.controller";
-import { admin_types } from "../../use-cases/utils/jd-const";
-
+import {  AdminController } from "@adapters/admin/admin.controller";
+import { admin_types } from "use-cases/utils/jd-const";
 
 @injectable()
 export class AdminCollection {
@@ -10,7 +9,8 @@ export class AdminCollection {
   ) {}
   callFunctionByName(functionName: string, ...args: any[]): any {
     const register: Record<string, (...args: any[]) => any> = {
-      createVendor: () => this.adminController.onCreateVendor(),
+      createVendor: (data:any) => this.adminController.onCreateVendor(data),
+      getVendors:()=>this.adminController.onGetVendors()
     };
 
     return register[functionName] && args

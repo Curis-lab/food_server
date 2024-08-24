@@ -1,14 +1,16 @@
-import { Admin } from "../../../../entities/Admin";
+import { IVendorInput } from "../../../../dto";
+import { VandorDoc } from "../../../../models";
 import { Vendor } from "../models/vendor";
 
 export interface IAdminInteractor{
-    createVendor(id:string):Promise<Vendor>;
+    createVendor(data:any):Promise<Vendor>;
     getVendors():Promise<Vendor[]>;
 }
 
 export interface IAdminRepository{
-    create(data:any):Promise<Vendor>;
+    createVendor(data:IVendorInput):Promise<VandorDoc>;
     delete(id:string):null;
     update(id:string):Promise<Vendor>;
-    findById(id:string):Promise<Vendor>;    
+    findById(id:string):Promise<Vendor>;  
+    find():Promise<Vendor[]>  
 }
