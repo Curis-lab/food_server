@@ -1,9 +1,7 @@
 import { Container } from "inversify";
 import { VendorInteractor } from "../../use-cases/vendor/vendor.interactor";
 import { VendorRepository } from "../../adapters/common/repositories/vendor.rep";
-import {
-  IVendorRepository,
-} from "../../adapters/common/interfaces/vendor";
+import { IVendorRepository } from "../../adapters/common/interfaces/vendor";
 import {
   VENDOR_TYPES,
   VendorController,

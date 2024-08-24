@@ -10,7 +10,7 @@ import { Food, Vendor } from "@entities";
 export class VendorInteractor implements VendorGateway {
   private _vendorRepository: IVendorRepository;
   constructor(
-    @inject(VENDOR_TYPES.VendorRepository) vendorRepository: IVendorRepository
+    @inject(VENDOR_TYPES.VendorRepository) vendorRepository: IVendorRepository,
   ) {
     this._vendorRepository = vendorRepository;
   }

@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { NextFunction, Request, Response } from "express";
 import { VendorGateway } from "use-cases/vendor/vendor.gateway";
+import VendorPresenter from "./vendor.presenter";
 
 export const VENDOR_TYPES = {
   VendorRepository: Symbol.for("VendorRepository"),
@@ -20,23 +21,27 @@ export class VendorController {
     this._interactor = interactor;
     this._presenter = presenter;
   }
-  async VendorLogin(req: Request) {
-    type Tauth = {email:string, password:string};
+  async VendorLogin(req: Request, res:Response) {
+    type Tauth = { email: string; password: string };
     const { email, password } = <Tauth>req.body;
-    return "creadential is not valid";
+    return this._presenter.showSuccess({email:'eil'},res)
   }
 
-  async GetVendorProfile(req: Request) {
+  async GetVendorProfile(req: Request, res:Response) {
     const data = await this._interactor.getVendorProfileById(
       "66c45ff6b7e8a571a43fe07b"
     );
-    return "this is get vendor profile";
+    if(data){
+      return this._presenter.showSuccess(data, res)
+    }else{
+      return this._presenter.showError('Get vendor profile error', res);
+    }
   }
 
   async UpdateVendorProfile(req: Request, res: Response, next: NextFunction) {
     return res.send({ message: "update profile" });
   }
-  async AddFood(req: Request) {
+  async AddFood(req: Request, res: Response) {
     type CreateFoodInputs = {
       name: string;
       description: string;
@@ -47,6 +52,10 @@ export class VendorController {
     };
     const food = <CreateFoodInputs>req.body;
     const data = await this._interactor.addFood(food);
-    return data;
+    if (data) {
+      return this._presenter.showSuccess(data, res);
+    } else {
+      return this._presenter.showError("Add Food Error", res);
+    }
   }
 }

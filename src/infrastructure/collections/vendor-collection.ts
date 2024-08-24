@@ -15,9 +15,9 @@ export class VendorCollection {
   ) {}
   callFunctionByName(funcName: string, ...args: any) {
     const register: Record<string, (...args: any) => any> = {
-      profile: (req) => this.vendorController.GetVendorProfile(req),
-      login: (req) => this.vendorController.VendorLogin(req),
-      addfood: (req) => this.vendorController.AddFood(req),
+      profile: (req, res) => this.vendorController.GetVendorProfile(req, res),
+      login: (req, res) => this.vendorController.VendorLogin(req, res),
+      addfood: (req, res) => this.vendorController.AddFood(req, res),
     };
 
     return register[funcName]
