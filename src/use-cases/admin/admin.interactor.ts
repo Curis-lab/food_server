@@ -5,7 +5,7 @@ import { admin_types } from "../utils/jd-const";
 import { IVendorInput } from "../../../dto";
 import {  VandorDoc } from "../../../models";
 import AdminGateway from "./admin.gateway";
-import ProductProps from "entities/product";
+import FoodProps from "entities/product";
 
 @injectable()
 export class AdminInteractor implements AdminGateway {
@@ -22,7 +22,7 @@ export class AdminInteractor implements AdminGateway {
     return Promise.resolve(data);
   }
   async rejectVendor(id: string): Promise<void> {}
-  async viewAllProducts(): Promise<ProductProps[]> {
+  async viewAllProducts(): Promise<FoodProps[]> {
     const data = await this._repos.find();
     throw new Error("view all products");
   }

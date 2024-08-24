@@ -10,11 +10,8 @@ export function vendorExecuteRule(rule: string) {
     const controller = vendorLoadContainer().get(VendorCollection);
 
     try {
-      const funData =
-        reqData || id
-          ? await controller.callFunctionByName(rule, reqData ? reqData : id)
-          : await controller.callFunctionByName(rule);
-      return res.json({ funData });
+      const data = await controller.callFunctionByName(rule, req);
+      return res.send({data});
     } catch (err) {
       res.status(500).json({
         name: "unexpected_failure",

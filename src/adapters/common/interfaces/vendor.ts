@@ -1,13 +1,4 @@
-import { Food } from "../models/food";
-import { Vendor } from "../models/vendor";
-
-export interface IVendorInteractor{
-    getVendorProfileById(id:string):Promise<Vendor>;
-    getVendorProfileByEmail(email:string):Promise<Vendor>;
-    updateVendorProfile(data:any):Promise<Vendor>;
-    addFood(data:any):Promise<Food>;
-    getFoods():Promise<Food[]>;
-}
+import { Food, Vendor } from "@entities";
 
 export interface IVendorRepository{
     create(data:any):Promise<Vendor>;
@@ -16,6 +7,7 @@ export interface IVendorRepository{
     findById(id:string):Promise<Vendor>;
     getAll():Promise<Vendor[]>;
     findByEmail(email:string):Promise<Vendor>;
+    createFood(data:any):Promise<Food>;
 }
 
 export interface IVendorInput{

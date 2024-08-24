@@ -1,8 +1,7 @@
 import { Container } from "inversify";
-import { VendorInteractor } from "../../use-cases/vendor.interactor";
+import { VendorInteractor } from "../../use-cases/vendor/vendor.interactor";
 import { VendorRepository } from "../../adapters/common/repositories/vendor.rep";
 import {
-  IVendorInteractor,
   IVendorRepository,
 } from "../../adapters/common/interfaces/vendor";
 import {
@@ -11,6 +10,7 @@ import {
 } from "../../adapters/vendor/vendor.controller";
 import VendorPresenter from "../../adapters/vendor/vendor.presenter";
 import { VendorCollection } from "../collections/vendor-collection";
+import { VendorGateway } from "use-cases/vendor/vendor.gateway";
 
 export function vendorLoadContainer() {
   const container = new Container();
@@ -18,7 +18,7 @@ export function vendorLoadContainer() {
     .bind<IVendorRepository>(VENDOR_TYPES.VendorRepository)
     .to(VendorRepository);
   container
-    .bind<IVendorInteractor>(VENDOR_TYPES.VendorInteractor)
+    .bind<VendorGateway>(VENDOR_TYPES.VendorInteractor)
     .to(VendorInteractor);
   container
     .bind<VendorPresenter>(VENDOR_TYPES.VendorPresenter)

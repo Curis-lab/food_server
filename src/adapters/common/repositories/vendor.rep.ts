@@ -1,13 +1,15 @@
 import { injectable } from "inversify";
-import { Vandor } from "../../../../models";
 import { IVendorRepository } from "../interfaces/vendor";
-import { Vendor } from "../models/vendor";
+import { Vendor, Food } from "@entities";
+import { Vandor, Food as food } from "../../../../models";
 
 @injectable()
 export class VendorRepository implements IVendorRepository {
-  private client: any;
+  private vendor: any;
+  private food:any;
   constructor() {
-    this.client = Vandor;
+    this.vendor = Vandor;
+    this.food = food;
   }
   create(data: any): Promise<Vendor> {
     throw new Error("Method not implemented.");
@@ -19,7 +21,7 @@ export class VendorRepository implements IVendorRepository {
     throw new Error("Method not implemented.");
   }
   async findByEmail(email: string): Promise<Vendor> {
-    const data = await this.client.findOne({ email });
+    const data = await this.vendor.findOne({ email });
     if (data) {
       return Promise.resolve(data);
     } else {
@@ -27,7 +29,7 @@ export class VendorRepository implements IVendorRepository {
     }
   }
   async findById(id: string): Promise<Vendor> {
-    const data = await this.client.findById(id);
+    const data = await this.vendor.findById(id);
     if (data) {
       return Promise.resolve(data);
     } else {
@@ -36,5 +38,9 @@ export class VendorRepository implements IVendorRepository {
   }
   getAll(): Promise<Vendor[]> {
     throw new Error("Method not implemented.");
+  }
+  async createFood(data:any):Promise<Food>{
+    const food = await this.food.create(data);
+    return Promise.resolve(food);
   }
 }

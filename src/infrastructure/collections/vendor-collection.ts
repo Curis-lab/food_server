@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { VendorController } from "../../adapters/vendor/vendor.controller";
+import { VendorController } from "@adapters/vendor/vendor.controller";
 
 const INTERFACE_TYPE = {
   VendorRepository: Symbol.for("VendorRepository"),
@@ -14,11 +14,10 @@ export class VendorCollection {
     private vendorController: VendorController
   ) {}
   callFunctionByName(funcName: string, ...args: any) {
-    const register: Record<string, (...args: any[]) => any> = {
-      profile: (id: string) => this.vendorController.GetVendorProfile(id),
-      login: (data: { email: string; password: string }) =>
-        this.vendorController.VendorLogin(data),
-      addfood:()=>this.vendorController.AddFood()
+    const register: Record<string, (...args: any) => any> = {
+      profile: (req) => this.vendorController.GetVendorProfile(req),
+      login: (req) => this.vendorController.VendorLogin(req),
+      addfood: (req) => this.vendorController.AddFood(req),
     };
 
     return register[funcName]

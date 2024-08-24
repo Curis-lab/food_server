@@ -1,4 +1,4 @@
-export default interface ProductProps{
+export default interface FoodProps{
     vendorId:string;
     name:string;
     description:string;

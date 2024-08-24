@@ -1,9 +1,8 @@
-import { Vendor } from "@adapters/common/models/vendor";
-import ProductProps from "entities/product";
+import { Vendor, Food } from "@entities";
 
 export default interface AdminGateway {
   createVendor(data: any): Promise<Vendor>;
   viewVendors(): Promise<Vendor[]>;
-  viewAllProducts(): Promise<ProductProps[]>;
+  viewAllProducts(): Promise<Food[]>;
   rejectVendor(id: string): Promise<void>;
 }
