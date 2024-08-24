@@ -18,6 +18,7 @@ export class VendorCollection {
       profile: (id: string) => this.vendorController.GetVendorProfile(id),
       login: (data: { email: string; password: string }) =>
         this.vendorController.VendorLogin(data),
+      addfood:()=>this.vendorController.AddFood()
     };
 
     return register[funcName]
