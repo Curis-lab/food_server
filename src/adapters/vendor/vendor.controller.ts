@@ -1,7 +1,6 @@
 import { inject, injectable } from "inversify";
 import { NextFunction, Request, Response } from "express";
 import { VendorGateway } from "use-cases/vendor/vendor.gateway";
-import VendorPresenter from "./vendor.presenter";
 
 export const VENDOR_TYPES = {
   VendorRepository: Symbol.for("VendorRepository"),

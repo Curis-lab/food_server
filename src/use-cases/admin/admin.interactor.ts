@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify";
 import { IAdminRepository } from "../../adapters/common/interfaces/admin";
-import { Vendor } from "../../adapters/common/models/vendor";
 import { admin_types } from "../utils/jd-const";
 import { IVendorInput } from "../../../dto";
-import {  VandorDoc } from "../../../models";
+import { VandorDoc } from "../../../models";
 import AdminGateway from "./admin.gateway";
 import FoodProps from "entities/product";
+import { Vendor } from "@entities";
 
 @injectable()
 export class AdminInteractor implements AdminGateway {
@@ -19,7 +19,27 @@ export class AdminInteractor implements AdminGateway {
   }
   async viewVendors(): Promise<Vendor[]> {
     const data = await this._repos.find();
-    return Promise.resolve(data);
+    if(!data){
+      throw new Error('view Vendors error on admin.interactor');
+    }
+    const vendors: Vendor[] = data.map((vendor) => {
+      return {
+        name: vendor.name,
+        ownerName: vendor.ownerName,
+        pinCode: vendor.pinCode,
+        address: vendor.address,
+        phone: vendor.phone,
+        email: vendor.email,
+        password: vendor.password,
+        salt: vendor.salt,
+        serviceAvailable: vendor.serviceAvailable,
+        coverImage: vendor.coverImage,
+        rating: vendor.rating,
+        foodType: vendor.foodType,
+        foods: vendor.foods,
+      };
+    });
+    return Promise.resolve(vendors);
   }
   async rejectVendor(id: string): Promise<void> {}
   async viewAllProducts(): Promise<FoodProps[]> {
