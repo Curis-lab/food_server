@@ -5,25 +5,32 @@ import { Vandor, VandorDoc } from "../../../../models";
 import { IVendorInput } from "../../../../dto";
 
 @injectable()
-export class AdminRepository implements IAdminRepository{
-  private _repos:any;
-  constructor(){
+export class AdminRepository implements IAdminRepository {
+  private _repos: any;
+  constructor() {
     this._repos = Vandor;
   }
   async createVendor(data: IVendorInput): Promise<VandorDoc> {
     const vendor = await this._repos.create(data);
     return Promise.resolve(vendor);
   }
-  delete(id: string): null {
-    throw new Error("Method not implemented.");
+  async deleteVendor(id: string): Promise<boolean> {
+    const deleteVendor = await this._repos.deleteOne({ _id: id });
+    return Promise.resolve(deleteVendor.deletedCount === 1);
   }
-  update(id: string): Promise<Vendor> {
-    throw new Error("Method not implemented.");
+  async updateVendor(id: string, data: any): Promise<Vendor> {
+    const result = await this._repos.findByIdAndUpdate(
+      { _id: id },
+      { name: data },
+      { new: true }
+    );
+    return Promise.resolve(result);
   }
-  findById(id: string): Promise<Vendor> {
-    throw new Error("Method not implemented.");
+  async findById(id: string): Promise<Vendor> {
+    const result = await this._repos.findById({ _id: id });
+    return Promise.resolve(result);
   }
-  async find():Promise<Vendor[]>{
+  async find(): Promise<Vendor[]> {
     return await this._repos.find();
   }
 }

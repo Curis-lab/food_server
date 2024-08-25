@@ -6,7 +6,7 @@ import { Vandor, Food as food } from "../../../../models";
 @injectable()
 export class VendorRepository implements IVendorRepository {
   private vendor: any;
-  private food:any;
+  private food: any;
   constructor() {
     this.vendor = Vandor;
     this.food = food;
@@ -14,8 +14,10 @@ export class VendorRepository implements IVendorRepository {
   create(data: any): Promise<Vendor> {
     throw new Error("Method not implemented.");
   }
-  delete(id: string | number): null {
-    throw new Error("Method not implemented.");
+  async deleteVendor(id: string): Promise<boolean> {
+    // const result = await this.vendor.deleteOne({ _id: id });
+    console.log(id);
+    return Promise.resolve(true);
   }
   update(id: string): Promise<Vendor> {
     throw new Error("Method not implemented.");
@@ -39,7 +41,7 @@ export class VendorRepository implements IVendorRepository {
   getAll(): Promise<Vendor[]> {
     throw new Error("Method not implemented.");
   }
-  async createFood(data:any):Promise<Food>{
+  async createFood(data: any): Promise<Food> {
     const food = await this.food.create(data);
     return Promise.resolve(food);
   }

@@ -9,8 +9,8 @@ export interface IAdminInteractor{
 
 export interface IAdminRepository{
     createVendor(data:IVendorInput):Promise<VandorDoc>;
-    delete(id:string):null;
-    update(id:string):Promise<Vendor>;
+    deleteVendor(id:string):Promise<boolean>;
+    updateVendor(id:string, data:any):Promise<Vendor>;
     findById(id:string):Promise<Vendor>;  
     find():Promise<Vendor[]>  
 }

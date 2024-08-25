@@ -1,10 +1,9 @@
 import { inject, injectable } from "inversify";
-import { IAdminInteractor } from "../common/interfaces/admin";
 import { IVendorInput } from "../../../dto";
 import { admin_types } from "../../use-cases/utils/jd-const";
 import AdminGateway from "use-cases/admin/admin.gateway";
 import { Request, Response } from "express";
-import { Vendor } from "@entities";
+import bodyParser from "body-parser";
 
 @injectable()
 export class AdminController {
@@ -14,41 +13,42 @@ export class AdminController {
   ) {
     this._interactor = adminInteractor;
   }
-  onUpdateVendor() {
+  onUpdateVendor(req: Request, res: Response) {
     const data = this._interactor.createVendor("interantio");
-    return `this is on update vendor`;
+
+    return res.send({ message: "update Vendor" });
   }
   onGetVendorById() {
     return `this is on get vendor by id`;
   }
-  async onGetVendors(req: Request, res:Response) {
+  async onGetVendors(req: Request, res: Response) {
     const data = await this._interactor.viewVendors();
-    
+
     const dataformat = {
-      status:'success',
-      data:data,
-      message:'Vendor retrived successfully'
-    }
+      status: "success",
+      data: data,
+      message: "Vendor retrived successfully",
+    };
     return res.send(dataformat);
   }
-  onDeleteVendorById() {
-    return `this is on delete vendor by id`;
+  async onDeleteVendorById(req: Request, res: Response) {
+    const id = req.params.id;
+    const msg = await this._interactor.rejectVendor(id);
+    const formatted = {
+      status: "success",
+      body: msg,
+      message: msg,
+    };
+    return res.send(formatted);
   }
-  async onCreateVendor(input:any) {    
-    const vendorData:IVendorInput = {
-      name:'tuntun',
-      ownerName:'file',
-      foodType:['fiowiel'],
-      pinCode:'iowie',
-      address:'iwoei',
-      phone:'oi',
-      email:'slfjaslf',
-      password: 'fiow',
-      salt:'ioweif',
-      serviceAvailable: false,
-      coverImage: [""],
-      rating: 2,
-    }
-    return await this._interactor.createVendor(vendorData);
+  async onCreateVendor(req: Request, res: Response) {
+    const vendorData: IVendorInput = <IVendorInput>req.body;
+    const data = await this._interactor.createVendor(vendorData);
+    const formatted = {
+      status: "success",
+      data,
+      message: "successfuly created",
+    };
+    return res.send(formatted);
   }
 }

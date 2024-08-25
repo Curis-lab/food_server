@@ -19,8 +19,8 @@ export class AdminInteractor implements AdminGateway {
   }
   async viewVendors(): Promise<Vendor[]> {
     const data = await this._repos.find();
-    if(!data){
-      throw new Error('view Vendors error on admin.interactor');
+    if (!data) {
+      throw new Error("view Vendors error on admin.interactor");
     }
     const vendors: Vendor[] = data.map((vendor) => {
       return {
@@ -41,7 +41,18 @@ export class AdminInteractor implements AdminGateway {
     });
     return Promise.resolve(vendors);
   }
-  async rejectVendor(id: string): Promise<void> {}
+  async rejectVendor(id: string): Promise<string> {
+    const existing = await this._repos.findById(id);
+    if (!existing) {
+      return Promise.resolve("already deleted");
+    }
+    const vendor_deleted = await this._repos.deleteVendor(id);
+    if (vendor_deleted) {
+      return Promise.resolve("sussefully deleted");
+    } else {
+      return Promise.resolve("unsuccessfully deleted");
+    }
+  }
   async viewAllProducts(): Promise<FoodProps[]> {
     const data = await this._repos.find();
     throw new Error("view all products");
