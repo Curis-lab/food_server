@@ -37,6 +37,6 @@ export interface IVendorInput{
   password: string;
   salt: string;
   serviceAvailable: boolean;
-  coverImage: string[];
+  coverImage: [string];
   rating: number;
 }
