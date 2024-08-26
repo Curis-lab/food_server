@@ -1,14 +1,15 @@
 import { injectable } from "inversify";
 import { IVendorRepository } from "../interfaces/vendor";
 import { Vendor, Food } from "@entities";
-import { Vandor, Food as food } from "../../../../models";
+import {  Food as food } from "../../../../models";
+import { Vendor as vendor } from "../../../infrastructure/db/mongo/models/vendor";
 
 @injectable()
 export class VendorRepository implements IVendorRepository {
   private vendor: any;
   private food: any;
   constructor() {
-    this.vendor = Vandor;
+    this.vendor = vendor;
     this.food = food;
   }
   create(data: any): Promise<Vendor> {

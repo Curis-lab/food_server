@@ -2,10 +2,10 @@ import { inject, injectable } from "inversify";
 import { IAdminRepository } from "../../adapters/common/interfaces/admin";
 import { admin_types } from "../utils/jd-const";
 import { IVendorInput } from "../../../dto";
-import { VandorDoc } from "../../../models";
 import AdminGateway from "./admin.gateway";
 import FoodProps from "entities/product";
 import { Vendor } from "@entities";
+import { VendorDoc } from "infrastructure/db/mongo/models/vendor";
 
 @injectable()
 export class AdminInteractor implements AdminGateway {
@@ -13,7 +13,7 @@ export class AdminInteractor implements AdminGateway {
   constructor(@inject(admin_types.adminrespository) repos: IAdminRepository) {
     this._repos = repos;
   }
-  async createVendor(data: IVendorInput): Promise<VandorDoc> {
+  async createVendor(data: IVendorInput): Promise<VendorDoc> {
     const vendor = await this._repos.createVendor(data);
     return Promise.resolve(vendor);
   }
@@ -46,6 +46,7 @@ export class AdminInteractor implements AdminGateway {
     if (!existing) {
       return Promise.resolve("already deleted");
     }
+
     const vendor_deleted = await this._repos.deleteVendor(id);
     if (vendor_deleted) {
       return Promise.resolve("sussefully deleted");

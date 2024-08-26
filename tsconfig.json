@@ -6,9 +6,9 @@
     "moduleResolution": "node10",
     "baseUrl": "./src",
     "paths": {
-      "@infrastructure/*": ["infrastructure/*"],
+      // "@infrastructure/*": ["infrastructure/*"],
       // "@useCases/*": ["use-cases/*"],
-      "@adapters/*": ["adapters/*"],
+      // "@adapters/*": ["adapters/*"],
       "@entities": ["entities/index"]
     },
     "esModuleInterop": true,

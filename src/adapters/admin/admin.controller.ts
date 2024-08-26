@@ -3,15 +3,18 @@ import { IVendorInput } from "../../../dto";
 import { admin_types } from "../../use-cases/utils/jd-const";
 import AdminGateway from "use-cases/admin/admin.gateway";
 import { Request, Response } from "express";
-import bodyParser from "body-parser";
+import AdminPresenter from "./admin.presenter";
 
 @injectable()
 export class AdminController {
   private _interactor: AdminGateway;
+  private presenter:AdminPresenter;
   constructor(
-    @inject(admin_types.admininteractor) adminInteractor: AdminGateway
+    @inject(admin_types.admininteractor) adminInteractor: AdminGateway,
+    @inject(admin_types.adminpresenter) adminPresenter: AdminPresenter
   ) {
     this._interactor = adminInteractor;
+    this.presenter = adminPresenter;
   }
   onUpdateVendor(req: Request, res: Response) {
     const data = this._interactor.createVendor("interantio");
@@ -23,13 +26,13 @@ export class AdminController {
   }
   async onGetVendors(req: Request, res: Response) {
     const data = await this._interactor.viewVendors();
-
+    
     const dataformat = {
       status: "success",
       data: data,
       message: "Vendor retrived successfully",
     };
-    return res.send(dataformat);
+    return this.presenter.showSucces(data,res);
   }
   async onDeleteVendorById(req: Request, res: Response) {
     const id = req.params.id;

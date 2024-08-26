@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import {  AdminController } from "@adapters/admin/admin.controller";
+import {  AdminController } from "adapters/admin/admin.controller";
 import { admin_types } from "../../use-cases/utils/jd-const";
 
 @injectable()

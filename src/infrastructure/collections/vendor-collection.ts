@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { VendorController } from "@adapters/vendor/vendor.controller";
+import { VendorController } from "adapters/vendor/vendor.controller";
 
 const INTERFACE_TYPE = {
   VendorRepository: Symbol.for("VendorRepository"),
