@@ -12,6 +12,7 @@ import {
   TableBody,
   TableCell,
 } from "./ui/table";
+
 import {
   ColumnDef,
   getCoreRowModel,
@@ -21,14 +22,16 @@ import {
 import { DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
+import { getCommonPinningStyles } from "@/lib/data-table";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
+
 export default function MainTable<TData, TValue>({
-  columns,
   data,
+  columns,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -37,7 +40,7 @@ export default function MainTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full mx-10">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."
@@ -53,7 +56,7 @@ export default function MainTable<TData, TValue>({
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="opacity-100">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -61,7 +64,7 @@ export default function MainTable<TData, TValue>({
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize"
+                    className="capitalize opacity-100"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
@@ -74,14 +77,20 @@ export default function MainTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-hidden">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      style={{
+                        ...getCommonPinningStyles({ column: header.column }),
+                      }}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -102,7 +111,12 @@ export default function MainTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      style={{
+                        ...getCommonPinningStyles({ column: cell.column }),
+                      }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

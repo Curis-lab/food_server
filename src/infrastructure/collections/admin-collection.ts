@@ -9,6 +9,8 @@ export class AdminCollection {
   ) {}
   callFunctionByName(functionName: string, ...args: any[]): any {
     const register: Record<string, (...args: any[]) => any> = {
+
+      //register all method
       createVendor: (req, res) => this.adminController.onCreateVendor(req, res),
       getVendors:(req, res)=>this.adminController.onGetVendors(req,res),
       rejectVendor:(req, res)=>this.adminController.onDeleteVendorById(req, res)

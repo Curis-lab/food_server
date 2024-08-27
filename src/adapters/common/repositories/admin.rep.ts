@@ -1,7 +1,6 @@
 import { injectable } from "inversify";
 import { IAdminRepository } from "../interfaces/admin";
 import { Vendor } from "../models/vendor";
-// import { Vandor, VandorDoc } from "../../../../models";
 import { IVendorInput } from "../../../../dto";
 import { Vendor as vendor, VendorDoc } from "../../../infrastructure/db/mongo/models/vendor";
 

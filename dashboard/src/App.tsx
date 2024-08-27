@@ -1,26 +1,30 @@
 import "./App.css";
-import { ApiProvider } from "@reduxjs/toolkit/query/react";
 import { adminApi } from "./infrastructure/api/apiSlice";
 import MainTable from "./presentation/components/table";
 import { ColumnDef } from "@tanstack/react-table";
+import { Button } from "./presentation/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
+import CreateVendorAccount from "./presentation/components/create-vendor-account";
+import HomePage from "./presentation/pages/home";
 
-type vendor = {
+import {Route, createBrowserRouter, createRoutesFromElements, RouterProvider,} from 'react-router-dom'
+//-----------------router-----------
+
+//-----------------end router -----------
+
+export type vendor_table = {
   name: string;
   ownerName: string;
-  pinCode: string;
-  address: string;
   phone: string;
   email: string;
-  password: string;
-  salt: string;
+  address: string;
   serviceAvailable: boolean;
-  coverImage: [string];
   rating: number;
   foodType: [string];
-  foods: [];
+  pinCode: string;
 };
 
-export const columns: ColumnDef<vendor>[] = [
+export const columns: ColumnDef<vendor_table>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -28,6 +32,21 @@ export const columns: ColumnDef<vendor>[] = [
   {
     accessorKey: "ownerName",
     header: "Owner Name",
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "pinCode",
@@ -41,29 +60,27 @@ export const columns: ColumnDef<vendor>[] = [
     accessorKey: "phone",
     header: "Phone",
   },
-  {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "password",
-    header: "Password",
-  },
-  {
-    accessorKey: "salt",
-    header: "Salt",
-  },
+  
   {
     accessorKey: "serviceAvailable",
     header: "Service Available",
   },
   {
-    accessorKey: "coverImage",
-    header: "coverIamge",
-  },
-  {
     accessorKey: "rating",
-    header: "Rating",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Rating
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("rating")}</div>
+    ),
   },
   {
     accessorKey: "foodType",
@@ -75,21 +92,37 @@ export const columns: ColumnDef<vendor>[] = [
   },
 ];
 
-
 function Table() {
   const { data: api, isSuccess } = adminApi.useGetVendorsQuery();
-  return isSuccess ? (
-    <MainTable data={api.data} columns={columns} />
-  ) : (
-    <div>Noting</div>
-  );
+  const vendor_data: vendor_table[] = isSuccess
+    ? api.map((vendor) => {
+        return {
+          name: vendor.name,
+          ownerName: vendor.ownerName,
+          phone: vendor.phone,
+          email: vendor.email,
+          address: vendor.address,
+          serviceAvailable: vendor.serviceAvailable,
+          rating: vendor.rating,
+          foodType: vendor.foodType,
+          pinCode: vendor.pinCode,
+        };
+      })
+    : [];
+  return <MainTable data={vendor_data} columns={columns} />;
 }
 
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<HomePage/>}>
+      <Route index element={<Table/>}/>
+      <Route path="create" element={<CreateVendorAccount/>}/>
+    </Route>
+  )
+)
 function App() {
   return (
-    <ApiProvider api={adminApi}>
-      <Table />
-    </ApiProvider>
+    <RouterProvider router={router}/>
   );
 }
 

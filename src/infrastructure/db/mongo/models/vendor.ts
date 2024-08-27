@@ -1,26 +1,22 @@
-import mongoose, {Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-export interface VendorDoc extends Document{
-    name:string;
-    ownerName:string;
-    pinCode:string;
-    address:string;
-    phone:string;
-    email:string;
-    password:string;
-    salt:string;
-    serviceAvailable:boolean;
-    coverImage:[string];
-    rating:number;
-    foodType:[string];
-    foods:any
+export interface VendorDoc extends Document {
+  name: string;
+  ownerName: string;
+  pinCode: string;
+  address: string;
+  phone: string;
+  email: string;
+  password: string;
+  salt: string;
+  serviceAvailable: boolean;
+  coverImage: [string];
+  rating: number;
+  foodType: [string];
+  foods: any;
 }
-<<<<<<< HEAD:models/Vandor.ts
 
-const VandorSchema =  new Schema({
-=======
 const VendorSchema =  new Schema({
->>>>>>> dev_refactor:src/infrastructure/db/mongo/models/vendor.ts
     name:{type:String, required:true},
     ownerName:{type:String, required:true},
     pinCode:{type:String, required:true},
@@ -47,6 +43,6 @@ const VendorSchema =  new Schema({
     }
 });
 
-const Vendor = mongoose.model<VendorDoc>('vandor',VendorSchema);
+const Vendor = mongoose.model<VendorDoc>("vandor", VendorSchema);
 
-export {Vendor}
+export { Vendor };
