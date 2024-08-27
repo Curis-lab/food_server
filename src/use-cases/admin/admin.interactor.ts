@@ -1,11 +1,11 @@
-import { inject, injectable } from "inversify";
-import { IAdminRepository } from "../../adapters/common/interfaces/admin";
-import { admin_types } from "../utils/jd-const";
-import { IVendorInput } from "../../../dto";
-import AdminGateway from "./admin.gateway";
-import FoodProps from "entities/product";
 import { Vendor } from "@entities";
+import FoodProps from "entities/product";
+import AdminGateway from "./admin.gateway";
+import { IVendorInput } from "../../../dto";
+import { inject, injectable } from "inversify";
+import { admin_types } from "../utils/jd-const";
 import { VendorDoc } from "infrastructure/db/mongo/models/vendor";
+import { IAdminRepository } from "../../adapters/common/interfaces/admin";
 
 @injectable()
 export class AdminInteractor implements AdminGateway {

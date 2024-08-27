@@ -4,6 +4,8 @@ import { admin_types } from "../../use-cases/utils/jd-const";
 import AdminGateway from "use-cases/admin/admin.gateway";
 import { Request, Response } from "express";
 import AdminPresenter from "./admin.presenter";
+import HTTPCreateVendorBody from "use-cases/vendor/vendor.dtos";
+import HTTPRequest from "adapters/common/models/http-request";
 
 @injectable()
 export class AdminController {
@@ -18,7 +20,6 @@ export class AdminController {
   }
   onUpdateVendor(req: Request, res: Response) {
     const data = this._interactor.createVendor("interantio");
-
     return res.send({ message: "update Vendor" });
   }
   onGetVendorById() {
@@ -26,32 +27,18 @@ export class AdminController {
   }
   async onGetVendors(req: Request, res: Response) {
     const data = await this._interactor.viewVendors();
-    
-    const dataformat = {
-      status: "success",
-      data: data,
-      message: "Vendor retrived successfully",
-    };
     return this.presenter.showSucces(data,res);
   }
   async onDeleteVendorById(req: Request, res: Response) {
-    const id = req.params.id;
-    const msg = await this._interactor.rejectVendor(id);
-    const formatted = {
-      status: "success",
-      body: msg,
-      message: msg,
-    };
-    return res.send(formatted);
+    const msg = await this._interactor.rejectVendor(req.params.id);
+    return this.presenter.showSucces(msg, res)
   }
   async onCreateVendor(req: Request, res: Response) {
-    const vendorData: IVendorInput = <IVendorInput>req.body;
-    const data = await this._interactor.createVendor(vendorData);
-    const formatted = {
-      status: "success",
-      data,
-      message: "successfuly created",
-    };
-    return res.send(formatted);
+    const vendorData: IVendorInput = <HTTPCreateVendorBody>req.body;
+    const request:HTTPRequest<void, void,HTTPCreateVendorBody,void> = {
+      body:vendorData
+    }
+    const data = await this._interactor.createVendor(request.body);
+    return this.presenter.showSucces(data, res)
   }
 }
