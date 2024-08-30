@@ -1,30 +1,33 @@
 import { Vendor } from "../../entities";
-import FoodProps from "entities/product";
-import AdminGateway from "./admin.gateway";
 import { inject, injectable } from "inversify";
 import { admin_types } from "../utils/jd-const";
-import { VendorDoc } from "infrastructure/db/mongo/models/vendor";
-import {
-  IAdminRepository,
-} from "../../adapters/common/interfaces/admin";
+import { IAdminRepository } from "../../adapters/common/interfaces/admin";
 import {
   GeneratePassword,
   generateSalt,
 } from "../../use-cases/utils/password-utls";
-import {CreateVendorInput, vendorTDO } from "./admin.dtos";
+import { CreateVendorInput, vendorTDO } from "./admin.dtos";
+import { IAdminInteractor } from "./admin.gateway";
+import {Response } from "express";
+import AdminPresenter from "adapters/admin/admin.presenter";
 
 @injectable()
-export class AdminInteractor implements AdminGateway {
+export class AdminInteractor implements IAdminInteractor {
   private _repos: IAdminRepository;
-  constructor(@inject(admin_types.adminrespository) repos: IAdminRepository) {
+  private _presenter: AdminPresenter;
+  constructor(
+    @inject(admin_types.adminrespository) repos: IAdminRepository,
+    @inject(admin_types.adminpresenter) presenter: AdminPresenter
+  ) {
     this._repos = repos;
+    this._presenter = presenter;
   }
 
-  async createVendor(data: CreateVendorInput): Promise<vendorTDO | string> {
+  async createVendor(data: CreateVendorInput, responseModel: Response) {
     const { email, password } = data;
     const existing_vendor = await this._repos.findByEmail(email);
     if (!existing_vendor) {
-      return Promise.resolve("already created with this email");
+      return this._presenter.showError("vendor not found", responseModel);
     }
     const salt = await generateSalt();
     const hashed_password = await GeneratePassword(password, salt);
@@ -33,21 +36,19 @@ export class AdminInteractor implements AdminGateway {
       ...data,
       salt,
       password: hashed_password,
-    }
-    const create_vendor = Vendor.build(vendor_raw);
-    console.log('create vendor on interactor',create_vendor);
-    const vendor = await this._repos.createVendor(vendor_raw as vendorTDO);
-
-    return Promise.resolve(vendor);
+    };
+    const vendor = await this._repos.createVendor(Vendor.build(vendor_raw) as vendorTDO);
+    return this._presenter.showSucces(vendor, responseModel);
   }
 
-  async viewVendors(): Promise<Vendor[]> {
+  async viewVendors(responseModel: Response) {
     const data = await this._repos.find();
 
     if (!data) {
-      throw new Error("view Vendors error on admin.interactor");
+      return this._presenter.showError("vendor not found", responseModel);
     }
 
+    
     const vendors: any[] = data.map(
       ({
         name,
@@ -79,32 +80,30 @@ export class AdminInteractor implements AdminGateway {
         foods,
       })
     );
-    return Promise.resolve(vendors);
+    return this._presenter.showSucces(vendors, responseModel);
   }
-  async rejectVendor(id: string): Promise<string> {
+  async rejectVendor(id: string, responseModel: Response) {
     const existing = await this._repos.findById(id);
     if (!existing) {
-      return Promise.resolve("already deleted");
+      return this._presenter.showError("vendor not found", responseModel);
     }
-
     const vendor_deleted = await this._repos.deleteVendor(id);
     if (vendor_deleted) {
-      return Promise.resolve("sussefully deleted");
+      return this._presenter.showSucces("Succefully deleted", responseModel);
     } else {
-      return Promise.resolve("unsuccessfully deleted");
+      return this._presenter.showError("Error in deleting", responseModel);
     }
   }
-  async viewAllProducts(): Promise<FoodProps[]> {
+  async viewAllProducts(responseModel: Response){
     const data = await this._repos.find();
-    throw new Error("view all products");
+    return this._presenter.showSucces(data, responseModel);
   }
-  async updateVendor(id: string, data: any): Promise<Vendor> {
+  async updateVendor(id: string, data: any, responseModel:Response) {
     const vendor = await this._repos.patchVendor(id, data);
-    console.log("admin.interactor", vendor);
-    return Promise.resolve(vendor);
+    return this._presenter.showSucces(vendor, responseModel);
   }
-  async searchVendorById(id: string): Promise<Vendor> {
+  async searchVendorById(id: string, responseModel: Response){
     const vendor = await this._repos.findById(id);
-    return Promise.resolve(vendor);
+    return this._presenter.showSucces(vendor, responseModel);
   }
 }
