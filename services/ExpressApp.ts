@@ -9,7 +9,7 @@ export default async (app: Application) => {
   app.use(
     cors({
       origin: ["http://localhost:5173"],
-      methods: ["POST", "GET"],
+      methods: ["POST", "GET","DELETE","PATCH"],
       credentials: true,
     })
   );

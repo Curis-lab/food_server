@@ -1,4 +1,6 @@
-export default interface HTTPCreateVendorBody {
+//responsible for connect data between layer
+
+export interface vendorTDO {
   name: string;
   ownerName: string;
   foodType: string[];
@@ -13,3 +15,5 @@ export default interface HTTPCreateVendorBody {
   rating: number;
   foods:any
 }
+
+export type CreateVendorInput = Omit<vendorTDO,"salt">

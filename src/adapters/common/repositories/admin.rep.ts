@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
 import { IAdminRepository } from "../interfaces/admin";
-import { Vendor } from "../models/vendor";
-import { IVendorInput } from "../../../../dto";
+import { vendorTDO } from "use-cases/admin/admin.dtos";
 import { Vendor as vendor, VendorDoc } from "../../../infrastructure/db/mongo/models/vendor";
+import { Vendor } from "@entities";
 
 @injectable()
 export class AdminRepository implements IAdminRepository {
@@ -10,9 +10,9 @@ export class AdminRepository implements IAdminRepository {
   constructor() {
     this._repos = vendor;
   }
-  async createVendor(data: IVendorInput): Promise<VendorDoc> {
+  async createVendor(data:  vendorTDO): Promise<vendorTDO> {
     const vendor = await this._repos.create(data);
-    return Promise.resolve(vendor);
+    return Promise.resolve(vendor as vendorTDO);
   }
   async deleteVendor(id: string): Promise<boolean> {
     const deleteVendor = await this._repos.deleteOne({ _id: id });
@@ -30,7 +30,17 @@ export class AdminRepository implements IAdminRepository {
     const result = await this._repos.findById({ _id: id });
     return Promise.resolve(result);
   }
+  async patchVendor(id:string, updates:any):Promise<Vendor>{
+    const result = await this._repos.updateOne(
+      { _id: id },  // Filter by ID
+      { $set: updates }           // Apply updates (only specific fields)
+    );
+    return result;
+  }
   async find(): Promise<Vendor[]> {
     return await this._repos.find();
+  }
+  async findByEmail(email: string): Promise<Vendor> {
+    return await this._repos.find({email});
   }
 }

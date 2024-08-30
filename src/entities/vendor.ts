@@ -1,6 +1,5 @@
-import { Customer } from "../../models";
-
 export interface VendorProps {
+  id?: string;
   name: string;
   ownerName: string;
   pinCode: string;
@@ -10,23 +9,71 @@ export interface VendorProps {
   password: string;
   salt: string;
   serviceAvailable: boolean;
-  coverImage: [string];
+  coverImage: string[];
   rating: number;
-  foodType: [string];
+  foodType: string[];
   foods: any;
 }
-export class Vendor{
-    constructor(props: VendorProps){}
-    public static build(props: VendorProps):Vendor{
-      const errors: Array<string> = [];
-      // if(props.document.length !== 11 && props.document.length !== 14){
-      //   errors.push('invalid_document')
-      // }
 
-      // if(errors.length > 0){
-      //   throw new Error(errors);
-      // }
-      
-      return new Customer(props)
+
+export class Vendor {
+  // private props:VendorProps;
+  private props:VendorProps;
+  constructor(props: VendorProps) {
+    this.props = props
+  }
+  get name():string{
+    return this.props.name;
+  }
+  
+  get ownerName(): string{
+    return this.props.ownerName;
+  }
+
+  get pinCode(): string{
+    return this.props.pinCode;
+  };
+
+  get address(): string{
+    return this.props.address;
+  }
+  get phone(): string{
+    return this.props.phone
+  }
+  get email(): string{
+    return this.props.email
+  }
+  get salt(): string{
+    return this.props.salt
+  }
+  get password(): string{
+    return this.props.password
+  }
+  get serviceAvailable(): boolean{
+    return this.props.serviceAvailable
+  }
+  get coverImage():string[]{
+    return this.props.coverImage;
+  }
+  get rating():number{
+    return this.props.rating;
+  }
+  get foodType(): string[]{
+    return this.props.foodType;
+  }
+  get foods():any{
+    return this.props.foods;
+  }
+  
+  public static build(props: VendorProps):Vendor {
+    //some domain validation is here
+    const errors: Array<string> = [];
+    if(props.rating < 1 || props.rating >6){
+      errors.push("Rating must be between 1 and 5");
     }
+    if(errors.length > 0){
+      throw new Error("Error on vendor entities");
+    }
+    return new Vendor(props);
+  }
 }

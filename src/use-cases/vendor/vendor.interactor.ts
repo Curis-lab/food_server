@@ -22,7 +22,7 @@ export class VendorInteractor implements VendorGateway {
     const data = await this._vendorRepository.findById(id);
     return Promise.resolve(data);
   }
-  updateVendorProfile(data: any): Promise<Vendor> {
+  async updateVendorProfile(data: any): Promise<Vendor> {
     throw new Error("Method not implemented.");
   }
   async addFood(input: any): Promise<Food> {

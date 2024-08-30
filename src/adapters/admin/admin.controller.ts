@@ -1,11 +1,12 @@
+import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
-import { IVendorInput } from "../../../dto";
+import AdminPresenter from "./admin.presenter";
+import HTTPRequest from "adapters/common/models/http-request";
+import { vendorTDO } from "use-cases/admin/admin.dtos";
 import { admin_types } from "../../use-cases/utils/jd-const";
 import AdminGateway from "use-cases/admin/admin.gateway";
-import { Request, Response } from "express";
-import AdminPresenter from "./admin.presenter";
 import HTTPCreateVendorBody from "use-cases/vendor/vendor.dtos";
-import HTTPRequest from "adapters/common/models/http-request";
+
 
 @injectable()
 export class AdminController {
@@ -18,12 +19,20 @@ export class AdminController {
     this._interactor = adminInteractor;
     this.presenter = adminPresenter;
   }
-  onUpdateVendor(req: Request, res: Response) {
-    const data = this._interactor.createVendor("interantio");
-    return res.send({ message: "update Vendor" });
+  async onUpdateVendor(req: Request, res: Response) {
+    const vendorId = req.params.id;
+    const updateVendorDetails:any = <vendorTDO>req.body;
+    if(!vendorId|| Object.keys(updateVendorDetails).length == 0){
+      return this.presenter.showError("Vendor Id and update are required",res);
+    }
+    const vendor = await this._interactor.updateVendor(vendorId, updateVendorDetails);
+
+    return this.presenter.showSucces(vendor, res);
   }
-  onGetVendorById() {
-    return `this is on get vendor by id`;
+  async onGetVendorById(req: Request, res: Response) {
+    const id = req.params.id;
+    const vendor = await this._interactor.searchVendorById(id);
+    return this.presenter.showSucces(vendor, res);
   }
   async onGetVendors(req: Request, res: Response) {
     const data = await this._interactor.viewVendors();
@@ -34,11 +43,11 @@ export class AdminController {
     return this.presenter.showSucces(msg, res)
   }
   async onCreateVendor(req: Request, res: Response) {
-    const vendorData: IVendorInput = <HTTPCreateVendorBody>req.body;
+    const vendorDetails: vendorTDO = <HTTPCreateVendorBody>req.body;
     const request:HTTPRequest<void, void,HTTPCreateVendorBody,void> = {
-      body:vendorData
+      body:vendorDetails
     }
-    const data = await this._interactor.createVendor(request.body);
+    const data = await this._interactor.createVendor(vendorDetails);
     return this.presenter.showSucces(data, res)
   }
 }
