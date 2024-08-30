@@ -8,16 +8,32 @@ export const adminApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://localhost:8080/admin/'
     }),
+    tagTypes:['admin'],
     endpoints:(build)=>({
         getVendors: build.query<Vendor[],void>({
-            query:()=>`vendor`
+            query:()=>`vendors`,
+            providesTags:['admin']
         }),
         createVendor: build.mutation<Vendor,CreateVendor>({
             query:(body)=>({
                 url:`vendor`,
                 method:'POST',
                 body
-            })
+            }),
+            invalidatesTags:['admin']
+        }),
+        deleteVendor: build.mutation<void, string>({
+            query:(id)=>({
+                url:`${id}`,
+                method:'DELETE',
+                body:id
+            }),
+            invalidatesTags:['admin']
+        }),
+        getVendorById: build.query<Vendor, string>({
+            query:(id)=>`${id}`,
         })
     })
 });
+
+export const {useDeleteVendorMutation, useGetVendorByIdQuery} = adminApi; 

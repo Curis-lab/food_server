@@ -3,9 +3,10 @@ import adminExecuteRule from "../executeRule/admin-execute-rule";
 
 const router = Router();
 
-router.route('/vendor').post(adminExecuteRule("createVendor")).get(adminExecuteRule("getVendors"));//create vendor
-router.route('/:id').delete(adminExecuteRule("rejectVendor"));//get vendor
-router.route('/vendor')//delete vendor
-router.route('/vendor')//update vendor
-
+router.route('/vendors').get(adminExecuteRule("getVendors"));
+router.route('/vendor').post(adminExecuteRule("createVendor"));
+router.route('/:id').delete(adminExecuteRule("rejectVendor")).patch(adminExecuteRule('edit')).get(adminExecuteRule("searchVendor"));
+//vendor/:id/edit ---> {inputdata}
+//vendor/:id/reject
+//vendor/:id/approve
 export {router as AdminRoute}

@@ -1,4 +1,5 @@
 export interface Vendor {
+  id:string;
   name: string;
   ownerName: string;
   pinCode: string;

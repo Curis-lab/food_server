@@ -10,11 +10,3 @@ export interface IVendorRepository{
     createFood(data:any):Promise<Food>;
 }
 
-export interface IVendorInput{
-    name:string;
-    address:string;
-    phone:string;
-    email:string;
-    password:string;
-    coverImage:string
-}

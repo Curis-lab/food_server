@@ -3,8 +3,9 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Textarea } from "./ui/textarea";
-import { adminApi } from "@/infrastructure/api/apiSlice";
+import { adminApi, useGetVendorByIdQuery } from "@/infrastructure/api/apiSlice";
 import { useToast } from "./ui/use-toast";
+import { SearchVendorById } from "../hooks/get-vendor-byid";
 
 export interface CreateVendor {
   name: string;
@@ -25,13 +26,15 @@ const InputField = ({
   placeholder,
 }: {
   htmlFor: string;
-  value: string|number;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
 }) => {
   return (
     <div className="w-full flex">
-      <label className="w-[200px] block text-sm font-medium text-gray-700">{placeholder}</label>
+      <label className="w-[200px] block text-sm font-medium text-gray-700">
+        {placeholder}
+      </label>
       <Input
         name={htmlFor}
         value={value}
@@ -41,7 +44,7 @@ const InputField = ({
     </div>
   );
 };
-const CreateVendorAccount = () => {
+const Edit = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState<CreateVendor>({
     name: "",
@@ -55,8 +58,8 @@ const CreateVendorAccount = () => {
     rating: 0,
     foodType: [""],
   });
-  const [createVendor, { isSuccess }] = adminApi.useCreateVendorMutation();
-
+  const [createVendor] = adminApi.useCreateVendorMutation();
+  //refactor
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -70,17 +73,18 @@ const CreateVendorAccount = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createVendor(formData);
-    if (isSuccess) {
-      toast({
-        title: "Vendor Account Created",
-        description: "Vendor Account Created Successfully",
-      });
-    }
+    toast({
+      title: "Vendor Account Created",
+      description: "Vendor Account Created Successfully",
+    });
   };
 
   return (
     <div className="mx-10">
-      <h1 className="font-bold text-2xl space-y-4 mx-auto px-6 py-4">Create Vendor Account</h1>
+      <h1 className="font-bold text-2xl space-y-4 mx-auto px-6 py-4">
+        Edit Vendor Account
+      </h1>
+      {JSON.stringify(SearchVendorById('66cea1332aaec6ef1b7c4840'))}
       <form onSubmit={handleSubmit} className="space-y-4 mx-auto p-6">
         <InputField
           value={formData.name}
@@ -132,7 +136,6 @@ const CreateVendorAccount = () => {
             name="serviceAvailable"
             checked={formData.serviceAvailable}
             onChange={handleCheckboxChange}
-            
           />
           <label className="ml-2 block text-sm font-medium text-gray-700">
             Service Available
@@ -162,16 +165,15 @@ const CreateVendorAccount = () => {
           />
         </div>
 
-        {/* Food Type */}
         <InputField
           value={formData.foodType[0]}
           onChange={(e) =>
-            setFormData({ ...formData, foodType: [e.target.value] })}
+            setFormData({ ...formData, foodType: [e.target.value] })
+          }
           placeholder="Food Type"
           htmlFor="foodType"
         />
 
-        {/* Submit Button */}
         <Button type="submit" className="w-full bg-blue-500 text-white">
           Submit
         </Button>
@@ -180,4 +182,4 @@ const CreateVendorAccount = () => {
   );
 };
 
-export default CreateVendorAccount;
+export default Edit;
