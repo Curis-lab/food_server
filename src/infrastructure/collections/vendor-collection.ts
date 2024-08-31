@@ -12,12 +12,15 @@ export class VendorCollection {
   constructor(
     @inject(INTERFACE_TYPE.VendorController)
     private vendorController: VendorController
-  ) {}
+  ) {
+    this.vendorController = vendorController;
+  }
   callFunctionByName(funcName: string, ...args: any) {
     const register: Record<string, (...args: any) => any> = {
       profile: (req, res) => this.vendorController.GetVendorProfile(req, res),
       login: (req, res) => this.vendorController.VendorLogin(req, res),
-      addfood: (req, res) => this.vendorController.AddFood(req, res),
+      addfood: (req, res) => this.vendorController.addFood(req, res),
+      foods:(req, res)=>this.vendorController.getFoods(req, res),
     };
 
     return register[funcName]

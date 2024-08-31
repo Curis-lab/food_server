@@ -12,12 +12,14 @@ export class VendorRepository implements IVendorRepository {
     this.vendor = vendor;
     this.food = food;
   }
+  async createFood(input:any):Promise<Food>{
+    const food = await this.food.create(input);
+    return Promise.resolve(food);
+  }
   create(data: any): Promise<Vendor> {
     throw new Error("Method not implemented.");
   }
   async deleteVendor(id: string): Promise<boolean> {
-    // const result = await this.vendor.deleteOne({ _id: id });
-    console.log(id);
     return Promise.resolve(true);
   }
   update(id: string): Promise<Vendor> {
@@ -39,11 +41,8 @@ export class VendorRepository implements IVendorRepository {
       throw new Error("Method not implemented.");
     }
   }
-  getAll(): Promise<Vendor[]> {
-    throw new Error("Method not implemented.");
-  }
-  async createFood(data: any): Promise<Food> {
-    const food = await this.food.create(data);
-    return Promise.resolve(food);
+  async getFoods(): Promise<Vendor[]> {
+    const foods = await this.food.find()
+    return Promise.resolve(foods);
   }
 }
