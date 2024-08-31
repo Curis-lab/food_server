@@ -27,7 +27,7 @@ export class AdminRepository implements IAdminRepository {
     return Promise.resolve(result);
   }
   async findById(id: string): Promise<Vendor> {
-    const result = await this._repos.findById({ _id: id });
+    const result = await this._repos.findById(id);
     return Promise.resolve(result);
   }
   async patchVendor(id:string, updates:any):Promise<Vendor>{
@@ -37,7 +37,7 @@ export class AdminRepository implements IAdminRepository {
     );
     return result;
   }
-  async find(): Promise<Vendor[]> {
+  async find(): Promise<any[]> {
     return await this._repos.find();
   }
   async findByEmail(email: string): Promise<Vendor> {

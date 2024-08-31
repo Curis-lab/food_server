@@ -1,10 +1,6 @@
 import { useState } from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
-import { Textarea } from "./ui/textarea";
+import { Input, useToast, Button } from "./ui";
 import { adminApi } from "@/infrastructure/api/apiSlice";
-import { useToast } from "./ui/use-toast";
 
 export interface CreateVendor {
   name: string;
@@ -13,9 +9,9 @@ export interface CreateVendor {
   address: string;
   phone: string;
   email: string;
+  password: string;
   serviceAvailable: boolean;
   coverImage: string[]; // Array of image URLs
-  rating: number;
   foodType: string[]; // Array of food types
 }
 const InputField = ({
@@ -25,13 +21,15 @@ const InputField = ({
   placeholder,
 }: {
   htmlFor: string;
-  value: string|number;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
 }) => {
   return (
     <div className="w-full flex">
-      <label className="w-[200px] block text-sm font-medium text-gray-700">{placeholder}</label>
+      <label className="w-[200px] block text-sm font-medium text-gray-700">
+        {placeholder}
+      </label>
       <Input
         name={htmlFor}
         value={value}
@@ -52,8 +50,8 @@ const CreateVendorAccount = () => {
     email: "",
     serviceAvailable: false,
     coverImage: [""],
-    rating: 0,
     foodType: [""],
+    password: "",
   });
   const [createVendor, { isSuccess }] = adminApi.useCreateVendorMutation();
 
@@ -69,6 +67,7 @@ const CreateVendorAccount = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(formData);
     createVendor(formData);
     if (isSuccess) {
       toast({
@@ -80,7 +79,9 @@ const CreateVendorAccount = () => {
 
   return (
     <div className="mx-10">
-      <h1 className="font-bold text-2xl space-y-4 mx-auto px-6 py-4">Create Vendor Account</h1>
+      <h1 className="font-bold text-2xl space-y-4 mx-auto px-6 py-4">
+        Create Vendor Account
+      </h1>
       <form onSubmit={handleSubmit} className="space-y-4 mx-auto p-6">
         <InputField
           value={formData.name}
@@ -105,7 +106,8 @@ const CreateVendorAccount = () => {
           <label className="block text-sm font-medium text-gray-700 w-[200px]">
             Address
           </label>
-          <Textarea
+          <input
+          type="textarea"
             name="address"
             value={formData.address}
             onChange={handleChange}
@@ -125,14 +127,20 @@ const CreateVendorAccount = () => {
           placeholder="Email"
           htmlFor="email"
         />
+        <InputField
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Password"
+          htmlFor="password"
+        />
 
         {/* Service Available */}
         <div className="flex items-center pl-[170px]">
-          <Checkbox
+          <input
+          type="checkbox"
             name="serviceAvailable"
             checked={formData.serviceAvailable}
-            onChange={handleCheckboxChange}
-            
+            onChange={(e:React.ChangeEvent<HTMLInputElement>)=>handleCheckboxChange(e)}
           />
           <label className="ml-2 block text-sm font-medium text-gray-700">
             Service Available
@@ -140,12 +148,6 @@ const CreateVendorAccount = () => {
         </div>
 
         {/* Rating */}
-        <InputField
-          value={formData.rating}
-          onChange={handleChange}
-          placeholder="Rating"
-          htmlFor="rating"
-        />
 
         {/* Cover Image */}
         <div className="flex">
@@ -166,7 +168,8 @@ const CreateVendorAccount = () => {
         <InputField
           value={formData.foodType[0]}
           onChange={(e) =>
-            setFormData({ ...formData, foodType: [e.target.value] })}
+            setFormData({ ...formData, foodType: [e.target.value] })
+          }
           placeholder="Food Type"
           htmlFor="foodType"
         />

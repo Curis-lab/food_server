@@ -12,7 +12,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<HomePage/>}>
       <Route index element={<MainTable/>}/>
       <Route path="create" element={<CreateVendorAccount/>}/>
-      <Route path="edit" element={<Edit/>}/>
+      <Route path=":id/edit" element={<Edit/>}/>
       <Route path="customer" element={<CustomerTable/>}/>
     </Route>
   )

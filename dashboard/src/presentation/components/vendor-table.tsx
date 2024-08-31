@@ -35,12 +35,13 @@ import {
   adminApi,
   useDeleteVendorMutation,
 } from "@/infrastructure/api/apiSlice";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
+
 
 function UseDeleteVendor() {
   const [deleteVendor] = useDeleteVendorMutation();
@@ -143,7 +144,7 @@ const columns: ColumnDef<vendor_table>[] = [
     accessorKey: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const vendor = row.original;
       const deleteVendor = UseDeleteVendor();
       function handleDelete(id: string): void {
         deleteVendor(id)
@@ -163,13 +164,15 @@ const columns: ColumnDef<vendor_table>[] = [
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={() => {
-                handleDelete(payment.id);
-                navigator.clipboard.writeText(payment.id);
+                handleDelete(vendor.id);
+                navigator.clipboard.writeText(vendor.id);
               }}
             >
               Delete
             </DropdownMenuItem>
+            <Link to={`${vendor.id}/edit`}>
             <DropdownMenuItem>Edit</DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
