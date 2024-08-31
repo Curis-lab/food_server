@@ -25,8 +25,7 @@ function CustomerTable() {
   return <div className="mx-10">
     <h1 className="text-2xl font-bold my-3">Customer Table</h1>
     <Table>
-      <TableHeader>
-      </TableHeader>
+      <TableHeader/>
     </Table>
   </div>;
 }

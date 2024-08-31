@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -6,6 +6,8 @@ import { Textarea } from "./ui/textarea";
 import { adminApi, useGetVendorByIdQuery } from "@/infrastructure/api/apiSlice";
 import { useToast } from "./ui/use-toast";
 import { SearchVendorById } from "../hooks/get-vendor-byid";
+import { useParams } from "react-router-dom";
+import { Vendor } from "@/domain/entities";
 
 export interface CreateVendor {
   name: string;
@@ -45,6 +47,7 @@ const InputField = ({
   );
 };
 const Edit = () => {
+  const id = useParams().id as string;
   const { toast } = useToast();
   const [formData, setFormData] = useState<CreateVendor>({
     name: "",
@@ -59,6 +62,7 @@ const Edit = () => {
     foodType: [""],
   });
   const [createVendor] = adminApi.useCreateVendorMutation();
+  const {data:api, isSuccess} = useGetVendorByIdQuery(id)
   //refactor
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -72,19 +76,20 @@ const Edit = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createVendor(formData);
+    // createVendor(formData);
     toast({
       title: "Vendor Account Created",
       description: "Vendor Account Created Successfully",
     });
   };
-
+  useEffect(()=>{
+    setFormData({...formData,...api});
+  },[])
   return (
     <div className="mx-10">
       <h1 className="font-bold text-2xl space-y-4 mx-auto px-6 py-4">
         Edit Vendor Account
       </h1>
-      {JSON.stringify(SearchVendorById('66cea1332aaec6ef1b7c4840'))}
       <form onSubmit={handleSubmit} className="space-y-4 mx-auto p-6">
         <InputField
           value={formData.name}

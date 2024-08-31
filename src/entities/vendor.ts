@@ -1,5 +1,5 @@
 export interface VendorProps {
-  id?: string;
+  _id?: string;
   name: string;
   ownerName: string;
   pinCode: string;
@@ -15,12 +15,30 @@ export interface VendorProps {
   foods: any;
 }
 
+/**
+ * 
+ * Entity are the business objects that are managed by the coorperation 
+ *
+ */
 
-export class Vendor {
-  // private props:VendorProps;
+export class Vendor{
   private props:VendorProps;
+  public readonly isNew:boolean;
+  public _id:string|undefined;
+
   constructor(props: VendorProps) {
-    this.props = props
+    const handle = ()=>{
+      return {set:(o:any, property:string, value:any)=>{
+        o[property] = value;
+        return true;
+      }}
+    }
+    this.props = new Proxy(props,handle());
+    this.isNew = props._id? false: true;
+    this._id = props._id ? props._id.toString() : undefined;
+  }
+  get id():string|undefined{
+    return this._id
   }
   get name():string{
     return this.props.name;

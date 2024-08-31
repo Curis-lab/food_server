@@ -6,9 +6,9 @@ import {
   GeneratePassword,
   generateSalt,
 } from "../../use-cases/utils/password-utls";
-import { CreateVendorInput, vendorTDO } from "./admin.dtos";
+import { CreateVendorInput } from "./admin.dtos";
 import { IAdminInteractor } from "./admin.gateway";
-import {Response } from "express";
+import { Response } from "express";
 import AdminPresenter from "adapters/admin/admin.presenter";
 
 @injectable()
@@ -24,20 +24,29 @@ export class AdminInteractor implements IAdminInteractor {
   }
 
   async createVendor(data: CreateVendorInput, responseModel: Response) {
-    const { email, password } = data;
+    const {email, password} = data;
     const existing_vendor = await this._repos.findByEmail(email);
+    
+    //rating will be change their performance
+    const rating = 5;
     if (!existing_vendor) {
       return this._presenter.showError("vendor not found", responseModel);
     }
+    
     const salt = await generateSalt();
     const hashed_password = await GeneratePassword(password, salt);
 
     const vendor_raw = {
       ...data,
       salt,
+      rating,
       password: hashed_password,
     };
-    const vendor = await this._repos.createVendor(Vendor.build(vendor_raw) as vendorTDO);
+
+    const vendor_data = Vendor.build(vendor_raw);
+
+    const vendor = await this._repos.createVendor(vendor_raw);
+
     return this._presenter.showSucces(vendor, responseModel);
   }
 
@@ -47,40 +56,25 @@ export class AdminInteractor implements IAdminInteractor {
     if (!data) {
       return this._presenter.showError("vendor not found", responseModel);
     }
-
-    
-    const vendors: any[] = data.map(
-      ({
-        name,
-        ownerName,
-        pinCode,
-        address,
-        phone,
-        email,
-        password,
-        salt,
-        serviceAvailable,
-        coverImage,
-        rating,
-        foodType,
-        foods,
-      }) => ({
-        name,
-        ownerName,
-        pinCode,
-        address,
-        phone,
-        email,
-        password,
-        salt,
-        serviceAvailable,
-        coverImage,
-        rating,
-        foodType,
-        foods,
-      })
-    );
-    return this._presenter.showSucces(vendors, responseModel);
+    const vendors_update = data.reduce<any[]>((acc, cur) => {
+      acc.push({
+        id: cur._id.toString(),
+        name: cur.name,
+        ownerName: cur.ownerName,
+        foodType: cur.foodType,
+        pinCode: cur.pinCode,
+        address: cur.address,
+        phone: cur.phone,
+        email: cur.email,
+        password: cur.password,
+        serviceAvailable: cur.serviceAvailable,
+        coverImage: cur.coverImage,
+        rating: cur.rating,
+        foods: cur.foods,
+      });
+      return acc;
+    }, []);
+    return this._presenter.showSucces(vendors_update, responseModel);
   }
   async rejectVendor(id: string, responseModel: Response) {
     const existing = await this._repos.findById(id);
@@ -94,15 +88,15 @@ export class AdminInteractor implements IAdminInteractor {
       return this._presenter.showError("Error in deleting", responseModel);
     }
   }
-  async viewAllProducts(responseModel: Response){
+  async viewAllProducts(responseModel: Response) {
     const data = await this._repos.find();
     return this._presenter.showSucces(data, responseModel);
   }
-  async updateVendor(id: string, data: any, responseModel:Response) {
+  async updateVendor(id: string, data: any, responseModel: Response) {
     const vendor = await this._repos.patchVendor(id, data);
     return this._presenter.showSucces(vendor, responseModel);
   }
-  async searchVendorById(id: string, responseModel: Response){
+  async searchVendorById(id: string, responseModel: Response) {
     const vendor = await this._repos.findById(id);
     return this._presenter.showSucces(vendor, responseModel);
   }
