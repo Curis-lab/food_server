@@ -32,7 +32,7 @@ export class AdminRepository implements IAdminRepository {
   }
   async patchVendor(id:string, updates:any):Promise<Vendor>{
     const result = await this._repos.updateOne(
-      { _id: id },  // Filter by ID
+      { _id: id }, 
       { $set: updates }           // Apply updates (only specific fields)
     );
     return result;
