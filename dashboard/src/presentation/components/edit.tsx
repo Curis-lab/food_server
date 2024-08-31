@@ -3,11 +3,12 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Textarea } from "./ui/textarea";
-import { adminApi, useGetVendorByIdQuery } from "@/infrastructure/api/apiSlice";
+import {
+  useEditVendorMutation,
+  useGetVendorByIdQuery,
+} from "@/infrastructure/api/apiSlice";
 import { useToast } from "./ui/use-toast";
-import { SearchVendorById } from "../hooks/get-vendor-byid";
 import { useParams } from "react-router-dom";
-import { Vendor } from "@/domain/entities";
 
 export interface CreateVendor {
   name: string;
@@ -46,24 +47,42 @@ const InputField = ({
     </div>
   );
 };
+
+interface EditVendor {
+  name?: string;
+  ownerName?: string;
+  pinCode?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  password?: string;
+  serviceAvailable?: boolean;
+  coverImage?: string[]; // Array of image URLs
+  foodType?: string[];
+}
 const Edit = () => {
   const id = useParams().id as string;
   const { toast } = useToast();
-  const [formData, setFormData] = useState<CreateVendor>({
-    name: "",
-    ownerName: "",
-    pinCode: "",
-    address: "",
-    phone: "",
-    email: "",
-    serviceAvailable: false,
-    coverImage: [""],
-    rating: 0,
-    foodType: [""],
-  });
-  const [createVendor] = adminApi.useCreateVendorMutation();
-  const {data:api, isSuccess} = useGetVendorByIdQuery(id)
-  //refactor
+  const {
+    data: vendorAPI = {
+      name: "",
+      ownerName: "",
+      pinCode: "",
+      address: "",
+      phone: "",
+      email: "",
+      password: "",
+      serviceAvailable: false,
+      coverImage: [""],
+      foodType: [""],
+    },
+  } = useGetVendorByIdQuery(id);
+  const [formData, setFormData] = useState<CreateVendor | EditVendor>(
+    vendorAPI
+  );
+
+  const [editVendor] = useEditVendorMutation();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -74,17 +93,17 @@ const Edit = () => {
     setFormData({ ...formData, [name]: checked });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // createVendor(formData);
-    toast({
-      title: "Vendor Account Created",
-      description: "Vendor Account Created Successfully",
+    const input = { id, data: { ...formData } };
+    await editVendor(input).then((data) => {
+      console.log(data);
+      toast({
+        title: "Vendor Account Edited",
+        description: "Vendor Account Edited Successfully",
+      });
     });
   };
-  useEffect(()=>{
-    setFormData({...formData,...api});
-  },[])
   return (
     <div className="mx-10">
       <h1 className="font-bold text-2xl space-y-4 mx-auto px-6 py-4">

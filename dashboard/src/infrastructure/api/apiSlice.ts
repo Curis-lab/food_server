@@ -2,6 +2,18 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import { Vendor } from '../../shared/types/vendor';
 import { CreateVendor } from '@/presentation/components/create-vendor-account';
 
+interface EditVendor{
+    name?: string;
+    ownerName?: string;
+    pinCode?: string;
+    address?: string;
+    phone?: string;
+    email?: string;
+    password?: string;
+    serviceAvailable?: boolean;
+    coverImage?: string[]; // Array of image URLs
+    foodType?: string[]; 
+}
 
 export const adminApi = createApi({
     reducerPath:'admin',
@@ -32,8 +44,16 @@ export const adminApi = createApi({
         }),
         getVendorById: build.query<Vendor, string>({
             query:(id)=>`${id}`,
+        }),
+        editVendor: build.mutation<Vendor,{id:string, data:EditVendor}>({
+            query:(body)=>({
+                url:`${body.id}`,
+                method:'PATCH',
+                body: body.data
+            }),
+            invalidatesTags:['admin']
         })
     })
 });
 
-export const {useDeleteVendorMutation, useGetVendorByIdQuery} = adminApi; 
+export const {useDeleteVendorMutation, useGetVendorByIdQuery ,useEditVendorMutation} = adminApi; 

@@ -65,16 +65,16 @@ const CreateVendorAccount = () => {
     setFormData({ ...formData, [name]: checked });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formData);
-    createVendor(formData);
-    if (isSuccess) {
+    await createVendor(formData).then(data=>{
+      console.log(data);
       toast({
         title: "Vendor Account Created",
         description: "Vendor Account Created Successfully",
       });
-    }
+    }).catch((err)=>{console.log(err)});
   };
 
   return (

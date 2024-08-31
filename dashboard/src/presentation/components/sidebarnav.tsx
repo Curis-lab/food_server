@@ -13,7 +13,6 @@ function SideNavbar() {
       group: "General",
       items: [
         { link: "/", text: "Vendor Table" },
-        { link: "/edit", text: "Edit Vendor" },
         { link: "/customer", text: "Customer Table" },
       ],
     },
