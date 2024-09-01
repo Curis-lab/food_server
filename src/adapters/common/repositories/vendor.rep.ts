@@ -12,10 +12,16 @@ export class VendorRepository implements IVendorRepository {
     this.vendor = vendor;
     this.food = food;
   }
+
+  async deleteFood(id: string): Promise<boolean> {
+    const result =  await this.food.deleteOne({_id:id});   
+    return Promise.resolve(result.deletedCount === 1);
+  }
   async createFood(input:any):Promise<Food>{
     const food = await this.food.create(input);
     return Promise.resolve(food);
   }
+  
   create(data: any): Promise<Vendor> {
     throw new Error("Method not implemented.");
   }

@@ -9,5 +9,6 @@ export interface IVendorRepository{
     findByEmail(email:string):Promise<Vendor>;
     createFood(data:any):Promise<Food>;
     createFood(input:any):Promise<Food>;
+    deleteFood(id:string):Promise<boolean>;
 }
 

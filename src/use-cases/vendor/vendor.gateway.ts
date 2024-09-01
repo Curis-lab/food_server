@@ -7,6 +7,7 @@ export interface VendorGateway{
     updateVendorProfile(data:any):Promise<Vendor>;
     addFood(data: FoodTDO, res: Response):void;
     getFoods(res: Response):void;
+    deleteFood(id:string, res: Response): void;
 }
 
 export interface VendorCando{

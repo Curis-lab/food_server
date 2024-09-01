@@ -30,8 +30,7 @@ function ProfileSideBar() {
     },
   ];
   return (
-    <div className="flex flex-col gap-4 min-w-[300px] min-h-screen p-4 w-[300px] border-r">
-      <div></div>
+    <div className="fixed flex flex-col gap-4 min-w-[300px] min-h-screen p-4 w-[300px] border-r">
       <div className="grow">
         <Command style={{ overflow: "visible" }}>
           <CommandList style={{ overflow: "visible" }}>

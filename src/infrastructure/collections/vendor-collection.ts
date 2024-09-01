@@ -21,6 +21,7 @@ export class VendorCollection {
       login: (req, res) => this.vendorController.VendorLogin(req, res),
       addfood: (req, res) => this.vendorController.addFood(req, res),
       foods:(req, res)=>this.vendorController.getFoods(req, res),
+      deleteFood: (req, res)=> this.vendorController.deleteFood(req, res)
     };
 
     return register[funcName]

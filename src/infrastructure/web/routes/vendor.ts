@@ -8,7 +8,7 @@ router.route("/login").post(vendorExecuteRule("login"));
 router.route("/food").post(vendorExecuteRule("addfood"));
 router.route('/foods').get(vendorExecuteRule("foods")); //add food
 router.route("/:id"); //update specific profile
-router.route("/:id/food"); //get food by id
+router.route("/:id/food").delete(vendorExecuteRule('deleteFood')); //get food by id
 router.route("/:id"); //update vendor cover images
 
 export { router as VendorRoute };

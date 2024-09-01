@@ -30,7 +30,10 @@ export class VendorController {
   }
   editFood(req: Request, res: Response){
   }
-  deleteFood(){}
+  deleteFood(req: Request, res: Response){
+    const id = req.params.id;
+    this._interactor.deleteFood(id, res);
+  }
 
   viewOrders(){}
   updateOrderStatus(){}

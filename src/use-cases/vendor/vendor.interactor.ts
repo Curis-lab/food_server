@@ -19,6 +19,10 @@ export class VendorInteractor implements VendorGateway {
     this._vendorRepository = vendorRepository;
     this._presenter = presenter;
   }
+  async deleteFood(id: string, res: Response){
+    const deleted = await this._vendorRepository.deleteFood(id);
+    return this._presenter.showSuccess(deleted,res)
+  }
   async addFood(input: foodTDO, res:Response){
     const food = await this._vendorRepository.createFood(input);
     return this._presenter.showSuccess(food, res)
