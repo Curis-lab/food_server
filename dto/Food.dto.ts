@@ -1,4 +1,4 @@
-export interface CreateFoodInputs{
+export default interface FoodDTO{
     name:string;
     description:string;
     category:string;

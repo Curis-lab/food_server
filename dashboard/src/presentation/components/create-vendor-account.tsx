@@ -53,7 +53,7 @@ const CreateVendorAccount = () => {
     foodType: [""],
     password: "",
   });
-  const [createVendor, { isSuccess }] = adminApi.useCreateVendorMutation();
+  const [createVendor] = adminApi.useCreateVendorMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -67,7 +67,6 @@ const CreateVendorAccount = () => {
 
   const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
     await createVendor(formData).then(data=>{
       console.log(data);
       toast({
@@ -146,8 +145,6 @@ const CreateVendorAccount = () => {
             Service Available
           </label>
         </div>
-
-        {/* Rating */}
 
         {/* Cover Image */}
         <div className="flex">

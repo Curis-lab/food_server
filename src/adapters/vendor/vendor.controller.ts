@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { NextFunction, Request, Response } from "express";
 import { VendorGateway } from "use-cases/vendor/vendor.gateway";
+import foodDTO from '../../use-cases/vendor/vendor.dtos';
 
 export const VENDOR_TYPES = {
   VendorRepository: Symbol.for("VendorRepository"),
@@ -20,6 +21,25 @@ export class VendorController {
     this._interactor = interactor;
     this._presenter = presenter;
   }
+  getFoods(req: Request, res: Response){
+    this._interactor.getFoods(res);
+  }
+  addFood(req: Request, res:Response){
+    const food = <foodDTO>req.body;
+    this._interactor.addFood(food, res);
+  }
+  editFood(req: Request, res: Response){
+  }
+  deleteFood(req: Request, res: Response){
+    const id = req.params.id;
+    this._interactor.deleteFood(id, res);
+  }
+
+  viewOrders(){}
+  updateOrderStatus(){}
+  
+  viewCustomerInfo(){}
+  manageProfile(){}
   async VendorLogin(req: Request, res:Response) {
     type Tauth = { email: string; password: string };
     const { email, password } = <Tauth>req.body;
@@ -50,11 +70,11 @@ export class VendorController {
       price: number;
     };
     const food = <CreateFoodInputs>req.body;
-    const data = await this._interactor.addFood(food);
-    if (data) {
-      return this._presenter.showSuccess(data, res);
-    } else {
+    // const data = await this._interactor.addFood(food);
+    // if (data) {
+      // return this._presenter.showSuccess(data, res);
+    // } else {
       return this._presenter.showError("Add Food Error", res);
-    }
+    // }
   }
 }
