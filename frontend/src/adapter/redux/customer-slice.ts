@@ -4,7 +4,7 @@ const customerSlice = mainSlice.injectEndpoints({
     endpoints:(builder)=>({
         deleteAccount:builder.mutation<void, string>({
             query:(id)=>({
-                url:`customer/${id}`,
+                url:`customer/${id}/customer`,
                 method:'POST',
                 body:id
             })

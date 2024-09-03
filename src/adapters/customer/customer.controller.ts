@@ -7,6 +7,7 @@ export default class CustomerController {
   constructor() {
     this.interactor = new CustomerInteractor();
   }
+  //-------------for customer services------------
   signUp(req: Request, res: Response, next: NextFunction) {
     const input = <customerInputDTO>req.body;
     this.interactor.customerRegister(input, res);
@@ -22,8 +23,14 @@ export default class CustomerController {
   }
   updateProfile(req: Request, res: Response, next:NextFunction) {
     const input = <customerInputDTO>req.body;
+    const id = req.params.id;
+    this.interactor.editCustomerProfile(id,input, res);
   }
-  viewOrders() {}
+  //-------------------end of customer services-----------
+  //-------------------for order services-----------------
+  viewOrders(req: Request, res: Response, next:NextFunction) {
+    return res.send({message:"view orders"})
+  }
   viewOrderDetails() {}
   viewCart() {}
   addToCart() {}

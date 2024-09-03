@@ -15,19 +15,24 @@ export default class CustomerInteractor {
     const customer: customerDTO = {
       ...input,
       salt,
-      otp:otp.otp,
-      otp_expiry:otp.expiry
+      otp: otp.otp,
+      otp_expiry: otp.expiry,
     };
-    
+
     const data = await this.repository.createCustomer(customer);
     return res.send(data);
   }
-  async deleteCustomer(id:string, res: Response){
+  async deleteCustomer(id: string, res: Response) {
     const data = await this.repository.deleteCustomer(id);
-    return res.send({message:"deleted"});
+    return res.send({ message: "deleted" });
   }
-  async getCustomer(id:string, res:Response){
-    const data = await this.repository.getCustomerById(id)
+  async getCustomer(id: string, res: Response) {
+    const data = await this.repository.getCustomerById(id);
+    return res.send(data);
+  }
+  async editCustomerProfile(id:string,input: any, res: Response) {
+    const data = await this.repository.updateCustomer(id,input);
+
     return res.send(data);
   }
 }

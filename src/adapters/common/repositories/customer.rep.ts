@@ -26,9 +26,13 @@ export default class CustomerRepository {
     const data = await this.customer.findById(id);
     return Promise.resolve(data);
   }
-  async updateCustomer(input: any): Promise<any> {
-    const data = await this.customer.updateOne({_id: input._id},{$set: input});
+  async updateCustomer(id:string, input: any): Promise<any> {
+    const data = await this.customer.updateOne({_id: id},{$set: input});
     return Promise.resolve(data);
   }
+  //-------------end: customer data fetching-----------
   //---------- orders ---------------
+  async getOrders():Promise<any>{
+    throw new Error("Order")
+  }
 }

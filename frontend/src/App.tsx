@@ -13,11 +13,13 @@ import ProductForm from "./presenter/profile/product-form";
 import CustomerProfile from "./presenter/page/customer-profile";
 import Home from "./presenter/page/home";
 import { Layout } from "./presenter/common/layout";
+import CheckoutPage from "./presenter/page/checkout";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />
+      <Route path="/checkout" element={<CheckoutPage/>}/>
       <Route path="/customer" element={<CustomerProfile />} />
       <Route path="/vendor" element={<VendorProfile />}>
         <Route index element={<ProductList />} />
