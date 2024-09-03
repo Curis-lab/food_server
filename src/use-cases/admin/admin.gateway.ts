@@ -9,6 +9,7 @@ export interface IAdminInteractor {
   viewAllProducts(responseModel: Response): void;
   rejectVendor(id: string, responseModel: Response): void;
   updateVendor(id:string,data:any, responseModel: Response):void;
+  viewCustomers(responseModel: Response):void;
 }
 //Gateway is responsible for connecting
 // + other services

@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import express, { Application } from "express";
 import cors from "cors";
 import cookie from "cookie-parser";
-import { AdminRoute, VendorRoute } from "../src/infrastructure/web/routes";
+import { AdminRoute, VendorRoute , CustomerRoute} from "../src/infrastructure/web/routes";
 
 export default async (app: Application) => {
   app.use(
@@ -21,6 +21,6 @@ export default async (app: Application) => {
 
   app.use("/vendor", VendorRoute);
   app.use("/admin", AdminRoute);
-
+  app.use("/customer", CustomerRoute);
   return app;
 };

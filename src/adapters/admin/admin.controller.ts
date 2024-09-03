@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
-import { vendorTDO } from "use-cases/admin/admin.dtos";
-import { admin_types } from "../../use-cases/utils/jd-const";
-import {IAdminInteractor} from "use-cases/admin/admin.gateway";
+// import { vendorTDO } from "@useCases/admin/admin.dtos";
+import { vendorTDO } from "@useCases/admin/admin.dtos";
+import { admin_types } from "@useCases/utils/jd-const";
+import {IAdminInteractor} from "@useCases/admin/admin.gateway";
 
 @injectable()
 export class AdminController {
@@ -26,5 +27,8 @@ export class AdminController {
   }
   onCreateVendor(req: Request, res: Response) {
     this._interactor.createVendor(<vendorTDO>req.body, res);
+  }
+  viewCustomers(req: Request, res: Response){
+    this._interactor.viewCustomers(res);    
   }
 }

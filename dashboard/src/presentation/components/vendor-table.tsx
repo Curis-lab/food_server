@@ -31,11 +31,8 @@ import {
   CirclePlus,
 } from "lucide-react";
 import { getCommonPinningStyles } from "@/lib/data-table";
-import {
-  adminApi,
-  useDeleteVendorMutation,
-} from "@/infrastructure/api/apiSlice";
 import { Link} from "react-router-dom";
+import { useDeleteVendorMutation, useGetVendorsQuery } from "@/infrastructure/api/vendor-slice";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -317,7 +314,7 @@ function Inheritable<TData, TValue>({
 }
 
 export default function MainTable() {
-  const { data: api = [] } = adminApi.useGetVendorsQuery();
+  const { data: api = [] } = useGetVendorsQuery();
   const vendor_data: vendor_table[] = api.map(
     ({
       id,

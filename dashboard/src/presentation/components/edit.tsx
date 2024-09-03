@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
-import { Textarea } from "./ui/textarea";
+// import { Checkbox } from "./ui/checkbox";
+// import { Textarea } from "./ui/textarea";
+import { useToast } from "./ui/use-toast";
+import { useParams } from "react-router-dom";
 import {
   useEditVendorMutation,
   useGetVendorByIdQuery,
-} from "@/infrastructure/api/apiSlice";
-import { useToast } from "./ui/use-toast";
-import { useParams } from "react-router-dom";
+} from "@/infrastructure/api/vendor-slice";
 
 export interface CreateVendor {
   name: string;
@@ -48,18 +48,18 @@ const InputField = ({
   );
 };
 
-interface EditVendor {
-  name?: string;
-  ownerName?: string;
-  pinCode?: string;
-  address?: string;
-  phone?: string;
-  email?: string;
-  password?: string;
-  serviceAvailable?: boolean;
-  coverImage?: string[]; // Array of image URLs
-  foodType?: string[];
-}
+// interface EditVendor {
+//   name?: string;
+//   ownerName?: string;
+//   pinCode?: string;
+//   address?: string;
+//   phone?: string;
+//   email?: string;
+//   password?: string;
+//   serviceAvailable?: boolean;
+//   coverImage?: string[]; // Array of image URLs
+//   foodType?: string[];
+// }
 const Edit = () => {
   const id = useParams().id as string;
   const { toast } = useToast();
@@ -77,8 +77,9 @@ const Edit = () => {
       foodType: [""],
     },
   } = useGetVendorByIdQuery(id);
-  const [formData, setFormData] = useState<CreateVendor | EditVendor>(
-    vendorAPI
+
+  const [formData, setFormData] = useState<CreateVendor>(
+    vendorAPI as CreateVendor
   );
 
   const [editVendor] = useEditVendorMutation();
@@ -133,7 +134,8 @@ const Edit = () => {
           <label className="block text-sm font-medium text-gray-700 w-[200px]">
             Address
           </label>
-          <Textarea
+          <input
+          type="textarea"
             name="address"
             value={formData.address}
             onChange={handleChange}
@@ -156,7 +158,8 @@ const Edit = () => {
 
         {/* Service Available */}
         <div className="flex items-center pl-[170px]">
-          <Checkbox
+          <input
+          type="checkbox"
             name="serviceAvailable"
             checked={formData.serviceAvailable}
             onChange={handleCheckboxChange}

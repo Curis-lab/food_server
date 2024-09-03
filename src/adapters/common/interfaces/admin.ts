@@ -13,4 +13,8 @@ export interface IAdminRepository {
   find(): Promise<any[]>;
   patchVendor(id: string, updates: any): Promise<Vendor>;
   findByEmail(email: string): Promise<Vendor>;
+
+  //-- customer mangement------
+  getAllCustomers(): Promise<any>;
+  //--- end customer management -----
 }

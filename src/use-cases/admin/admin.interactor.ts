@@ -100,4 +100,11 @@ export class AdminInteractor implements IAdminInteractor {
     const vendor = await this._repos.findById(id);
     return this._presenter.showSucces(vendor, responseModel);
   }
+
+  //--------------- start: customer management ----------------------
+  async viewCustomers(responseModel: Response){
+    const customer = await this._repos.getAllCustomers();
+    return this._presenter.showSucces(customer, responseModel);
+  }
+  //----------------- end: customer management -------------------
 }

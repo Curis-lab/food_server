@@ -6,29 +6,9 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { Link } from "react-router-dom";
+import { menu } from "../page/vendor-profile";
 
-function ProfileSideBar() {
-  type menu = {
-    group: string;
-    items: { link: string; text: string; icon?: string }[];
-  };
-  const menuList: menu[] = [
-    {
-      group: "General",
-      items: [
-        { link: "/", text: "Product Mangement" },
-        { link: "/", text: "Orders" },
-        { link: "/", text: "Reviews & Feedback" },
-      ],
-    },
-    {
-      group: "Setting",
-      items: [
-        { link: "/", text: "Profile Setting" },
-        { link: "/", text: "Privacy" },
-      ],
-    },
-  ];
+function ProfileSideBar({menuList}:{menuList:menu[]}) {
   return (
     <div className="fixed flex flex-col gap-4 min-w-[300px] min-h-screen p-4 w-[300px] border-r">
       <div className="grow">

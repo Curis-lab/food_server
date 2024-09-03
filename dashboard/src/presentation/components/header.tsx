@@ -1,12 +1,12 @@
 import { BellIcon } from "lucide-react";
 import CommandDemo from "./command";
-import { Button } from "./ui";
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "./ui";
 import { useState } from "react";
 
 function Header() {
@@ -29,7 +29,7 @@ function Header() {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button className="relative" variant="outline" size="icon">
-                <div className={`absolute -top-2 -right-2 h-3 w-3 rounded-full my-1 ${notifications.find((x:any)=> x.read=== true)?'bg-green-500':'bg-neutral-200'}`}></div>
+              <div className={`absolute -top-2 -right-2 h-3 w-3 rounded-full my-1 ${notifications.find((x:any)=> x.read=== true)?'bg-green-500':'bg-neutral-200'}`}></div>
               <BellIcon className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>

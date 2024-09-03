@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
-import { AdminController } from "adapters/admin/admin.controller";
-import { admin_types } from "../../use-cases/utils/jd-const";
+import { AdminController } from "@adapters/admin/admin.controller";
+import { admin_types } from "@useCases/utils/jd-const";
 
 @injectable()
 export class AdminCollection {
@@ -17,6 +17,7 @@ export class AdminCollection {
       edit: (req, res) => this.adminController.onUpdateVendor(req, res),
       searchVendor: (req, res) =>
         this.adminController.onGetVendorById(req, res),
+      customers: (req, res) => this.adminController.viewCustomers(req, res),
     };
 
     return register[functionName] && args
