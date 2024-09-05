@@ -31,10 +31,21 @@ export default class CustomerController {
   viewOrders(req: Request, res: Response, next:NextFunction) {
     return res.send({message:"view orders"})
   }
-  viewOrderDetails() {}
+  viewOrderDetails(req: Request, res: Response, next:NextFunction) {
+    return res.send({message:"view orders"})
+  }
+  //-------------------end of order services--------------
+  //-----------------------cart services---------------
   viewCart() {}
-  addToCart() {}
+  addToCart(req: Request, res: Response, next:NextFunction) {
+    const input = req.body;
+    return res.send({message:"add to card"});
+  }
+  //-----------------------end of cart services-----------------
   viewWishlist() {}
   submitSupportTicket() {}
-  viewNotification() {}
+  viewNotification(req: Request, res: Response, next:NextFunction) {
+    
+    return res.send({messge:"view notification"});
+  }
 }

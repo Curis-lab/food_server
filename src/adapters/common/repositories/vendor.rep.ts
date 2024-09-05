@@ -33,11 +33,12 @@ export class VendorRepository implements IVendorRepository {
   }
   async findByEmail(email: string): Promise<Vendor> {
     const data = await this.vendor.findOne({ email });
-    if (data) {
+    // if (data) {
       return Promise.resolve(data);
-    } else {
-      throw new Error("Method not implemented.");
-    }
+    // } else {
+    //   throw new Error("Method not implemented.");
+    // }
+  
   }
   async findById(id: string): Promise<Vendor> {
     const data = await this.vendor.findById(id);

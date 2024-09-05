@@ -10,29 +10,30 @@ import { CreateVendorInput } from "./admin.dtos";
 import { IAdminInteractor } from "./admin.gateway";
 import { Response } from "express";
 import AdminPresenter from "adapters/admin/admin.presenter";
+import { generateAdminGateway } from "@adapters/admin/admin.gateway";
 
 @injectable()
 export class AdminInteractor implements IAdminInteractor {
   private _repos: IAdminRepository;
   private _presenter: AdminPresenter;
+  private _adminGateway: any; 
   constructor(
     @inject(admin_types.adminrespository) repos: IAdminRepository,
     @inject(admin_types.adminpresenter) presenter: AdminPresenter
   ) {
     this._repos = repos;
     this._presenter = presenter;
+    this._adminGateway = new generateAdminGateway();
   }
 
   async createVendor(data: CreateVendorInput, responseModel: Response) {
-    const {email, password} = data;
-    const existing_vendor = await this._repos.findByEmail(email);
-    
-    //rating will be change their performance
+    const { email, password } = data;
+    const existing_vendor = await this._adminGateway.findByEmail(email);
     const rating = 5;
-    if (!existing_vendor) {
+    if (existing_vendor) {
       return this._presenter.showError("vendor not found", responseModel);
     }
-    
+
     const salt = await generateSalt();
     const hashed_password = await GeneratePassword(password, salt);
 
@@ -42,9 +43,7 @@ export class AdminInteractor implements IAdminInteractor {
       rating,
       password: hashed_password,
     };
-
-    const vendor_data = Vendor.build(vendor_raw);
-
+    // const vendors = await this._adminGateway.createVendor(vendor_raw);
     const vendor = await this._repos.createVendor(vendor_raw);
 
     return this._presenter.showSucces(vendor, responseModel);
@@ -102,8 +101,8 @@ export class AdminInteractor implements IAdminInteractor {
   }
 
   //--------------- start: customer management ----------------------
-  async viewCustomers(responseModel: Response){
-    const customer = await this._repos.getAllCustomers();
+  async viewCustomers(responseModel: Response) {
+    const customer = await this._adminGateway.getAllCustomers();
     return this._presenter.showSucces(customer, responseModel);
   }
   //----------------- end: customer management -------------------

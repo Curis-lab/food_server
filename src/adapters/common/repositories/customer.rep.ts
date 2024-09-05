@@ -10,6 +10,10 @@ export default class CustomerRepository {
     this.orders = Order;
   }
   //---------- customer ---------------
+  async getAllCustomers(): Promise<any> {
+    const data = await this.customer.find();
+    return Promise.resolve(data);
+  }
   async createCustomer(input: customerDTO): Promise<any> {
     try {
       const data = await this.customer.create(input);
@@ -18,7 +22,7 @@ export default class CustomerRepository {
       throw new Error(e.message);
     }
   }
-  async deleteCustomer(id:string):Promise<boolean>{
+  async deleteCustomer(id: string): Promise<boolean> {
     const data = await this.customer.findByIdAndDelete(id);
     return Promise.resolve(true);
   }
@@ -26,13 +30,24 @@ export default class CustomerRepository {
     const data = await this.customer.findById(id);
     return Promise.resolve(data);
   }
-  async updateCustomer(id:string, input: any): Promise<any> {
-    const data = await this.customer.updateOne({_id: id},{$set: input});
+  async updateCustomer(id: string, input: any): Promise<any> {
+    const data = await this.customer.updateOne({ _id: id }, { $set: input });
     return Promise.resolve(data);
   }
   //-------------end: customer data fetching-----------
   //---------- orders ---------------
-  async getOrders():Promise<any>{
-    throw new Error("Order")
+  async getOrders(): Promise<any> {
+    throw new Error("Order");
   }
+}
+
+export function MixCustomerRepo(baseClass: any) {
+  return class extends baseClass {
+    private customer = Customer;
+
+    async getAllCustomers(): Promise<any> {
+      const data = await this.customer.find();
+      return Promise.resolve(data);
+    }
+  };
 }
