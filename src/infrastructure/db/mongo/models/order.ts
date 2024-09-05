@@ -1,9 +1,9 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface OrderDoc extends Document {
-  orderId: string; //8837739
-  items: [any]; //[{food, unit:1}]
-  totalAmount: number; //546
+  orderId: string;
+  items: [any]; 
+  totalAmount: number;
   orderDate: Date;
   paidThrough: string; //COD, Credit Card, Wallet
   paymentResponse: string; //{status: true, response: some bank response}

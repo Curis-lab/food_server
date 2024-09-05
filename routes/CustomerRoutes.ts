@@ -15,4 +15,4 @@ router.get('/profile', GetProfile);
 router.post('/create-order',CreateOrder);
 
 
-export {router as CustomerRoute};
+export {router as CustomerRoute1};

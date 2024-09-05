@@ -1,17 +1,18 @@
-import { Vendor } from "@entities";
-
+//for return data persistence
 
 export default interface VendorPersistenceData{
-    _id:string,
-    name:string
-}
-
-export function toDomain(vendor: VendorPersistenceData):any{
-    if(!vendor){
-        return null;
-    }
-    return null;
-    // return Vendor.build({
-    //     name: vendor.name
-    // })
+    _id?: string;
+    name: string;
+    ownerName: string;
+    pinCode: string;
+    address: string;
+    phone: string;
+    email: string;
+    password: string;
+    salt: string;
+    serviceAvailable: boolean;
+    coverImage: string[];
+    rating: number;
+    foodType: string[];
+    foods: any;
 }

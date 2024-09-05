@@ -11,7 +11,7 @@ function ProductList() {
     <>
       <div className="flex justify-between items-center">
         <div>Search Box</div>
-        <Button onClick={()=>naviagte('/create')} variant="outline" size="icon">
+        <Button onClick={()=>naviagte('/vendor/create')} variant="outline" size="icon">
           <Plus className="w-4 h-4" />
         </Button>
       </div>

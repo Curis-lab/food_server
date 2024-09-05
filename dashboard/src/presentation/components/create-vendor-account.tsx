@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input, useToast, Button } from "./ui";
-import { adminApi } from "@/infrastructure/api/apiSlice";
+import { useCreateVendorMutation } from "@/infrastructure/api/vendor-slice";
 
 export interface CreateVendor {
   name: string;
@@ -53,7 +53,7 @@ const CreateVendorAccount = () => {
     foodType: [""],
     password: "",
   });
-  const [createVendor] = adminApi.useCreateVendorMutation();
+  const [createVendor] = useCreateVendorMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

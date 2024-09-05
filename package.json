@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "test": "jest"
+    "dev": "ts-node-dev -r tsconfig-paths/register index.ts",
+    "start": "ts-node -r tsconfig-paths/register index.ts",
+    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json"
   },
   "author": "",
   "license": "ISC",
@@ -32,19 +33,20 @@
     "pg": "^8.12.0",
     "reflect-metadata": "^0.2.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.7",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.12",
-<<<<<<< HEAD
     "jest": "^29.7.0",
     "ts-jest": "^29.2.3",
-=======
     "@types/pg": "^8.11.6",
->>>>>>> dev_refactor
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "@types/web-push": "^3.6.3",
+    "tsc-alias": "^1.8.10",
+    "tsconfig-paths": "^4.2.0"
   }
 }

@@ -1,16 +1,18 @@
-import { Router } from "express";
+import * as webpush from 'web-push';
+
+import { Request,Response, Router } from "express";
 import adminExecuteRule from "../executeRule/admin-execute-rule";
+
+
 
 const router = Router();
 
-router.route("/vendors").get(adminExecuteRule("getVendors"));
+router.route("/customers").get(adminExecuteRule("viewAllCustomers"));
+router.route("/vendors").get(adminExecuteRule("fetchAllVendors"));
 router.route("/vendor").post(adminExecuteRule("createVendor"));
 router
   .route("/:id")
-  .delete(adminExecuteRule("rejectVendor"))
-  .patch(adminExecuteRule("edit"))
-  .get(adminExecuteRule("searchVendor"));
-//vendor/:id/edit ---> {inputdata}
-//vendor/:id/reject
-//vendor/:id/approve
+  .delete(adminExecuteRule("deleteVendor"))
+  .patch(adminExecuteRule("updateVendor"))
+  .get(adminExecuteRule("findVendorById"));
 export { router as AdminRoute };
