@@ -6,8 +6,8 @@
 //   updateVandor(id:string, input:string):Promise<VandorDoc>;
 // }
 
-import { VendorProps } from "../../../entities/vendor";
+import { VendorProps } from '../../../entities/vendor';
 
-export default interface getVendorDataGateway{
-    findVendorById(id:string):Promise<VendorProps>;
+export default interface getVendorDataGateway {
+  findVendorById(id: string): Promise<VendorProps>;
 }

@@ -1,6 +1,6 @@
-import { Customer } from "@infrastructure/db/mongo/models/customer";
-import { Order } from "@infrastructure/db/mongo/models/order";
-import { customerDTO } from "@useCases/customer/customer.dto";
+import { Customer } from '@infrastructure/db/mongo/models/customer';
+import { Order } from '@infrastructure/db/mongo/models/order';
+import { customerDTO, customerInputDTO } from '@useCases/customer/customer.dto';
 
 export default class CustomerRepository {
   private customer;
@@ -30,14 +30,14 @@ export default class CustomerRepository {
     const data = await this.customer.findById(id);
     return Promise.resolve(data);
   }
-  async updateCustomer(id: string, input: any): Promise<any> {
+  async updateCustomer(id: string, input: customerInputDTO): Promise<any> {
     const data = await this.customer.updateOne({ _id: id }, { $set: input });
     return Promise.resolve(data);
   }
   //-------------end: customer data fetching-----------
   //---------- orders ---------------
   async getOrders(): Promise<any> {
-    throw new Error("Order");
+    throw new Error('Order');
   }
 }
 

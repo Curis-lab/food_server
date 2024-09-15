@@ -1,16 +1,15 @@
-import { AwilixContainer, createContainer, InjectionMode } from "awilix";
+import { AwilixContainer, createContainer, InjectionMode } from 'awilix';
 
 //share 1 container for all modules
 // let container:AwilixContainer = null;
 
-export function loadContainer():AwilixContainer{
+export function loadContainer(): AwilixContainer {
+  const container = createContainer({
+    injectionMode: InjectionMode.PROXY,
+    strict: true,
+  });
 
-    const container =  createContainer({
-        injectionMode: InjectionMode.PROXY,
-        strict:true
-    });
-     
-    return container;
+  return container;
 }
 
 // export const getContainer = ()=>{

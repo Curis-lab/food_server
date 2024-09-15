@@ -1,5 +1,5 @@
-import { Vendor } from "@entities";
-import { vendorTDO } from "use-cases/admin/admin.dtos";
+import { Vendor } from '@entities';
+import { vendorTDO } from 'use-cases/admin/admin.dtos';
 export interface IAdminInteractor {
   createVendor(data: any): Promise<Vendor>;
   getVendors(): Promise<Vendor[]>;

@@ -1,7 +1,7 @@
-import { IVendorInput } from "../../../../dto";
-import { IAdminInteractor } from "../../../../interface/IAdminInteractor";
-import { IAdminRepository } from "../../../../interface/IAdminRepository";
-import { VandorDoc } from "../../../../models";
+import { IVendorInput } from '../../../../dto';
+import { IAdminInteractor } from '../../../../interface/IAdminInteractor';
+import { IAdminRepository } from '../../../../interface/IAdminRepository';
+import { VandorDoc } from '../../../../models';
 
 export class AdminInteractor implements IAdminInteractor {
   private _gateway: IAdminRepository;
@@ -40,7 +40,7 @@ export class AdminInteractor implements IAdminInteractor {
     if (vendor) {
       return vendor;
     } else {
-      throw new Error("Error while creating vandor");
+      throw new Error('Error while creating vandor');
     }
   }
   async updateVandor(id: string, input: string): Promise<VandorDoc> {
@@ -48,7 +48,7 @@ export class AdminInteractor implements IAdminInteractor {
     if (updated) {
       return updated;
     } else {
-      throw new Error("Error while updating vandor");
+      throw new Error('Error while updating vandor');
     }
   }
 }

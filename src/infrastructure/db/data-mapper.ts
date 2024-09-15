@@ -1,4 +1,4 @@
-import { AbstractDataMapper } from "@adapters/common/interfaces/data-mappers";
+import { AbstractDataMapper } from '@adapters/common/interfaces/data-mappers';
 
 export default class DataMapper<Model> implements AbstractDataMapper<Model> {
   public database: any;
@@ -18,7 +18,7 @@ export default class DataMapper<Model> implements AbstractDataMapper<Model> {
   async updateById(id: number | string, data: Partial<Model>): Promise<Model> {
     const updatedData: Model = await this.database.findByIdAndUpdate(
       { _id: id },
-      { $set: data }
+      { $set: data },
     );
     return Promise.resolve(updatedData);
   }

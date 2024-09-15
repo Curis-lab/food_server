@@ -1,9 +1,9 @@
-export class Identifier<T>{
-    constructor(private value:T){
-        this.value = value;
-    }
+export class Identifier<T> {
+  constructor(private value: T) {
+    this.value = value;
+  }
 
-    public equals(id?:Identifier<T>):boolean{
-        return true;
-    }
+  public equals(id?: Identifier<T>): boolean {
+    return true;
+  }
 }

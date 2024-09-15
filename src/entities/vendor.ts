@@ -16,81 +16,83 @@ export interface VendorProps {
 }
 
 /**
- * 
- * Entity are the business objects that are managed by the coorperation 
+ *
+ * Entity are the business objects that are managed by the coorperation
  *
  */
 
-export class Vendor{
-  private props:VendorProps;
-  public readonly isNew:boolean;
-  public _id:string|undefined;
+export class Vendor {
+  private props: VendorProps;
+  public readonly isNew: boolean;
+  public _id: string | undefined;
 
   constructor(props: VendorProps) {
-    const handle = ()=>{
-      return {set:(o:any, property:string, value:any)=>{
-        o[property] = value;
-        return true;
-      }}
-    }
-    this.props = new Proxy(props,handle());
-    this.isNew = props._id? false: true;
+    const handle = () => {
+      return {
+        set: (o: any, property: string, value: any) => {
+          o[property] = value;
+          return true;
+        },
+      };
+    };
+    this.props = new Proxy(props, handle());
+    this.isNew = props._id ? false : true;
     this._id = props._id ? props._id.toString() : undefined;
   }
-  get id():string|undefined{
-    return this._id
+  get id(): string | undefined {
+    return this._id;
   }
-  get name():string{
+  get name(): string {
     return this.props.name;
   }
-  
-  get ownerName(): string{
+
+  get ownerName(): string {
     return this.props.ownerName;
   }
 
-  get pinCode(): string{
+  get pinCode(): string {
     return this.props.pinCode;
-  };
+  }
 
-  get address(): string{
+  get address(): string {
     return this.props.address;
   }
-  get phone(): string{
-    return this.props.phone
+  get phone(): string {
+    return this.props.phone;
   }
-  get email(): string{
-    return this.props.email
+  get email(): string {
+    return this.props.email;
   }
-  get salt(): string{
-    return this.props.salt
+  get salt(): string {
+    return this.props.salt;
   }
-  get password(): string{
-    return this.props.password
+  get password(): string {
+    return this.props.password;
   }
-  get serviceAvailable(): boolean{
-    return this.props.serviceAvailable
+  get serviceAvailable(): boolean {
+    return this.props.serviceAvailable;
   }
-  get coverImage():string[]{
+  get coverImage(): string[] {
     return this.props.coverImage;
   }
-  get rating():number{
+  get rating(): number {
     return this.props.rating;
   }
-  get foodType(): string[]{
+  get foodType(): string[] {
     return this.props.foodType;
   }
-  get foods():any{
+  get foods(): any {
     return this.props.foods;
   }
-  
-  public static build(props: VendorProps):Vendor {
+
+  public static build(props: VendorProps): Vendor {
     //some domain validation is here
     const errors: Array<string> = [];
-    if(props.rating < 1 || props.rating >6){
-      errors.push("Rating must be between 1 and 5");
+    if (props.rating < 1 || props.rating > 6) {
+      errors.push('Rating must be between 1 and 5');
     }
-    if(errors.length > 0){
-      throw new Error("Error on vendor entities");
+    if (errors.length > 0) {
+      throw new Error('Error on vendor entities');
     }
     return new Vendor(props);
   }

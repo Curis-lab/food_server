@@ -11,5 +11,5 @@ export default interface HTTPCreateVendorBody {
   serviceAvailable: boolean;
   coverImage: string[];
   rating: number;
-  foods:any
+  foods: [];
 }

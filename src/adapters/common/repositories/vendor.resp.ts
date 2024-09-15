@@ -1,31 +1,43 @@
-import { IVendorInput } from "../../../../dto";
-import { IAdminRepository } from "../../../../interface/IAdminRepository";
-import {  VandorDoc } from "../../../../models";
+import { VendorProps } from '@entities';
+import VendorDataMapper from '@infrastructure/db/data-mapper/vendor-data-mapper';
+import { Vendor } from '@infrastructure/db/mongo/models/vendor';
 
-export class AdminRepository implements IAdminRepository {
-  private _vendorDataMapper;
-  constructor(vendor:any) {
-    this._vendorDataMapper = vendor;
-  }
-  async deleteVandor(id: string): Promise<boolean> {
-    const result = await this._vendorDataMapper.deleteOne({ _id: id });
-    return result.deletedCount === 1;
-  }
-  async vandors(): Promise<any[]> {
-    return await this._vendorDataMapper.find();
-  }
-  async createVandor(input: IVendorInput): Promise<VandorDoc> {
-    return await this._vendorDataMapper.create(input);
-  }
-  async findVandor(id: string): Promise<VandorDoc | null> {
-    return await this._vendorDataMapper.findById({ _id: id });
-  }
-  async updateVandor(id: string, data: string): Promise<VandorDoc | null> {
-    const result = await this._vendorDataMapper.findByIdAndUpdate(
-      { _id: id },
-      { name: data },
-      { new: true }
-    );
-    return result;
-  }
+type GConstructor<T = {}> = new (...args: any[]) => T;
+
+export function MixVendorRepository<TBase extends GConstructor>(
+  baseClass: TBase,
+) {
+  return class extends baseClass {
+    private _vendor: any;
+    constructor(...args: any[]) {
+      super(...args);
+      this._vendor = new VendorDataMapper(Vendor);
+    }
+    async createVendor(data: VendorProps): Promise<VendorProps> {
+      const vendor = await this._vendor.insert(data);
+      return Promise.resolve(vendor as VendorProps);
+    }
+    async deleteVendor(id: string): Promise<boolean> {
+      const deleted: boolean = await this._vendor.deleteOne(id);
+      return Promise.resolve(deleted);
+    }
+    async updateVendor(id: string, data: any): Promise<VendorProps> {
+      const result = await this._vendor.updateById(id, data);
+      return Promise.resolve(result);
+    }
+    async findById(id: string): Promise<VendorProps> {
+      const result = await this._vendor.findById(id);
+      return Promise.resolve(result);
+    }
+    async patchVendor(id: string, updates: any): Promise<VendorProps> {
+      const result = await this._vendor.updateById(id, updates);
+      return result;
+    }
+    async find(): Promise<any[]> {
+      return await this._vendor.find();
+    }
+    async findByEmail(email: string): Promise<VendorProps> {
+      return await this._vendor.findByEmail(email);
+    }
+  };
 }

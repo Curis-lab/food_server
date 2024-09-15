@@ -1,8 +1,8 @@
-import { injectable } from "inversify";
-import { Response } from "express";
+import { injectable } from 'inversify';
+import { Response } from 'express';
 
 @injectable()
-export default class VendorPresenter  {
+export default class VendorPresenter {
   public showSuccess(data: any, res: Response) {
     const view = {
       statusCode: 200,

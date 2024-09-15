@@ -1,5 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose";
-import { OrderDoc } from "./order";
+import mongoose, { Schema, Document } from 'mongoose';
+import { OrderDoc } from './order';
 
 interface CustomerDoc extends Document {
   email: string;
@@ -34,7 +34,7 @@ const CustomerSchema = new Schema(
     orders: [
       {
         type: Schema.Types.ObjectId,
-        ref: "order",
+        ref: 'order',
       },
     ],
     createdAt: { type: Date, immutable: true, default: () => Date.now() },
@@ -51,9 +51,9 @@ const CustomerSchema = new Schema(
       },
     },
     timestamps: true,
-  }
+  },
 );
 
-const Customer = mongoose.model<CustomerDoc>("customer", CustomerSchema);
+const Customer = mongoose.model<CustomerDoc>('customer', CustomerSchema);
 
 export { Customer };

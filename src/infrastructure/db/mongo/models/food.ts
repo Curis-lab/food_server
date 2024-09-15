@@ -1,4 +1,4 @@
-import mongoose, { mongo, Schema, Document } from "mongoose";
+import mongoose, { mongo, Schema, Document } from 'mongoose';
 
 export interface FoodDoc extends Document {
   vandorId: string;
@@ -31,7 +31,7 @@ const FoodSchema = new Schema(
         delete ret.__v, delete ret.createdAt, delete ret.updatedAt;
       },
     },
-  }
+  },
 );
-const Food = mongoose.model<FoodDoc>("food", FoodSchema);
+const Food = mongoose.model<FoodDoc>('food', FoodSchema);
 export { Food };

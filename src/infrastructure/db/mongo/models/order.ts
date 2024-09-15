@@ -1,8 +1,8 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface OrderDoc extends Document {
   orderId: string;
-  items: [any]; 
+  items: [any];
   totalAmount: number;
   orderDate: Date;
   paidThrough: string; //COD, Credit Card, Wallet
@@ -15,7 +15,7 @@ const CustomerSchema = new Schema(
     orderID: { type: String, required: true },
     items: [
       {
-        food: { type: Schema.Types.ObjectId, ref: "food", required: true },
+        food: { type: Schema.Types.ObjectId, ref: 'food', required: true },
         unit: { type: Number, required: true },
       },
     ],
@@ -36,9 +36,9 @@ const CustomerSchema = new Schema(
       },
     },
     timestamps: true,
-  }
+  },
 );
 
-const Order = mongoose.model<OrderDoc>("order", CustomerSchema);
+const Order = mongoose.model<OrderDoc>('order', CustomerSchema);
 
 export { Order };

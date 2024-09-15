@@ -1,25 +1,27 @@
-import { Vendor } from "../../entities";
-import { inject, injectable } from "inversify";
-import { admin_types } from "../utils/jd-const";
-import { IAdminRepository } from "../../adapters/common/interfaces/admin";
+import { inject, injectable } from 'inversify';
+import { admin_types } from '../utils/jd-const';
+import { IAdminRepository } from '../../adapters/common/interfaces/admin';
 import {
   GeneratePassword,
   generateSalt,
-} from "../../use-cases/utils/password-utls";
-import { CreateVendorInput } from "./admin.dtos";
-import { IAdminInteractor } from "./admin.gateway";
-import { Response } from "express";
-import AdminPresenter from "adapters/admin/admin.presenter";
-import { generateAdminGateway } from "@adapters/admin/admin.gateway";
+} from '../../use-cases/utils/password-utls';
+import { CreateVendorInput } from './admin.dtos';
+import { AdminGateway, IAdminInteractor } from './admin.gateway';
+import { Response } from 'express';
+import AdminPresenter from 'adapters/admin/admin.presenter';
+import { generateAdminGateway } from '@adapters/admin/admin.gateway';
+
+//what do I need for adminGateway
+
 
 @injectable()
 export class AdminInteractor implements IAdminInteractor {
   private _repos: IAdminRepository;
   private _presenter: AdminPresenter;
-  private _adminGateway: any; 
+  private _adminGateway: AdminGateway;
   constructor(
     @inject(admin_types.adminrespository) repos: IAdminRepository,
-    @inject(admin_types.adminpresenter) presenter: AdminPresenter
+    @inject(admin_types.adminpresenter) presenter: AdminPresenter,
   ) {
     this._repos = repos;
     this._presenter = presenter;
@@ -31,7 +33,7 @@ export class AdminInteractor implements IAdminInteractor {
     const existing_vendor = await this._adminGateway.findByEmail(email);
     const rating = 5;
     if (existing_vendor) {
-      return this._presenter.showError("vendor not found", responseModel);
+      return this._presenter.showError('vendor not found', responseModel);
     }
 
     const salt = await generateSalt();
@@ -43,7 +45,6 @@ export class AdminInteractor implements IAdminInteractor {
       rating,
       password: hashed_password,
     };
-    // const vendors = await this._adminGateway.createVendor(vendor_raw);
     const vendor = await this._repos.createVendor(vendor_raw);
 
     return this._presenter.showSucces(vendor, responseModel);
@@ -53,7 +54,7 @@ export class AdminInteractor implements IAdminInteractor {
     const data = await this._repos.find();
 
     if (!data) {
-      return this._presenter.showError("vendor not found", responseModel);
+      return this._presenter.showError('vendor not found', responseModel);
     }
     const vendors_update = data.reduce<any[]>((acc, cur) => {
       acc.push({
@@ -78,13 +79,13 @@ export class AdminInteractor implements IAdminInteractor {
   async rejectVendor(id: string, responseModel: Response) {
     const existing = await this._repos.findById(id);
     if (!existing) {
-      return this._presenter.showError("vendor not found", responseModel);
+      return this._presenter.showError('vendor not found', responseModel);
     }
     const vendor_deleted = await this._repos.deleteVendor(id);
     if (vendor_deleted) {
-      return this._presenter.showSucces("Succefully deleted", responseModel);
+      return this._presenter.showSucces('Succefully deleted', responseModel);
     } else {
-      return this._presenter.showError("Error in deleting", responseModel);
+      return this._presenter.showError('Error in deleting', responseModel);
     }
   }
   async viewAllProducts(responseModel: Response) {
@@ -100,10 +101,8 @@ export class AdminInteractor implements IAdminInteractor {
     return this._presenter.showSucces(vendor, responseModel);
   }
 
-  //--------------- start: customer management ----------------------
   async viewCustomers(responseModel: Response) {
     const customer = await this._adminGateway.getAllCustomers();
     return this._presenter.showSucces(customer, responseModel);
   }
-  //----------------- end: customer management -------------------
 }

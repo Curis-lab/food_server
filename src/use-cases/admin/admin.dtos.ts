@@ -14,7 +14,7 @@ export interface vendorTDO {
   foods: any;
 }
 
-export type CreateVendorInput = Omit<vendorTDO, "salt" | "rating">;
+export type CreateVendorInput = Omit<vendorTDO, 'salt' | 'rating'>;
 
 export type responseVendors = {
   _id: string;

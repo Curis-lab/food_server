@@ -1,23 +1,27 @@
-import { Response } from "express";
-import HTTPResponse, { httpResponseHandler } from "../../adapters/common/models/http-response";
+import { Response } from 'express';
+import HTTPResponse, {
+  httpResponseHandler,
+} from '../../adapters/common/models/http-response';
 
-export default class ExpressResponseHandler<T> implements httpResponseHandler<T>{
-    private _response: Response;
+export default class ExpressResponseHandler<T>
+  implements httpResponseHandler<T>
+{
+  private _response: Response;
 
-    constructor(response:Response){
-        this._response = response;
+  constructor(response: Response) {
+    this._response = response;
+  }
+
+  public send(data: HTTPResponse<T>): any {
+    if (data.headers) {
+      Object.keys(data.headers).forEach((key: string) => {
+        this._response.setHeader(key, data.headers[key]);
+      });
     }
-    
-    public send(data:HTTPResponse<T>):any{
-        if(data.headers){
-            Object.keys(data.headers).forEach((key:string)=>{
-                this._response.setHeader(key, data.headers[key])
-            });
-        }
-        this._response.status(data.statusCode);
-        if(data.body){
-            return this._response.json(data.body);
-        }
-        return this._response.send(data.message);
+    this._response.status(data.statusCode);
+    if (data.body) {
+      return this._response.json(data.body);
     }
+    return this._response.send(data.message);
+  }
 }

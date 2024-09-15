@@ -1,5 +1,5 @@
-import VendorPersistenceData from "@adapters/common/models/vendor-persistence-data";
-import DataMapper from "../data-mapper";
+import VendorPersistenceData from '@adapters/common/models/vendor-persistence-data';
+import DataMapper from '../data-mapper';
 
 export default class VendorDataMapper extends DataMapper<VendorPersistenceData> {
   constructor(vendor: any) {

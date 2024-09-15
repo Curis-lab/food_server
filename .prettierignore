@@ -1,0 +1,6 @@
+node_modules
+.frontend
+.dashboard
+.git
+.husky
+.vscode

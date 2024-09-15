@@ -1,5 +1,5 @@
-import { AwilixContainer } from "awilix";
-import { startHttpServer } from "./http-server";
+import { AwilixContainer } from 'awilix';
+import { startHttpServer } from './http-server';
 
 declare global {
   namespace Express {
@@ -8,12 +8,12 @@ declare global {
     }
   }
 }
-let server:any = null;
+let server: any = null;
 
 const init = async () => {
-  try{
+  try {
     server = startHttpServer();
-  }catch(err){
+  } catch (err) {
     console.log('Boot error', err);
   }
 };

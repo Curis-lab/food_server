@@ -1,7 +1,9 @@
 import 'reflect-metadata';
-import express from "express";
-import dbConnection from "./services/Database";
-import App from "./services/ExpressApp";
+import express from 'express';
+import dbConnection from './services/Database';
+import App from './services/ExpressApp';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const init = async () => {
   const app = express();

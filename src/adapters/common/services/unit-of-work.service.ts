@@ -1,15 +1,17 @@
-import { UnitOfWork } from "../interfaces/unit-of-work";
+import { UnitOfWork } from '../interfaces/unit-of-work';
 
-export function MixUnitOfWorkServices(baseUrl:any){
-    return class extends baseUrl implements UnitOfWork{
-        public async startTransaction():Promise<void>{
-            console.log('start transaction');
-        }               
-        public async commitTransaction():Promise<void>{
-            console.log('commit transaction');
-        }
-        public async rollbackTransaction():Promise<void>{
-            console.log('rollbackTransaction');
-        }
+type GConstructor<T = {}> = new (...args: any[]) => T;
+
+export function MixUnitOfWorkServices< TBase extends GConstructor>(baseUrl: TBase) {
+  return class extends baseUrl implements UnitOfWork {
+    public async startTransaction(): Promise<void> {
+      console.log('start transaction');
     }
+    public async commitTransaction(): Promise<void> {
+      console.log('commit transaction');
+    }
+    public async rollbackTransaction(): Promise<void> {
+      console.log('rollbackTransaction');
+    }
+  };
 }

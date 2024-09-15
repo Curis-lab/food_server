@@ -13,9 +13,4 @@ export type customerDTO = {
   lng: number;
 };
 
-export type customerInputDTO = Omit<customerDTO, "salt"|"otp"|"otp_expiry">;
-
- const f = {
-  "email":"tuntun",
-  "password":"seed"
-}
+export type customerInputDTO = Omit<customerDTO, 'salt' | 'otp' | 'otp_expiry'>;

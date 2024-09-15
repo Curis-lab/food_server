@@ -1,5 +1,5 @@
-import { Food } from "../models/food";
+import { Food } from '../models/food';
 
-export interface IFood{
-    createFood(input:any):Promise<Food>;    
+export interface IFood {
+  createFood(input: any): Promise<Food>;
 }
