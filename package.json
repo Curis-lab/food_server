@@ -13,12 +13,11 @@
     "format": "prettier --write 'src/**/**/*.{ts}'"
   },
   "lint-staged": {
-    "src/**/**/*.{ts, tsx, js, jsx}": [
-      "eslint --fix",
+    "src/**/*.{ts, tsx, js, jsx}": [
       "prettier --write"
     ],
-    "src/**/**/*.{json, css, md}": [
-      "prettier --write"
+    "src/**/*.{json, css, md}": [
+      "eslint"
     ]
   },
   "author": "Min Nyan Lin",

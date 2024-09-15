@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
-// import { vendorTDO } from "@useCases/admin/admin.dtos";
 import { vendorTDO } from '@useCases/admin/admin.dtos';
 import { admin_types } from '@useCases/utils/jd-const';
 import { IAdminInteractor } from '@useCases/admin/admin.gateway';
@@ -20,6 +19,7 @@ export class AdminController {
     this._interactor.searchVendorById(req.params.id, res);
   }
   onGetVendors(req: Request, res: Response) {
+    req.body;
     this._interactor.viewVendors(res);
   }
   onDeleteVendorById(req: Request, res: Response) {
