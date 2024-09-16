@@ -10,9 +10,9 @@ import { AdminGateway, IAdminInteractor } from './admin.gateway';
 import { Response } from 'express';
 import AdminPresenter from 'adapters/admin/admin.presenter';
 import { generateAdminGateway } from '@adapters/admin/admin.gateway';
+import { logger } from '@useCases/utils/logger';
 
 //what do I need for adminGateway
-
 
 @injectable()
 export class AdminInteractor implements IAdminInteractor {
@@ -30,6 +30,9 @@ export class AdminInteractor implements IAdminInteractor {
 
   async createVendor(data: CreateVendorInput, responseModel: Response) {
     const { email, password } = data;
+    if (!data) {
+      logger.warn('input data did not found on vendor creating process.');
+    }
     const existing_vendor = await this._adminGateway.findByEmail(email);
     const rating = 5;
     if (existing_vendor) {
@@ -45,9 +48,10 @@ export class AdminInteractor implements IAdminInteractor {
       rating,
       password: hashed_password,
     };
-    const vendor = await this._repos.createVendor(vendor_raw);
 
-    return this._presenter.showSucces(vendor, responseModel);
+    const vendor = await this._adminGateway.createVendor(vendor_raw);
+
+    return this._presenter.showSucces('vendor', responseModel);
   }
 
   async viewVendors(responseModel: Response) {
@@ -56,6 +60,27 @@ export class AdminInteractor implements IAdminInteractor {
     if (!data) {
       return this._presenter.showError('vendor not found', responseModel);
     }
+
+    const reformatted = (data: any[], input: any, output: any) => {
+      return data.reduce<any[]>((acc, cur) => {
+        acc.push({
+          id: cur._id.toString(),
+          name: cur.name,
+          ownerName: cur.ownerName,
+          foodType: cur.foodType,
+          pinCode: cur.pinCode,
+          address: cur.address,
+          phone: cur.phone,
+          email: cur.email,
+          password: cur.password,
+          serviceAvailable: cur.serviceAvailable,
+          coverImage: cur.coverImage,
+          rating: cur.rating,
+          foods: cur.foods,
+        });
+        return acc;
+      }, []);
+    };
     const vendors_update = data.reduce<any[]>((acc, cur) => {
       acc.push({
         id: cur._id.toString(),

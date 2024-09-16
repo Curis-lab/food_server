@@ -9,8 +9,10 @@ export default class DataMapper<Model> implements AbstractDataMapper<Model> {
     const data: Model = await this.database.findById(id);
     return Promise.resolve(data);
   }
-  async insert(model: Model): Promise<void> {
-    return await this.database.create(model);
+  async insert(model: Model): Promise<any> {
+    // console.log('model',model)
+    const data = await this.database.create(model);
+    return Promise.resolve(data);
   }
   async bluckInsert(models: Model[]): Promise<void> {
     return await this.database.insertMany(models);

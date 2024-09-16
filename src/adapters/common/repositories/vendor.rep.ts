@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { IVendorRepository } from '../interfaces/vendor';
 import { Vendor, Food } from '@entities';
-import { Food as food } from '../../../../models';
+// import { Food as food } from '../../../../models';
 import { Vendor as vendor } from '../../../infrastructure/db/mongo/models/vendor';
 
 @injectable()
@@ -10,7 +10,7 @@ export class VendorRepository implements IVendorRepository {
   private food: any;
   constructor() {
     this.vendor = vendor;
-    this.food = food;
+    // this.food = food;
   }
 
   async deleteFood(id: string): Promise<boolean> {

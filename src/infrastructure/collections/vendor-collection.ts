@@ -2,7 +2,6 @@ import { inject, injectable } from 'inversify';
 import { VendorController } from 'adapters/vendor/vendor.controller';
 
 const INTERFACE_TYPE = {
-  VendorRepository: Symbol.for('VendorRepository'),
   VendorInteractor: Symbol.for('VendorInteractor'),
   VendorController: Symbol.for('VendorController'),
   VendorPresenter: Symbol.for('VendorPresenter'),

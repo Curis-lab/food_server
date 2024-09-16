@@ -13,7 +13,7 @@ export interface VendorDoc extends Document {
   coverImage: [string];
   rating: number;
   foodType: [string];
-  foods: any;
+  foods: any[];
 }
 
 const VendorSchema = new Schema(

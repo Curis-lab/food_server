@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const init = async () => {
+
   const app = express();
   await dbConnection();
   await App(app);

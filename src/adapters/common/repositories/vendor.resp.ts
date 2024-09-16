@@ -1,8 +1,12 @@
 import { VendorProps } from '@entities';
 import VendorDataMapper from '@infrastructure/db/data-mapper/vendor-data-mapper';
 import { Vendor } from '@infrastructure/db/mongo/models/vendor';
+import { injectable } from 'inversify';
 
 type GConstructor<T = {}> = new (...args: any[]) => T;
+
+@injectable()
+export class VendorRepository {}
 
 export function MixVendorRepository<TBase extends GConstructor>(
   baseClass: TBase,
@@ -13,9 +17,10 @@ export function MixVendorRepository<TBase extends GConstructor>(
       super(...args);
       this._vendor = new VendorDataMapper(Vendor);
     }
-    async createVendor(data: VendorProps): Promise<VendorProps> {
+    async createVendor(data: VendorProps): Promise<any> {
+      console.log(data);
       const vendor = await this._vendor.insert(data);
-      return Promise.resolve(vendor as VendorProps);
+      return Promise.resolve('vendor');
     }
     async deleteVendor(id: string): Promise<boolean> {
       const deleted: boolean = await this._vendor.deleteOne(id);

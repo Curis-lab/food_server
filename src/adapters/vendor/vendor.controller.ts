@@ -12,7 +12,7 @@ export const VENDOR_TYPES = {
 
 @injectable()
 export class VendorController {
-  private _interactor: VendorGateway;
+  private _interactor: any;
   private _presenter: any;
   constructor(
     @inject(VENDOR_TYPES.VendorInteractor) interactor: VendorGateway,
@@ -42,7 +42,7 @@ export class VendorController {
   async VendorLogin(req: Request, res: Response) {
     type Tauth = { email: string; password: string };
     const { email, password } = <Tauth>req.body;
-    return this._presenter.showSuccess({ email: 'eil' }, res);
+    this._interactor.vendorLogin({ email, password }, res);
   }
 
   async GetVendorProfile(req: Request, res: Response) {
