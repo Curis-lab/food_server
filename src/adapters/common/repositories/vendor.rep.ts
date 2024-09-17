@@ -1,54 +1,55 @@
+import { VendorProps } from '@entities';
+import VendorDataMapper from '@infrastructure/db/data-mapper/vendor-data-mapper';
+import { Vendor } from '@infrastructure/db/mongo/models/vendor';
 import { injectable } from 'inversify';
-import { IVendorRepository } from '../interfaces/vendor';
-import { Vendor, Food } from '@entities';
-// import { Food as food } from '../../../../models';
-import { Vendor as vendor } from '../../../infrastructure/db/mongo/models/vendor';
+
+type GConstructor<T = {}> = new (...args: any[]) => T;
 
 @injectable()
-export class VendorRepository implements IVendorRepository {
-  private vendor: any;
-  private food: any;
-  constructor() {
-    this.vendor = vendor;
-    // this.food = food;
-  }
+export class VendorRepository {}
 
-  async deleteFood(id: string): Promise<boolean> {
-    const result = await this.food.deleteOne({ _id: id });
-    return Promise.resolve(result.deletedCount === 1);
-  }
-  async createFood(input: any): Promise<Food> {
-    const food = await this.food.create(input);
-    return Promise.resolve(food);
-  }
-
-  create(data: any): Promise<Vendor> {
-    throw new Error('Method not implemented.');
-  }
-  async deleteVendor(id: string): Promise<boolean> {
-    return Promise.resolve(true);
-  }
-  update(id: string): Promise<Vendor> {
-    throw new Error('Method not implemented.');
-  }
-  async findByEmail(email: string): Promise<Vendor> {
-    const data = await this.vendor.findOne({ email });
-    // if (data) {
-    return Promise.resolve(data);
-    // } else {
-    //   throw new Error("Method not implemented.");
-    // }
-  }
-  async findById(id: string): Promise<Vendor> {
-    const data = await this.vendor.findById(id);
-    if (data) {
-      return Promise.resolve(data);
-    } else {
-      throw new Error('Method not implemented.');
+export function MixVendorRepository<TBase extends GConstructor>(
+  baseClass: TBase,
+) {
+  return class extends baseClass {
+    private mapper: any;
+    constructor(...args: any[]) {
+      super(...args);
+      this.mapper = new VendorDataMapper(Vendor);
     }
-  }
-  async getFoods(): Promise<Vendor[]> {
-    const foods = await this.food.find();
-    return Promise.resolve(foods);
-  }
+    async vendorFoodIds(vendorId: string): Promise<any> {
+      const vendor = await this.mapper.findById(vendorId);
+      if (!vendor) {
+        return Promise.resolve('this is not found');
+      }
+      const foodIds = vendor.foods;
+      return Promise.resolve(foodIds);
+    }
+    async createVendor(data: VendorProps): Promise<any> {
+      const vendor = await this.mapper.insert(data);
+      return Promise.resolve('vendor');
+    }
+    async deleteVendor(id: string): Promise<boolean> {
+      const deleted: boolean = await this.mapper.deleteOne(id);
+      return Promise.resolve(deleted);
+    }
+    async updateVendor(id: string, data: any): Promise<VendorProps> {
+      const result = await this.mapper.updateById(id, data);
+      return Promise.resolve(result);
+    }
+    async findVendorById(id: string): Promise<VendorProps> {
+      const result = await this.mapper.findById(id);
+      return Promise.resolve(result);
+    }
+    async patchVendor(id: string, updates: any): Promise<VendorProps> {
+      const result = await this.mapper.updateById(id, updates);
+      return result;
+    }
+    async getAllVendor(): Promise<any[]> {
+      return await this.mapper.find();
+    }
+    async findVendorByEmail(email: string): Promise<VendorProps> {
+      return await this.mapper.findByEmail(email);
+    }
+  };
 }

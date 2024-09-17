@@ -7,13 +7,11 @@ import {
 import VendorPresenter from '../../adapters/vendor/vendor.presenter';
 import { VendorCollection } from '../collections/vendor-collection';
 import { VendorGateway } from 'use-cases/vendor/vendor.gateway';
-import { VendorRepository } from '@adapters/common/repositories/vendor.resp';
+import { VendorRepository } from '@adapters/common/repositories/vendor.rep';
 
 export function vendorLoadContainer() {
   const container = new Container();
-  container
-    .bind<VendorGateway>(VENDOR_TYPES.VendorInteractor)
-    .to(VendorInteractor);
+  container.bind<any>(VENDOR_TYPES.VendorInteractor).to(VendorInteractor);
   container.bind(VENDOR_TYPES.VendorRepository).to(VendorRepository);
   container
     .bind<VendorPresenter>(VENDOR_TYPES.VendorPresenter)

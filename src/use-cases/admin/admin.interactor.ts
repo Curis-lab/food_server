@@ -33,7 +33,7 @@ export class AdminInteractor implements IAdminInteractor {
     if (!data) {
       logger.warn('input data did not found on vendor creating process.');
     }
-    const existing_vendor = await this._adminGateway.findByEmail(email);
+    const existing_vendor = await this._adminGateway.findVendorByEmail(email);
     const rating = 5;
     if (existing_vendor) {
       return this._presenter.showError('vendor not found', responseModel);

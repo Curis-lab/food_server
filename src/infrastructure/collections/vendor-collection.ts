@@ -16,9 +16,10 @@ export class VendorCollection {
   }
   callFunctionByName(funcName: string, ...args: any) {
     const register: Record<string, (...args: any) => any> = {
-      profile: (req, res) => this.vendorController.GetVendorProfile(req, res),
-      login: (req, res) => this.vendorController.VendorLogin(req, res),
+      profile: (req, res) => this.vendorController.getVendorProfile(req, res),
+      login: (req, res) => this.vendorController.vendorLogin(req, res),
       addfood: (req, res) => this.vendorController.addFood(req, res),
+      viewFood: (req, res) => this.vendorController.viewFood(req, res),
       foods: (req, res) => this.vendorController.getFoods(req, res),
       deleteFood: (req, res) => this.vendorController.deleteFood(req, res),
     };

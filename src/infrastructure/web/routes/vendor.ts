@@ -1,15 +1,16 @@
 import express from 'express';
 import { vendorExecuteRule } from '../executeRule/vendor-execute-rule';
+import { AuthVerify } from '../middlewares/auth-verify';
 
 const router = express.Router();
 
-router.route('/profile/:id').get(vendorExecuteRule('profile'));
 router.route('/login').post(vendorExecuteRule('login'));
-router.route('/food').post(vendorExecuteRule('addfood'));
-router.route('/foods').get(vendorExecuteRule('foods')); //add food
-router.route('/:id'); //update specific profile
-//search other food
-router.route('/:id/food').delete(vendorExecuteRule('deleteFood')); //get food by id
-router.route('/:id'); //update vendor cover images
+router.route('/food').post(AuthVerify, vendorExecuteRule('addfood'));
+router.route('/foods').get(AuthVerify, vendorExecuteRule('foods')); //add food
+router.route('/profile').get(AuthVerify, vendorExecuteRule('profile'));
+//edit/view food
+router.route('/:id/food').get(AuthVerify, vendorExecuteRule('viewFood'));
+
+// router.route('/:id/food').delete(vendorExecuteRule('deleteFood')); //get food by id
 
 export { router as VendorRoute };

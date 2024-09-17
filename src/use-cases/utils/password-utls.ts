@@ -1,4 +1,5 @@
 import bcyrpt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export const generateSalt = async () => {
   return await bcyrpt.genSalt();
@@ -15,3 +16,6 @@ export const validatePassword = async (
 ) => {
   return (await GeneratePassword(enteredPassword, salt)) === savedPassword;
 };
+export function generateSignature(payload: { id: string; email: string }) {
+  return jwt.sign(payload, process.env.jwt_sec as string, { expiresIn: '1d' });
+}

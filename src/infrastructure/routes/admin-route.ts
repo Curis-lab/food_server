@@ -3,7 +3,7 @@ import HttpAdminController, {
   AdminRegi,
 } from '../../adapters/admin/http-admin.controller';
 import { AdminInteractor } from '../../use-cases/common/get-vendor-data/get-vendor-data.interactor';
-import { AdminRepository } from '../../adapters/common/repositories/vendor.resp';
+import { AdminRepository } from '../../adapters/common/repositories/vendor.rep';
 import { Vandor } from '../../../models';
 
 const router = express.Router();

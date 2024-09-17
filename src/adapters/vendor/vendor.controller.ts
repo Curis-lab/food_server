@@ -2,6 +2,9 @@ import { inject, injectable } from 'inversify';
 import { NextFunction, Request, Response } from 'express';
 import { VendorGateway } from 'use-cases/vendor/vendor.gateway';
 import foodDTO from '../../use-cases/vendor/vendor.dtos';
+import { Food } from '@infrastructure/db/mongo/models/food';
+import VendorDataMapper from '@infrastructure/db/data-mapper/vendor-data-mapper';
+import FoodDataMapper from '@infrastructure/db/data-mapper/food-data-mapper';
 
 export const VENDOR_TYPES = {
   VendorRepository: Symbol.for('VendorRepository'),
@@ -13,67 +16,51 @@ export const VENDOR_TYPES = {
 @injectable()
 export class VendorController {
   private _interactor: any;
-  private _presenter: any;
   constructor(
     @inject(VENDOR_TYPES.VendorInteractor) interactor: VendorGateway,
-    @inject(VENDOR_TYPES.VendorPresenter) presenter: any,
   ) {
     this._interactor = interactor;
-    this._presenter = presenter;
   }
+  //-------------food section---------------
   getFoods(req: Request, res: Response) {
-    this._interactor.getFoods(res);
+    const { id } = req.body.user;
+    this._interactor.getFoods(id, res);
   }
-  addFood(req: Request, res: Response) {
-    const food = <foodDTO>req.body;
-    this._interactor.addFood(food, res);
+  viewFood(req: Request, res: Response) {
+    const foodId = req.params.id;
+    const vendorId = req.body.user.id;
+    this._interactor.viewFoodById(foodId, vendorId, res);
   }
   editFood(req: Request, res: Response) {}
   deleteFood(req: Request, res: Response) {
-    const id = req.params.id;
-    this._interactor.deleteFood(id, res);
+    const { id } = req.body.user;
+    const foodId = req.params.id;
+    this._interactor.deleteFood(foodId, id, res);
+  }
+  async addFood(req: Request, res: Response) {
+    const food = <any>req.body;
+    this._interactor.addFood(food, res);
   }
 
+  //---------------end of food section--------------
+  //-------------- order section------------------
   viewOrders() {}
   updateOrderStatus() {}
-
+  // --------------- end of order section -----------
   viewCustomerInfo() {}
   manageProfile() {}
-  async VendorLogin(req: Request, res: Response) {
+  async vendorLogin(req: Request, res: Response) {
     type Tauth = { email: string; password: string };
     const { email, password } = <Tauth>req.body;
     this._interactor.vendorLogin({ email, password }, res);
   }
 
-  async GetVendorProfile(req: Request, res: Response) {
-    const data = await this._interactor.getVendorProfileById(
-      '66c45ff6b7e8a571a43fe07b',
-    );
-    if (data) {
-      return this._presenter.showSuccess(data, res);
-    } else {
-      return this._presenter.showError('Get vendor profile error', res);
-    }
+  async getVendorProfile(req: Request, res: Response) {
+    const { id } = req.body.user;
+    this._interactor.getVendorProfileById(id, res);
   }
 
-  async UpdateVendorProfile(req: Request, res: Response, next: NextFunction) {
+  async updateVendorProfile(req: Request, res: Response, next: NextFunction) {
     return res.send({ message: 'update profile' });
-  }
-  async AddFood(req: Request, res: Response) {
-    type CreateFoodInputs = {
-      name: string;
-      description: string;
-      category: string;
-      foodType: string;
-      readyTime: number;
-      price: number;
-    };
-    const food = <CreateFoodInputs>req.body;
-    // const data = await this._interactor.addFood(food);
-    // if (data) {
-    // return this._presenter.showSuccess(data, res);
-    // } else {
-    return this._presenter.showError('Add Food Error', res);
-    // }
   }
 }

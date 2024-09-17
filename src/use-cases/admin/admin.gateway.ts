@@ -15,7 +15,7 @@ export interface AdminGateway {
   startTransaction(): Promise<void>;
   commitTransaction(): Promise<void>;
   rollbackTransaction(): Promise<void>;
-  findByEmail(email: string): Promise<any>;
+  findVendorByEmail(email: string): Promise<any>;
   getAllCustomers(): Promise<any>;
   createVendor(data: CreateVendorInput): Promise<any>;
 }
