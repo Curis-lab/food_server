@@ -1,19 +1,19 @@
+import mongoose from 'mongoose';
+import { Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { VENDOR_TYPES } from '../../adapters/vendor/vendor.controller';
 import VendorPresenter from 'adapters/vendor/vendor.presenter';
-import { Response } from 'express';
 import { generateVendorGateway } from '@adapters/vendor/vendor.gateway';
 import {
   generateSignature,
   validatePassword,
 } from '@useCases/utils/password-utls';
-
-import mongoose from 'mongoose';
+import { vendorGateway } from './vendor.gateway';
 
 @injectable()
 export class VendorInteractor {
   private _presenter: VendorPresenter;
-  private _gateway: any;
+  private _gateway: vendorGateway;
   constructor(
     @inject(VENDOR_TYPES.VendorPresenter) presenter: VendorPresenter,
   ) {
@@ -25,7 +25,7 @@ export class VendorInteractor {
     try {
       const { email, password } = data;
 
-      const vendor = await this._gateway.findByEmail(email);
+      const vendor = await this._gateway.findVendorByEmail(email);
 
       if (!vendor) {
         return this._presenter.showError('vendor not found', res);

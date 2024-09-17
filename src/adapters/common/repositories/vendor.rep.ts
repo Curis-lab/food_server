@@ -12,13 +12,13 @@ export function MixVendorRepository<TBase extends GConstructor>(
   baseClass: TBase,
 ) {
   return class extends baseClass {
-    private mapper: any;
+    private _mapper: any;
     constructor(...args: any[]) {
       super(...args);
-      this.mapper = new VendorDataMapper(Vendor);
+      this._mapper = new VendorDataMapper(Vendor);
     }
     async vendorFoodIds(vendorId: string): Promise<any> {
-      const vendor = await this.mapper.findById(vendorId);
+      const vendor = await this._mapper.findById(vendorId);
       if (!vendor) {
         return Promise.resolve('this is not found');
       }
@@ -26,30 +26,30 @@ export function MixVendorRepository<TBase extends GConstructor>(
       return Promise.resolve(foodIds);
     }
     async createVendor(data: VendorProps): Promise<any> {
-      const vendor = await this.mapper.insert(data);
+      const vendor = await this._mapper.insert(data);
       return Promise.resolve('vendor');
     }
     async deleteVendor(id: string): Promise<boolean> {
-      const deleted: boolean = await this.mapper.deleteOne(id);
+      const deleted: boolean = await this._mapper.deleteOne(id);
       return Promise.resolve(deleted);
     }
     async updateVendor(id: string, data: any): Promise<VendorProps> {
-      const result = await this.mapper.updateById(id, data);
+      const result = await this._mapper.updateById(id, data);
       return Promise.resolve(result);
     }
     async findVendorById(id: string): Promise<VendorProps> {
-      const result = await this.mapper.findById(id);
+      const result = await this._mapper.findById(id);
       return Promise.resolve(result);
     }
     async patchVendor(id: string, updates: any): Promise<VendorProps> {
-      const result = await this.mapper.updateById(id, updates);
+      const result = await this._mapper.updateById(id, updates);
       return result;
     }
     async getAllVendor(): Promise<any[]> {
-      return await this.mapper.find();
+      return await this._mapper.find();
     }
     async findVendorByEmail(email: string): Promise<VendorProps> {
-      return await this.mapper.findByEmail(email);
+      return await this._mapper.findByEmail(email);
     }
   };
 }
