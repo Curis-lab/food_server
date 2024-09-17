@@ -1,11 +1,15 @@
 import { FoodPersistenceData } from '@adapters/common/models/food-persistence-data';
 import DataMapper from '../data-mapper';
-
-export default class FoodDataMapper extends DataMapper<FoodPersistenceData> {
+import { FoodDataMapper } from '@adapters/common/interfaces/data-mappers';
+import { Types } from 'mongoose';
+export default class MongooseFoodDataMapper
+  extends DataMapper<FoodPersistenceData>
+  implements FoodDataMapper
+{
   constructor(food: any) {
     super(food);
   }
-  async foodListByIds(ids: string[]): Promise<any> {
+  async foodListByIds(ids: Types.ObjectId[]): Promise<any> {
     const foods: any[] = await this.database.find({
       _id: { $in: ids },
     });

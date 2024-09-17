@@ -25,7 +25,7 @@ export class VendorInteractor {
     try {
       const { email, password } = data;
 
-      const vendor = await this._gateway.findByEmail(email);
+      const vendor = await this._gateway.findVendorByEmail(email);
 
       if (!vendor) {
         return this._presenter.showError('vendor not found', res);

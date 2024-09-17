@@ -1,6 +1,7 @@
-import FoodDataMapper from '@infrastructure/db/data-mapper/food-data-mapper';
+import MongooseFoodDataMapper from '@infrastructure/db/data-mapper/food-data-mapper';
 import { Food } from '@infrastructure/db/mongo/models/food';
 import mongoose, { Types } from 'mongoose';
+import { FoodDataMapper } from '../interfaces/data-mappers';
 
 type GConstructor<T = {}> = new (...args: any[]) => T;
 
@@ -8,10 +9,10 @@ export function MixFoodRepository<TBase extends GConstructor>(
   baseClass: TBase,
 ) {
   return class extends baseClass {
-    private _mapper: any;
+    private _mapper: FoodDataMapper;
     constructor(...args: any[]) {
       super(...args);
-      this._mapper = new FoodDataMapper(Food);
+      this._mapper = new MongooseFoodDataMapper(Food);
     }
     async addFood(input: any): Promise<any> {
       const food = await this._mapper.insert(input);
