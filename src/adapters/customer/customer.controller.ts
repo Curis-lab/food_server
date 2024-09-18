@@ -2,29 +2,30 @@ import { Request, Response } from 'express';
 import CustomerInteractor from '@useCases/customer/customer.interactor';
 import { customerInputDTO } from '@useCases/customer/customer.dto';
 
+//I build it customer data processing upon on signature token
 export default class CustomerController {
-  private interactor;
+  private _interactor: any;
   constructor() {
-    this.interactor = new CustomerInteractor();
+    this._interactor = new CustomerInteractor();
   }
   //-------------for customer services------------
   signUp(req: Request, res: Response) {
     const input = <customerInputDTO>req.body;
-    this.interactor.customerRegister(input, res);
+    this._interactor.customerRegister(input, res);
+  }
+  login(req: Request, res: Response) {
+    this._interactor.customerLogin(req.body, res);
   }
   deleteAccount(req: Request, res: Response) {
-    const id = req.params.id;
-    this.interactor.deleteCustomer(id, res);
+    this._interactor.deleteCustomer(req.body.user.id, res);
   }
-  login() {}
   viewProfile(req: Request, res: Response) {
-    const id = req.params.id;
-    this.interactor.getCustomer(id, res);
+    this._interactor.customerProfile(req.body.user.id, res);
   }
+
   updateProfile(req: Request, res: Response) {
     const input = <customerInputDTO>req.body;
-    const id = req.params.id;
-    this.interactor.editCustomerProfile(id, input, res);
+    this._interactor.editCustomerProfile(req.body.user.id, input, res);
   }
   //-------------------end of customer services-----------
   //-------------------for order services-----------------

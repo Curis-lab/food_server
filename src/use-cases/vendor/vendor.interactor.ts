@@ -9,11 +9,12 @@ import {
 } from '@useCases/utils/password-utls';
 
 import mongoose from 'mongoose';
+import GenerateVendorGateway from './vendor.gateway';
 
 @injectable()
 export class VendorInteractor {
   private _presenter: VendorPresenter;
-  private _gateway: any;
+  private _gateway: GenerateVendorGateway;
   constructor(
     @inject(VENDOR_TYPES.VendorPresenter) presenter: VendorPresenter,
   ) {

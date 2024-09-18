@@ -1,10 +1,5 @@
 import { inject, injectable } from 'inversify';
 import { NextFunction, Request, Response } from 'express';
-import { VendorGateway } from 'use-cases/vendor/vendor.gateway';
-import foodDTO from '../../use-cases/vendor/vendor.dtos';
-import { Food } from '@infrastructure/db/mongo/models/food';
-import VendorDataMapper from '@infrastructure/db/data-mapper/vendor-data-mapper';
-import FoodDataMapper from '@infrastructure/db/data-mapper/food-data-mapper';
 
 export const VENDOR_TYPES = {
   VendorRepository: Symbol.for('VendorRepository'),
@@ -16,9 +11,7 @@ export const VENDOR_TYPES = {
 @injectable()
 export class VendorController {
   private _interactor: any;
-  constructor(
-    @inject(VENDOR_TYPES.VendorInteractor) interactor: VendorGateway,
-  ) {
+  constructor(@inject(VENDOR_TYPES.VendorInteractor) interactor: any) {
     this._interactor = interactor;
   }
   //-------------food section---------------

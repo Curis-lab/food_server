@@ -1,3 +1,4 @@
+import { CustomerPersistenceData } from '../models/customer-persistence-data';
 import { FoodPersistenceData } from '../models/food-persistence-data';
 import VendorPersistenceData from '../models/vendor-persistence-data';
 import { Types } from 'mongoose';
@@ -22,4 +23,9 @@ export interface FoodDataMapper
   delete(id: string): Promise<Boolean>;
 }
 
-export interface CustomerDataMapper extends AbstractDataMapper<any> {}
+export interface CustomerDataMapper
+  extends AbstractDataMapper<CustomerPersistenceData> {
+  getAllCustomers(): Promise<any>;
+  findByEmail(email: string): Promise<any>;
+  deleteById(id: string): Promise<any>;
+}

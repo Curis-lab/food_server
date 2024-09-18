@@ -6,7 +6,7 @@ import {
   generateSalt,
 } from '../../use-cases/utils/password-utls';
 import { CreateVendorInput } from './admin.dtos';
-import { AdminGateway, IAdminInteractor } from './admin.gateway';
+import { GenerateAdminGateway } from './admin.gateway';
 import { Response } from 'express';
 import AdminPresenter from 'adapters/admin/admin.presenter';
 import { generateAdminGateway } from '@adapters/admin/admin.gateway';
@@ -15,17 +15,17 @@ import { logger } from '@useCases/utils/logger';
 //what do I need for adminGateway
 
 @injectable()
-export class AdminInteractor implements IAdminInteractor {
+export class AdminInteractor {
   private _repos: IAdminRepository;
   private _presenter: AdminPresenter;
-  private _adminGateway: AdminGateway;
+  private _gateway: GenerateAdminGateway;
   constructor(
     @inject(admin_types.adminrespository) repos: IAdminRepository,
     @inject(admin_types.adminpresenter) presenter: AdminPresenter,
   ) {
     this._repos = repos;
     this._presenter = presenter;
-    this._adminGateway = new generateAdminGateway();
+    this._gateway = new generateAdminGateway();
   }
 
   async createVendor(data: CreateVendorInput, responseModel: Response) {
@@ -33,7 +33,7 @@ export class AdminInteractor implements IAdminInteractor {
     if (!data) {
       logger.warn('input data did not found on vendor creating process.');
     }
-    const existing_vendor = await this._adminGateway.findVendorByEmail(email);
+    const existing_vendor = await this._gateway.findVendorByEmail(email);
     const rating = 5;
     if (existing_vendor) {
       return this._presenter.showError('vendor not found', responseModel);
@@ -49,7 +49,7 @@ export class AdminInteractor implements IAdminInteractor {
       password: hashed_password,
     };
 
-    const vendor = await this._adminGateway.createVendor(vendor_raw);
+    const vendor = await this._gateway.createVendor(vendor_raw);
 
     return this._presenter.showSucces('vendor', responseModel);
   }
@@ -99,7 +99,7 @@ export class AdminInteractor implements IAdminInteractor {
       });
       return acc;
     }, []);
-    return this._presenter.showSucces(vendors_update, responseModel);
+    return this._presenter.showPagnination(vendors_update, responseModel);
   }
   async rejectVendor(id: string, responseModel: Response) {
     const existing = await this._repos.findById(id);
@@ -127,7 +127,7 @@ export class AdminInteractor implements IAdminInteractor {
   }
 
   async viewCustomers(responseModel: Response) {
-    const customer = await this._adminGateway.getAllCustomers();
-    return this._presenter.showSucces(customer, responseModel);
+    const customer = await this._gateway.getAllCustomers();
+    return this._presenter.showPagnination(customer, responseModel);
   }
 }
