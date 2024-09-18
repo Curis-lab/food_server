@@ -8,12 +8,12 @@ import {
   generateSignature,
   validatePassword,
 } from '@useCases/utils/password-utls';
-import { vendorGateway } from './vendor.gateway';
 
+import GenerateVendorGateway from './vendor.gateway';
 @injectable()
 export class VendorInteractor {
   private _presenter: VendorPresenter;
-  private _gateway: vendorGateway;
+  private _gateway: GenerateVendorGateway;
   constructor(
     @inject(VENDOR_TYPES.VendorPresenter) presenter: VendorPresenter,
   ) {

@@ -13,4 +13,7 @@ export default class AdminPresenter {
   public showError(msg: string, res: Response) {
     return res.status(404).json(msg);
   }
+  public showPagnination(data: any, res: Response) {
+    return res.status(200).send({ data, length: data.length });
+  }
 }

@@ -1,7 +1,8 @@
 import { VendorProps } from '@entities';
-import VendorDataMapper from '@infrastructure/db/data-mapper/vendor-data-mapper';
+import MongooseVendorDataMapper from '@infrastructure/db/data-mapper/vendor-data-mapper';
 import { Vendor } from '@infrastructure/db/mongo/models/vendor';
 import { injectable } from 'inversify';
+import { VendorDataMapper } from '../interfaces/data-mappers';
 
 type GConstructor<T = {}> = new (...args: any[]) => T;
 
@@ -12,10 +13,10 @@ export function MixVendorRepository<TBase extends GConstructor>(
   baseClass: TBase,
 ) {
   return class extends baseClass {
-    private _mapper: any;
+    private _mapper: VendorDataMapper;
     constructor(...args: any[]) {
       super(...args);
-      this._mapper = new VendorDataMapper(Vendor);
+      this._mapper = new MongooseVendorDataMapper(Vendor);
     }
     async vendorFoodIds(vendorId: string): Promise<any> {
       const vendor = await this._mapper.findById(vendorId);
@@ -29,8 +30,8 @@ export function MixVendorRepository<TBase extends GConstructor>(
       const vendor = await this._mapper.insert(data);
       return Promise.resolve('vendor');
     }
-    async deleteVendor(id: string): Promise<boolean> {
-      const deleted: boolean = await this._mapper.deleteOne(id);
+    async deleteVendor(id: string): Promise<Boolean> {
+      const deleted = await this._mapper.deleteOne(id);
       return Promise.resolve(deleted);
     }
     async updateVendor(id: string, data: any): Promise<VendorProps> {

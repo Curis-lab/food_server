@@ -1,7 +1,11 @@
-import VendorPersistenceData from '@adapters/common/models/vendor-persistence-data';
 import DataMapper from '../data-mapper';
+import { VendorDataMapper } from '@adapters/common/interfaces/data-mappers';
+import VendorPersistenceData from '@adapters/common/models/vendor-persistence-data';
 
-export default class VendorDataMapper extends DataMapper<VendorPersistenceData> {
+export default class MongooseVendorDataMapper
+  extends DataMapper<VendorPersistenceData>
+  implements VendorDataMapper
+{
   constructor(vendor: any) {
     super(vendor);
   }

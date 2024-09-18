@@ -11,7 +11,7 @@ export interface IAdminInteractor {
   updateVendor(id: string, data: any, responseModel: Response): void;
   viewCustomers(responseModel: Response): void;
 }
-export interface AdminGateway {
+export interface GenerateAdminGateway {
   startTransaction(): Promise<void>;
   commitTransaction(): Promise<void>;
   rollbackTransaction(): Promise<void>;

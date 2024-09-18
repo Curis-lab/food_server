@@ -6,7 +6,6 @@ import {
 } from '../../adapters/vendor/vendor.controller';
 import VendorPresenter from '../../adapters/vendor/vendor.presenter';
 import { VendorCollection } from '../collections/vendor-collection';
-import { VendorGateway } from 'use-cases/vendor/vendor.gateway';
 import { VendorRepository } from '@adapters/common/repositories/vendor.rep';
 
 export function vendorLoadContainer() {
