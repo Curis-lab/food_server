@@ -21,6 +21,8 @@ export interface FoodDataMapper
   extends AbstractDataMapper<FoodPersistenceData> {
   foodListByIds(ids: Types.ObjectId[]): Promise<any>;
   delete(id: string): Promise<Boolean>;
+  foods(): Promise<any>;
+  findQuery(input: any): Promise<any>;
 }
 
 export interface CustomerDataMapper
