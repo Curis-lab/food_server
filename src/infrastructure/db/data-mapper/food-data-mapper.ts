@@ -9,6 +9,10 @@ export default class MongooseFoodDataMapper
   constructor(food: any) {
     super(food);
   }
+  async foods(): Promise<any> {
+    const data = await this.database.find();
+    return Promise.resolve(data);
+  }
   async foodListByIds(ids: Types.ObjectId[]): Promise<any> {
     const foods: any[] = await this.database.find({
       _id: { $in: ids },
@@ -18,5 +22,9 @@ export default class MongooseFoodDataMapper
   async delete(id: string): Promise<Boolean> {
     const deleted = await this.database.deleteOne({ _id: id });
     return Promise.resolve(deleted.deletedCount === 1);
+  }
+  async findQuery(input: any): Promise<any> {
+    const data = await this.database.find({ ...input });
+    return Promise.resolve(data);
   }
 }

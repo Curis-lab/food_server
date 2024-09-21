@@ -1,13 +1,13 @@
-ARG NODE_VERSION=20.15.0-alpine
+FROM node:14
 
-FROM node:$NODE_VERSION
+WORKDIR /app
 
-WORKDIR /food
-
-COPY . /food
+COPY package*.json ./
 
 RUN npm install
 
+COPY . .
+
 EXPOSE 8080
 
-CMD [ "npm","run","dev" ]
+CMD [ "npm", "run", "dev" ]

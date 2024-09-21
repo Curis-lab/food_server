@@ -33,5 +33,15 @@ export function MixFoodRepository<TBase extends GConstructor>(
       const food = await this._mapper.findById(id);
       return Promise.resolve(food);
     }
+    async getFoods(): Promise<any> {
+      const foods = await this._mapper.foods();
+      return Promise.resolve(foods);
+    }
+    async findFood(query: any): Promise<any> {
+      //check for some type of query ensure data system
+      console.log(query);
+      const foods = await this._mapper.findQuery(query);
+      return Promise.resolve(foods);
+    }
   };
 }
