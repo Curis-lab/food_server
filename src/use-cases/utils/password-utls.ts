@@ -1,4 +1,4 @@
-import bcyrpt from 'bcrypt';
+import bcyrpt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export const generateSalt = async () => {

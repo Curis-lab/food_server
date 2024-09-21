@@ -8,7 +8,7 @@ import {
   VendorRoute,
   CustomerRoute,
   ShoppingRoute,
-} from '../src/infrastructure/web/routes';
+} from '../web/routes';
 
 import * as webpush from 'web-push';
 
