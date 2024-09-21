@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import express from 'express';
-import dbConnection from './services/Database';
-import App from './services/ExpressApp';
+import App from './src/infrastructure/services/ExpressApp';
+import dbConnection from './src/infrastructure/services/Database';
 import dotenv from 'dotenv';
 dotenv.config();
 

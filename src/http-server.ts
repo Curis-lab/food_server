@@ -1,11 +1,9 @@
 import express from 'express';
-import dbConnection from '../services/Database';
-import App from '../services/ExpressApp';
-// import { loadContainer } from "./infrastructure/container";
+import App from './infrastructure/services/ExpressApp';
+import dbConnection from '../src/infrastructure/services/Database';
 
 export const startHttpServer = async () => {
   const app = express();
-  // const load = loadContainer();
   await dbConnection();
   await App(app);
   const port = process.env.PORT || 8080;
