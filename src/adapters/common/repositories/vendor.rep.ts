@@ -46,7 +46,7 @@ export function MixVendorRepository<TBase extends GConstructor>(
       const result = await this.mapper.updateById(id, updates);
       return result;
     }
-    async getAllVendor(): Promise<any[]> {
+    async getAllVendors(): Promise<any[]> {
       return await this.mapper.find();
     }
     async findVendorByEmail(email: string): Promise<VendorProps> {

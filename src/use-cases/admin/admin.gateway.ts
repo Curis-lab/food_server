@@ -18,4 +18,6 @@ export interface GenerateAdminGateway {
   findVendorByEmail(email: string): Promise<any>;
   getAllCustomers(): Promise<any>;
   createVendor(data: CreateVendorInput): Promise<any>;
+  getAllVendors(): Promise<any>;
+  findVendorById(id: string): Promise<any>;
 }

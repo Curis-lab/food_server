@@ -3,10 +3,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  Checkbox,
   Button,
   Table,
   TableHeader,
@@ -15,171 +11,27 @@ import {
   TableBody,
   TableCell,
   Input,
-} from "./ui";
+} from './ui';
 
 import {
   ColumnDef,
   getCoreRowModel,
   useReactTable,
   flexRender,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 
 import {
   ChevronDown,
-  ArrowUpDown,
-  MoreHorizontal,
   CirclePlus,
-} from "lucide-react";
-import { getCommonPinningStyles } from "@/lib/data-table";
-import { Link} from "react-router-dom";
-import { useDeleteVendorMutation, useGetVendorsQuery } from "@/infrastructure/api/vendor-slice";
+} from 'lucide-react';
+import { getCommonPinningStyles } from '@/lib/data-table';
+import { Link } from 'react-router-dom';
+import {
+  useGetVendorsQuery,
+} from '@/infrastructure/api/vendor-slice';
+import { vendorTableColumns } from './vendor-table/columns';
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-
-function UseDeleteVendor() {
-  const [deleteVendor] = useDeleteVendorMutation();
-
-  const deleteFun = (id: string) => {
-    return deleteVendor(id);
-  };
-
-  return deleteFun;
-}
-const columns: ColumnDef<vendor_table>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "ownerName",
-    header: "Owner Name",
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "pinCode",
-    header: "Pin Code",
-  },
-  {
-    accessorKey: "address",
-    header: "Address",
-  },
-  {
-    accessorKey: "phone",
-    header: "Phone",
-  },
-
-  {
-    accessorKey: "serviceAvailable",
-    header: "Service Available",
-  },
-  {
-    accessorKey: "rating",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Rating
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("rating")}</div>
-    ),
-  },
-  {
-    accessorKey: "foodType",
-    header: "foodType",
-  },
-  {
-    accessorKey: "foods",
-    header: "Foods",
-  },
-  {
-    accessorKey: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const vendor = row.original;
-      const deleteVendor = UseDeleteVendor();
-      function handleDelete(id: string): void {
-        deleteVendor(id)
-          .then(() => console.log(`Vendor with ID ${id} deleted successfully`))
-          .catch((error) => console.error(`Failed to delete vendor: ${error}`));
-      }
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => {
-                handleDelete(vendor.id);
-                navigator.clipboard.writeText(vendor.id);
-              }}
-            >
-              Delete
-            </DropdownMenuItem>
-            <Link to={`${vendor.id}/edit`}>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            </Link>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
-export type vendor_table = {
+export type vendorTable = {
   id: string;
   name: string;
   ownerName: string;
@@ -192,10 +44,18 @@ export type vendor_table = {
   pinCode: string;
 };
 
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+}
+
+
 function Inheritable<TData, TValue>({
   data,
   columns,
 }: DataTableProps<TData, TValue>) {
+  console.log(data);
+  console.log(columns);
   const table = useReactTable({
     data,
     columns,
@@ -208,9 +68,9 @@ function Inheritable<TData, TValue>({
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
           onChange={(e) =>
-            table.getColumn("email")?.setFilterValue(e.target.value)
+            table.getColumn('email')?.setFilterValue(e.target.value)
           }
           className="max-w-sm"
         />
@@ -266,7 +126,7 @@ function Inheritable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -279,7 +139,7 @@ function Inheritable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
@@ -290,7 +150,7 @@ function Inheritable<TData, TValue>({
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -314,31 +174,7 @@ function Inheritable<TData, TValue>({
 }
 
 export default function MainTable() {
-  const { data: api = [] } = useGetVendorsQuery();
-  const vendor_data: vendor_table[] = api.map(
-    ({
-      id,
-      name,
-      ownerName,
-      phone,
-      email,
-      address,
-      serviceAvailable,
-      rating,
-      foodType,
-      pinCode,
-    }) => ({
-      id,
-      name,
-      ownerName,
-      phone,
-      email,
-      address,
-      serviceAvailable,
-      rating,
-      foodType,
-      pinCode,
-    })
-  );
-  return <Inheritable data={vendor_data} columns={columns} />;
+  const { data: api = { data: [], length: 0 } } = useGetVendorsQuery();
+  const vendorData: vendorTable[] = api.data.map((vendor) => ({ ...vendor }));
+  return <Inheritable data={vendorData} columns={vendorTableColumns} />;
 }

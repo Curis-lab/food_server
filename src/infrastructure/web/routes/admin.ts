@@ -1,6 +1,4 @@
-import * as webpush from 'web-push';
-
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 import adminExecuteRule from '../executeRule/admin-execute-rule';
 
 const router = Router();
