@@ -12,8 +12,6 @@ import AdminPresenter from 'adapters/admin/admin.presenter';
 import { generateAdminGateway } from '@adapters/admin/admin.gateway';
 import { logger } from '@useCases/utils/logger';
 
-//what do I need for adminGateway
-
 @injectable()
 export class AdminInteractor {
   private _repos: IAdminRepository;
@@ -36,7 +34,7 @@ export class AdminInteractor {
     const existing_vendor = await this._gateway.findVendorByEmail(email);
     const rating = 5;
     if (existing_vendor) {
-      return this._presenter.showError('vendor not found', responseModel);
+      return this._presenter.showError('vendor already exist', responseModel);
     }
 
     const salt = await generateSalt();
@@ -49,60 +47,35 @@ export class AdminInteractor {
       password: hashed_password,
     };
 
-    const vendor = await this._gateway.createVendor(vendor_raw);
+    await this._gateway.createVendor(vendor_raw);
 
     return this._presenter.showSucces('vendor', responseModel);
   }
 
   async viewVendors(responseModel: Response) {
-    const data = await this._repos.find();
-
-    if (!data) {
+    const vendors: any[] = await this._gateway.getAllVendors();
+    if (!vendors) {
       return this._presenter.showError('vendor not found', responseModel);
     }
-
-    const reformatted = (data: any[], input: any, output: any) => {
-      return data.reduce<any[]>((acc, cur) => {
-        acc.push({
-          id: cur._id.toString(),
-          name: cur.name,
-          ownerName: cur.ownerName,
-          foodType: cur.foodType,
-          pinCode: cur.pinCode,
-          address: cur.address,
-          phone: cur.phone,
-          email: cur.email,
-          password: cur.password,
-          serviceAvailable: cur.serviceAvailable,
-          coverImage: cur.coverImage,
-          rating: cur.rating,
-          foods: cur.foods,
-        });
-        return acc;
-      }, []);
-    };
-    const vendors_update = data.reduce<any[]>((acc, cur) => {
-      acc.push({
-        id: cur._id.toString(),
-        name: cur.name,
-        ownerName: cur.ownerName,
-        foodType: cur.foodType,
-        pinCode: cur.pinCode,
-        address: cur.address,
-        phone: cur.phone,
-        email: cur.email,
-        password: cur.password,
-        serviceAvailable: cur.serviceAvailable,
-        coverImage: cur.coverImage,
-        rating: cur.rating,
-        foods: cur.foods,
-      });
-      return acc;
-    }, []);
-    return this._presenter.showPagnination(vendors_update, responseModel);
+    const updatedVendors: any[] = vendors.map((vendor) => ({
+      id: vendor._id.toString(),
+      name: vendor.name,
+      ownerName: vendor.ownerName,
+      foodType: vendor.foodType,
+      pinCode: vendor.pinCode,
+      address: vendor.address,
+      phone: vendor.phone,
+      email: vendor.email,
+      password: vendor.password,
+      serviceAvailable: vendor.serviceAvailable,
+      coverImage: vendor.coverImage,
+      rating: vendor.rating,
+      foods: vendor.foods,
+    }));
+    return this._presenter.showPagnination(updatedVendors, responseModel);
   }
   async rejectVendor(id: string, responseModel: Response) {
-    const existing = await this._repos.findById(id);
+    const existing = await this._gateway.findVendorById(id);
     if (!existing) {
       return this._presenter.showError('vendor not found', responseModel);
     }

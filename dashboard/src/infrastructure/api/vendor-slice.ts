@@ -7,7 +7,7 @@ interface EditVendor {
   email?: string;
   password?: string;
   serviceAvailable?: boolean;
-  coverImage?: string[]; // Array of image URLs
+  coverImage?: string[];
   foodType?: string[];
 }
 
@@ -17,7 +17,7 @@ import { CreateVendor } from "@/presentation/components/create-vendor-account";
 
 export const vendorSlice = mainSlice.injectEndpoints({
   endpoints: (build) => ({
-    getVendors: build.query<Vendor[], void>({
+    getVendors: build.query<{data:Vendor[], length:number}, void>({
       query: () => `vendors`,
       providesTags: ["admin"],
     }),
